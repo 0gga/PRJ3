@@ -59,11 +59,11 @@
 >>- Constantly accepts clients and stores information independently.  
 >>- Systemwide unified users.json - read onto hashmaps at startup for efficient runtime.
 >>- String parser for standardized name format - snake_case.  
->><br>
+>>    
 >>- ASIO - Asynchronous client handling.  
 >>- Asynchronous client handling runs on hardcoded amount of dedicated threads{4}.  
 >>- Callback to avoid blocking IO.  
->><br>
+>>    
 >>- OOP for simple high-level usage.
 > 
 >>### **To be implemented**<br>
