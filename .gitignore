@@ -2,7 +2,7 @@
 build/
 bin/
 obj/
-out/
+Diagrams/out/
 *.exe
 *.dll
 *.so
@@ -21,6 +21,7 @@ compile_commands.json
 
 # IDEs / Editors
 .vscode/
+.idea/shelf
 *.suo
 *.user
 *.userossc

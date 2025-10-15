@@ -1,34 +1,35 @@
 #pragma once
 
+#include <json.hpp>
 #include <thread>
-#include <memory>
 #include <boost/asio.hpp>
+
+#include "TcpConnection.h"
 
 class TcpServer {
 public:
-	explicit TcpServer(int port);
+	explicit TcpServer(const int& port);
 	~TcpServer();
 
 	void start();
 	void stop();
 	static void stopAll();
 
-	template<typename Rx>
-	void read(std::function<void(const Rx&)> handler);
+	void onClientConnect(std::function<void(std::shared_ptr<TcpConnection>)> callback);
 
-	template<typename Tx>
-	void write(const Tx& data) const;
+	static void setThreadCount(const uint8_t&);
 
 private: // Member Functions
 	void acceptConnection();
 
 private: // Member Variables
 	static boost::asio::io_context io_context;
-	static std::thread asyncTcp_t;
+	static std::vector<std::thread> asyncThreads_t;
 	static boost::asio::executor_work_guard<boost::asio::io_context::executor_type> work_guard;
 
-	bool running = false;
-	
 	boost::asio::ip::tcp::acceptor acceptor;
-	boost::asio::ip::tcp::socket socket;
+	bool running = false;
+	static inline uint8_t threadCount{1};
+	static inline uint8_t threadLimit{4};
+	std::function<void(std::shared_ptr<TcpConnection>)> connectHandler;
 };

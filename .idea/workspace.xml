@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="BackendCodeEditorMiscSettings">
-    <option name="/Default/Housekeeping/LiveTemplatesHousekeeping/HotspotSessionHintIsShown/@EntryValue" value="true" type="bool" />
-    <option name="/Default/Housekeeping/OptionsDialog/SelectedPageId/@EntryValue" value="CppFormatterOtherPage" type="string" />
+    <option name="/Default/Housekeeping/OptionsDialog/SelectedPageId/@EntryValue" value="CppGeneralOptions" type="string" />
+    <option name="/Default/Housekeeping/RefactoringsMru/RenameRefactoring/DoSearchForTextInStrings/@EntryValue" value="true" type="bool" />
   </component>
   <component name="CMakePresetLoader">{
   &quot;useNewFormat&quot;: true
@@ -18,8 +18,8 @@
   </component>
   <component name="CMakeRunConfigurationManager">
     <generated>
+      <config projectName="PRJ3" targetName="client" />
       <config projectName="PRJ3" targetName="asioServer" />
-      <config projectName="PRJ3" targetName="Server" />
     </generated>
   </component>
   <component name="CMakeSettings" AUTO_RELOAD="true">
@@ -31,9 +31,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="315737ac-39e3-4f15-8b1f-a7fb14169d37" name="Changes" comment="Changes to states">
+    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="Improvements - refactored most params to const&amp;">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.source/asioServer/src/Reader.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/.source/asioServer/src/Reader.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,186 +46,186 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
-  <component name="GitLabMergeRequestFiltersHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPENED",
-    "assignee": {
-      "type": "org.jetbrains.plugins.gitlab.mergerequest.ui.filters.GitLabMergeRequestsFiltersValue.MergeRequestsMemberFilterValue.MergeRequestsAssigneeFilterValue",
-      "username": "au761203",
-      "fullname": "Oscar Friis Gustavsen"
+  <component name="GitLabMergeRequestFiltersHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPENED&quot;,
+    &quot;assignee&quot;: {
+      &quot;type&quot;: &quot;org.jetbrains.plugins.gitlab.mergerequest.ui.filters.GitLabMergeRequestsFiltersValue.MergeRequestsMemberFilterValue.MergeRequestsAssigneeFilterValue&quot;,
+      &quot;username&quot;: &quot;au761203&quot;,
+      &quot;fullname&quot;: &quot;Oscar Friis Gustavsen&quot;
     }
   }
-}]]></component>
-  <component name="GitLabMergeRequestsSettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "first": "https://gitlab.au.dk/au761203/SW3PRJ3.git",
-    "second": "eecea205-3cbe-4958-b7b2-7637b50b1076"
+}</component>
+  <component name="GitLabMergeRequestsSettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;first&quot;: &quot;https://gitlab.au.dk/au761203/SW3PRJ3.git&quot;,
+    &quot;second&quot;: &quot;eecea205-3cbe-4958-b7b2-7637b50b1076&quot;
   }
-}]]></component>
+}</component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/.source/asioServer/TCP/TcpConnection.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/.source/asioServer/TCP/TcpConnection.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/.source/asioServer/TCP/TcpServer.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/.source/asioServer/TCP/TcpServer.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/.source/asioServer/include/Reader.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/.source/asioServer/src/Reader.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/.source/asioServer/src/main.cpp" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="NamedScopeManager">
+    <order>
+      <scope name=".myScope" />
+    </order>
   </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 5
 }</component>
-  <component name="ProjectId" id="343HQTNKybu7qudKFfB9zP59c35" />
+  <component name="ProjectId" id="344By5D2B34eUXLbI0ZtaDqgy3t" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "CMake Application.Asio_Server.executor": "Run",
-    "RunOnceActivity.RadMigrateCodeStyle": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.readMode.enableVisualFormatting": "true",
-    "RunOnceActivity.west.config.association.type.startup.service": "true",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/oscar/source/.repos/SW3PRJ3/.source/asioServer/TCP",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
+    &quot;CMake Application.asioServer.executor&quot;: &quot;Run&quot;,
+    &quot;CMake Application.build_unix.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.RadMigrateCodeStyle&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.west.config.association.type.startup.service&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/oscar/source/.repos/SW3PRJ3/.source/asioServer&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;CMakeSettings&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;ChangesTree.GroupingKeys&quot;: [
+      &quot;directory&quot;,
+      &quot;repository&quot;
+    ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\oscar\source\.repos\SW3PRJ3\.source\asioServer" />
+      <recent name="C:\Users\oscar\source\.repos\SW3PRJ3\.source\client" />
       <recent name="C:\Users\oscar\source\.repos\SW3PRJ3\.source\asioServer\TCP" />
-      <recent name="C:\Users\oscar\source\.repos\SW3PRJ3\Reader\Asio_Server\TCP" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\oscar\source\.repos\SW3PRJ3" />
-      <recent name="C:\Users\oscar\source\.repos\SW3PRJ3\Reader\Boost.asio-Server" />
+      <recent name="C:\Users\oscar\source\.repos\SW3PRJ3\Diagrams" />
+      <recent name="C:\Users\oscar\source\.repos\SW3PRJ3\.source\asioServer\bin" />
+      <recent name="C:\Users\oscar\source\.repos\SW3PRJ3\.source" />
     </key>
   </component>
-  <component name="RunManager">
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="CMake Application.asioServer">
     <configuration name="asioServer" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="PRJ3" TARGET_NAME="asioServer" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="PRJ3" RUN_TARGET_NAME="asioServer">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-  </component>
-  <component name="SvnConfiguration">
-    <configuration>C:\Users\oscar\AppData\Roaming\Subversion</configuration>
+    <configuration name="client" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="PRJ3" TARGET_NAME="client" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="PRJ3" RUN_TARGET_NAME="client">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="CMake Application.asioServer" />
+      <item itemvalue="CMake Application.client" />
+    </list>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="315737ac-39e3-4f15-8b1f-a7fb14169d37" name="Changes" comment="" />
-      <created>1760431268778</created>
+      <changelist id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="" />
+      <created>1760463214779</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1760431268778</updated>
-      <workItem from="1760431270299" duration="456000" />
-      <workItem from="1760431978081" duration="360000" />
-      <workItem from="1760432597083" duration="2611000" />
-      <workItem from="1760435322157" duration="5421000" />
-      <workItem from="1760440788439" duration="14802000" />
+      <updated>1760463214779</updated>
+      <workItem from="1760463216217" duration="2139000" />
+      <workItem from="1760465428136" duration="270000" />
+      <workItem from="1760465732285" duration="10222000" />
+      <workItem from="1760476102719" duration="498000" />
+      <workItem from="1760478211032" duration="50000" />
+      <workItem from="1760478293884" duration="46000" />
+      <workItem from="1760478355364" duration="22000" />
+      <workItem from="1760521543043" duration="9169000" />
     </task>
-    <task id="LOCAL-00001" summary="boost.asio integration">
+    <task id="LOCAL-00001" summary="Final touches">
       <option name="closed" value="true" />
-      <created>1760433198011</created>
+      <created>1760475587158</created>
       <option name="number" value="00001" />
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1760433198011</updated>
+      <updated>1760475587158</updated>
     </task>
-    <task id="LOCAL-00002" summary="boost.asio integration">
+    <task id="LOCAL-00002" summary="Final touches">
       <option name="closed" value="true" />
-      <created>1760434603071</created>
+      <created>1760475661234</created>
       <option name="number" value="00002" />
       <option name="presentableId" value="LOCAL-00002" />
       <option name="project" value="LOCAL" />
-      <updated>1760434603071</updated>
+      <updated>1760475661234</updated>
     </task>
-    <task id="LOCAL-00003" summary="boost.asio integration">
+    <task id="LOCAL-00003" summary="better readme">
       <option name="closed" value="true" />
-      <created>1760434710580</created>
+      <created>1760478255528</created>
       <option name="number" value="00003" />
       <option name="presentableId" value="LOCAL-00003" />
       <option name="project" value="LOCAL" />
-      <updated>1760434710580</updated>
+      <updated>1760478255528</updated>
     </task>
-    <task id="LOCAL-00004" summary="boost.asio integration">
+    <task id="LOCAL-00004" summary="better readme">
       <option name="closed" value="true" />
-      <created>1760440756488</created>
+      <created>1760478330713</created>
       <option name="number" value="00004" />
       <option name="presentableId" value="LOCAL-00004" />
       <option name="project" value="LOCAL" />
-      <updated>1760440756488</updated>
+      <updated>1760478330713</updated>
     </task>
-    <task id="LOCAL-00005" summary="boost.asio integration">
+    <task id="LOCAL-00005" summary="better readme">
       <option name="closed" value="true" />
-      <created>1760440929628</created>
+      <created>1760478367628</created>
       <option name="number" value="00005" />
       <option name="presentableId" value="LOCAL-00005" />
       <option name="project" value="LOCAL" />
-      <updated>1760440929628</updated>
+      <updated>1760478367628</updated>
     </task>
-    <task id="LOCAL-00006" summary="boost.asio integration">
+    <task id="LOCAL-00006" summary="added door handling and refactored users.json to config.json">
       <option name="closed" value="true" />
-      <created>1760440999266</created>
+      <created>1760528273693</created>
       <option name="number" value="00006" />
       <option name="presentableId" value="LOCAL-00006" />
       <option name="project" value="LOCAL" />
-      <updated>1760440999266</updated>
+      <updated>1760528273693</updated>
     </task>
-    <task id="LOCAL-00007" summary="boost.asio integration">
+    <task id="LOCAL-00007" summary="Improvements - refactored most params to const&amp;">
       <option name="closed" value="true" />
-      <created>1760441264121</created>
+      <created>1760530252291</created>
       <option name="number" value="00007" />
       <option name="presentableId" value="LOCAL-00007" />
       <option name="project" value="LOCAL" />
-      <updated>1760441264121</updated>
+      <updated>1760530252291</updated>
     </task>
-    <task id="LOCAL-00008" summary="changes people">
+    <task id="LOCAL-00008" summary="Improvements - refactored most params to const&amp;">
       <option name="closed" value="true" />
-      <created>1760447330358</created>
+      <created>1760530505995</created>
       <option name="number" value="00008" />
       <option name="presentableId" value="LOCAL-00008" />
       <option name="project" value="LOCAL" />
-      <updated>1760447330358</updated>
+      <updated>1760530505995</updated>
     </task>
-    <task id="LOCAL-00009" summary="changes, people!">
-      <option name="closed" value="true" />
-      <created>1760447340191</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1760447340191</updated>
-    </task>
-    <task id="LOCAL-00010" summary="Using callback instead of pointer packages.">
-      <option name="closed" value="true" />
-      <created>1760450892801</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1760450892801</updated>
-    </task>
-    <task id="LOCAL-00011" summary="Changes to states">
-      <option name="closed" value="true" />
-      <created>1760455094987</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1760455094987</updated>
-    </task>
-    <option name="localTasksCounter" value="12" />
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -241,19 +241,30 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/master" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="boost.asio integration" />
-    <MESSAGE value="changes people" />
-    <MESSAGE value="changes, people!" />
-    <MESSAGE value="Using callback instead of pointer packages." />
-    <MESSAGE value="Changes to states" />
-    <option name="LAST_COMMIT_MESSAGE" value="Changes to states" />
+    <MESSAGE value="Final touches" />
+    <MESSAGE value="better readme" />
+    <MESSAGE value="added door handling and refactored users.json to config.json" />
+    <MESSAGE value="Improvements - refactored most params to const&amp;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Improvements - refactored most params to const&amp;" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

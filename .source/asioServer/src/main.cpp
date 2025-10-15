@@ -1,7 +1,9 @@
-﻿#include "Reader.h"
+﻿#include "ReaderHandler.h"
 
 int main() {
-	Reader reader1(3, 9000, 9001);
+	ReaderHandler reader(9000, 9001);
 
-	reader1.init();
+	ReaderHandler::runLoop();
+
+	return 0;
 }
