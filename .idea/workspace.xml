@@ -31,9 +31,12 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="Improvements - refactored most params to const&amp;">
+    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="changes to readme">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.source/asioServer/TCP/TcpServer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/.source/asioServer/TCP/TcpServer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.source/asioServer/TCP/TcpServer.h" beforeDir="false" afterPath="$PROJECT_DIR$/.source/asioServer/TCP/TcpServer.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.source/asioServer/include/ReaderHandler.h" beforeDir="false" afterPath="$PROJECT_DIR$/.source/asioServer/include/ReaderHandler.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.source/asioServer/src/ReaderHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/.source/asioServer/src/ReaderHandler.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,6 +86,9 @@
   &quot;associatedIndex&quot;: 5
 }</component>
   <component name="ProjectId" id="344By5D2B34eUXLbI0ZtaDqgy3t" />
+  <component name="ProjectLevelVcsManager">
+    <OptionsSetting value="false" id="Update" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -159,7 +165,8 @@
       <workItem from="1760478211032" duration="50000" />
       <workItem from="1760478293884" duration="46000" />
       <workItem from="1760478355364" duration="22000" />
-      <workItem from="1760521543043" duration="9169000" />
+      <workItem from="1760521543043" duration="9182000" />
+      <workItem from="1760530840374" duration="550000" />
     </task>
     <task id="LOCAL-00001" summary="Final touches">
       <option name="closed" value="true" />
@@ -225,7 +232,15 @@
       <option name="project" value="LOCAL" />
       <updated>1760530505995</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="changes to readme">
+      <option name="closed" value="true" />
+      <created>1760530768694</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1760530768694</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -264,7 +279,8 @@
     <MESSAGE value="better readme" />
     <MESSAGE value="added door handling and refactored users.json to config.json" />
     <MESSAGE value="Improvements - refactored most params to const&amp;" />
-    <option name="LAST_COMMIT_MESSAGE" value="Improvements - refactored most params to const&amp;" />
+    <MESSAGE value="changes to readme" />
+    <option name="LAST_COMMIT_MESSAGE" value="changes to readme" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

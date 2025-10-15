@@ -65,7 +65,7 @@ void TcpServer::onClientConnect(std::function<void(std::shared_ptr<TcpConnection
 	connectHandler = std::move(callback);
 }
 
-void TcpServer::setThreadCount(const uint8_t& count) {
+void TcpServer::setThreadCount(uint8_t count) {
 	if (count <= threadLimit) {
 		threadCount = count;
 	} else

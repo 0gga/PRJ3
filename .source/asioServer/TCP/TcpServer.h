@@ -17,7 +17,7 @@ public:
 
 	void onClientConnect(std::function<void(std::shared_ptr<TcpConnection>)> callback);
 
-	static void setThreadCount(const uint8_t&);
+	static void setThreadCount(uint8_t);
 
 private: // Member Functions
 	void acceptConnection();

@@ -18,27 +18,23 @@ public:
 
 	void stop();
 
-	ReaderState getState() const;
-
 	static void runLoop();
 
 private: // Member Functions
-	void handleClient(std::shared_ptr<TcpConnection> connection);
-	void handleCli(std::shared_ptr<TcpConnection> connection);
+	void handleClient(const std::shared_ptr<TcpConnection>& connection);
+	void handleCli(const std::shared_ptr<TcpConnection>& connection);
 
-	void newDoor(std::shared_ptr<TcpConnection> connection, const std::string&);
-	void newUser(std::shared_ptr<TcpConnection> connection, const std::string&);
-	void rmDoor(std::shared_ptr<TcpConnection> connection, const std::string&);
-	void rmUser(std::shared_ptr<TcpConnection> connection, const std::string&);
+	void newDoor(const std::shared_ptr<TcpConnection>& connection, const std::string&);
+	void newUser(const std::shared_ptr<TcpConnection>& connection, const std::string&);
+	void rmDoor(const std::shared_ptr<TcpConnection>& connection, const std::string&);
+	void rmUser(const std::shared_ptr<TcpConnection>& connection, const std::string&);
 	static void to_snake_case(std::string&);
+
+	ReaderState getState() const;
 
 	nlohmann::json getLog() const;
 
 private: // Member Variables
-	struct ClientInfo {
-		std::string doorName;
-		uint8_t accessLevel;
-	};
 	ReaderState state = ReaderState::Idle;
 	static inline bool running = true;
 
@@ -50,5 +46,4 @@ private: // Member Variables
 	nlohmann::json log;
 	std::unordered_map<std::string, int> doors;
 	std::unordered_map<std::string, std::pair<std::string, int>> users;
-	std::unordered_map<std::unique_ptr<TcpConnection>,ClientInfo> connectedClients;
 };
