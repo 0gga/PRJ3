@@ -3,18 +3,19 @@
 #include <iostream>
 #include <regex>
 
-ReaderHandler::ReaderHandler(const int& clientPort, const int& cliPort)
-: clientServer(clientPort), cliServer(cliPort) {
+ReaderHandler::ReaderHandler(const int &clientPort, const int &cliPort)
+	: clientServer(clientPort), cliServer(cliPort)
+{
 	//////////////////////////////// Init Servers ////////////////////////////////
-	clientServer.onClientConnect([this](std::shared_ptr<TcpConnection> connection) {
+	clientServer.onClientConnect([this](std::shared_ptr<TcpConnection> connection)
+								 {
 		std::cout << "Client Connected\n";
-		handleClient(connection);
-	});
+		handleClient(connection); });
 
-	cliServer.onClientConnect([this](std::shared_ptr<TcpConnection> connection) {
+	cliServer.onClientConnect([this](std::shared_ptr<TcpConnection> connection)
+							  {
 		std::cout << "CLI Connected\n";
-		handleCli(connection);
-	});
+		handleCli(connection); });
 
 	TcpServer::setThreadCount(4);
 
@@ -29,14 +30,20 @@ ReaderHandler::ReaderHandler(const int& clientPort, const int& cliPort)
 	std::ifstream file("config.json");
 	nlohmann::json configJson;
 
-	if (!file.is_open() || file.peek() == std::ifstream::traits_type::eof()) {
+	if (!file.is_open() || file.peek() == std::ifstream::traits_type::eof())
+	{
 		std::cerr << "config.json doesn't exist" << std::endl;
 		std::ofstream("config.json") << R"({"users":[],"doors":[]})";
 		std::cout << "Created empty config.json" << std::endl;
-	} else {
-		try {
+	}
+	else
+	{
+		try
+		{
 			file >> configJson;
-		} catch (const nlohmann::json::parse_error& e) {
+		}
+		catch (const nlohmann::json::parse_error &e)
+		{
 			std::cerr << "Invalid JSON in config.json" << e.what() << std::endl;
 			configJson = {{"users", nlohmann::json::array()}, {"doors", nlohmann::json::array()}};
 
@@ -47,7 +54,8 @@ ReaderHandler::ReaderHandler(const int& clientPort, const int& cliPort)
 
 	//////////////////////////// Write onto hash maps ////////////////////////////
 	if (configJson.contains("doors"))
-		for (const auto& door : configJson["doors"]) {
+		for (const auto &door : configJson["doors"])
+		{
 			if (door.contains("name") && door.contains("accessLevel") &&
 				door["name"].is_string() && door["accessLevel"].is_number_integer())
 				doors[door["name"]] = door["accessLevel"];
@@ -56,7 +64,8 @@ ReaderHandler::ReaderHandler(const int& clientPort, const int& cliPort)
 		}
 
 	if (configJson.contains("users"))
-		for (const auto& user : configJson["doors"]) {
+		for (const auto &user : configJson["doors"])
+		{
 			if (user.contains("name") && user.contains("uid") && user.contains("accessLevel") &&
 				user["name"].is_string() && user["uid"].is_string() && user["accessLevel"].is_number_integer())
 				users[user["name"]] = {user["uid"], user["accessLevel"]};
@@ -68,28 +77,34 @@ ReaderHandler::ReaderHandler(const int& clientPort, const int& cliPort)
 	runLoop();
 }
 
-ReaderHandler::~ReaderHandler() {
+ReaderHandler::~ReaderHandler()
+{
 	stop();
 }
 
-void ReaderHandler::stop() {
+void ReaderHandler::stop()
+{
 	state = ReaderState::Idle;
 	TcpServer::stopAll();
 	std::cout << "Servers Shutting Down" << std::endl;
 }
 
-ReaderState ReaderHandler::getState() const {
+ReaderState ReaderHandler::getState() const
+{
 	return state;
 }
 
-void ReaderHandler::runLoop() {
+void ReaderHandler::runLoop()
+{
 	while (running)
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }
 
-void ReaderHandler::handleClient(std::shared_ptr<TcpConnection> connection) {
+void ReaderHandler::handleClient(std::shared_ptr<TcpConnection> connection)
+{
 	state = ReaderState::Active;
-	connection->read<std::string>([this, connection](const std::string& pkg) {
+	connection->read<std::string>([this, connection](const std::string &pkg)
+								  {
 		const size_t seperator = pkg.find(':');
 		std::string name       = pkg.substr(0, seperator);
 		std::string uid        = pkg.substr(seperator + 1);
@@ -106,13 +121,14 @@ void ReaderHandler::handleClient(std::shared_ptr<TcpConnection> connection) {
 
 		connection->write<std::string>(authorized ? "Approved" : "Denied");
 		state = ReaderState::Idle;
-		handleClient(connection);
-	});
+		handleClient(connection); });
 }
 
-void ReaderHandler::handleCli(std::shared_ptr<TcpConnection> connection) {
+void ReaderHandler::handleCli(std::shared_ptr<TcpConnection> connection)
+{
 	state = ReaderState::Active;
-	connection->read<std::string>([this, connection](const std::string& pkg) {
+	connection->read<std::string>([this, connection](const std::string &pkg)
+								  {
 		if (pkg.rfind("newDoor", 0) == 0) {
 			newDoor(connection, pkg);
 		} else if (pkg.rfind("newUser", 0) == 0) {
@@ -130,15 +146,16 @@ void ReaderHandler::handleCli(std::shared_ptr<TcpConnection> connection) {
 			connection->write<std::string>("Unknown Command");
 		}
 		state = ReaderState::Idle;
-		handleCli(connection);
-	});
+		handleCli(connection); });
 }
 
-void ReaderHandler::newDoor(std::shared_ptr<TcpConnection> connection, const std::string& doorData) {
+void ReaderHandler::newDoor(std::shared_ptr<TcpConnection> connection, const std::string &doorData)
+{
 	// Parse CLI command for correct syntax
 	static const std::regex cliSyntax(R"(^newDoor\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
 	std::smatch match;
-	if (!std::regex_match(doorData, match, cliSyntax)) {
+	if (!std::regex_match(doorData, match, cliSyntax))
+	{
 		connection->write<std::string>("Failed to add new door - Incorrect CLI syntax");
 		return;
 	}
@@ -149,13 +166,16 @@ void ReaderHandler::newDoor(std::shared_ptr<TcpConnection> connection, const std
 	uint8_t accessLevel = std::stoul(match[2].str());
 
 	nlohmann::json configJson;
-	try {
+	try
+	{
 		std::ifstream in("config.json");
 		if (in && in.peek() != std::ifstream::traits_type::eof())
 			in >> configJson;
 		else
 			configJson = {{"users", nlohmann::json::array()}, {"doors", nlohmann::json::array()}};
-	} catch (const nlohmann::json::parse_error& e) {
+	}
+	catch (const nlohmann::json::parse_error &e)
+	{
 		std::cerr << "Invalid JSON @ config.json" << e.what() << std::endl;
 		configJson = {{"users", nlohmann::json::array()}, {"doors", nlohmann::json::array()}};
 	}
@@ -163,22 +183,23 @@ void ReaderHandler::newDoor(std::shared_ptr<TcpConnection> connection, const std
 		configJson["doors"] = nlohmann::json::array();
 
 	doors[name] = accessLevel;
-	configJson["doors"].push_back({
-									  {"name", name},
-									  {"accessLevel", accessLevel}
-								  });
+	configJson["doors"].push_back({{"name", name},
+								   {"accessLevel", accessLevel}});
 
 	std::ofstream out{"config_tmp.json"};
 	out << configJson.dump(4);
-	std::filesystem::rename("config_tmp.json", "config.json");
+	std::filesystem::rename("config_tmp.json", "config.json"); // this wont work for me..
+	// std::rename("config_tmp.json", "config.json");
 	connection->write<std::string>("Door Added Successfully");
 }
 
-void ReaderHandler::newUser(std::shared_ptr<TcpConnection> connection, const std::string& userData) {
+void ReaderHandler::newUser(std::shared_ptr<TcpConnection> connection, const std::string &userData)
+{
 	// Parse CLI command for correct syntax
 	static const std::regex cliSyntax(R"(^newUser\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
 	std::smatch match;
-	if (!std::regex_match(userData, match, cliSyntax)) {
+	if (!std::regex_match(userData, match, cliSyntax))
+	{
 		connection->write<std::string>("Failed to add new user - Incorrect CLI syntax");
 		return;
 	}
@@ -187,7 +208,8 @@ void ReaderHandler::newUser(std::shared_ptr<TcpConnection> connection, const std
 	to_snake_case(name);
 
 	uint8_t accessLevel = std::stoul(match[2].str());
-	connection->read<std::string>([this, name, accessLevel, connection](const std::string& uid) {
+	connection->read<std::string>([this, name, accessLevel, connection](const std::string &uid)
+								  {
 		nlohmann::json configJson;
 		try {
 			std::ifstream in("config.json");
@@ -212,15 +234,16 @@ void ReaderHandler::newUser(std::shared_ptr<TcpConnection> connection, const std
 		std::ofstream out{"config_tmp.json"};
 		out << configJson.dump(4);
 		std::filesystem::rename("config_tmp.json", "config.json");
-		connection->write<std::string>("User Added Successfully");
-	});
+		connection->write<std::string>("User Added Successfully"); });
 }
 
-void ReaderHandler::rmDoor(std::shared_ptr<TcpConnection> connection, const std::string& doorData) {
+void ReaderHandler::rmDoor(std::shared_ptr<TcpConnection> connection, const std::string &doorData)
+{
 	// Parse CLI command for correct syntax
 	static const std::regex cliSyntax(R"(^rmDoor\s+([A-Za-z_]+)$)");
 	std::smatch match;
-	if (!std::regex_match(doorData, match, cliSyntax)) {
+	if (!std::regex_match(doorData, match, cliSyntax))
+	{
 		connection->write<std::string>("Failed to remove door - Incorrect CLI syntax");
 		return;
 	}
@@ -228,27 +251,34 @@ void ReaderHandler::rmDoor(std::shared_ptr<TcpConnection> connection, const std:
 	std::string name = match[1].str();
 	to_snake_case(name);
 
-	if (doors.erase(name) == 0) {
+	if (doors.erase(name) == 0)
+	{
 		std::cout << "Door not found in memory" << std::endl;
 		return;
 	}
 
 	nlohmann::json configJson;
-	try {
+	try
+	{
 		std::ifstream in("config.json");
 		if (in && in.peek() != std::ifstream::traits_type::eof())
 			in >> configJson;
 		else
 			configJson = {{"users", nlohmann::json::array()}, {"doors", nlohmann::json::array()}};
-	} catch (const nlohmann::json::parse_error& e) {
+	}
+	catch (const nlohmann::json::parse_error &e)
+	{
 		std::cerr << "Invalid JSON @ config.json" << e.what() << std::endl;
 		configJson = {{"users", nlohmann::json::array()}, {"doors", nlohmann::json::array()}};
 	}
 
-	if (configJson.contains("doors")) {
-		auto& doorsJson = configJson["doors"];
-		for (auto it = doorsJson.begin(); it != doorsJson.end(); ++it) {
-			if (it->contains("name") && (*it)["name"] == name) {
+	if (configJson.contains("doors"))
+	{
+		auto &doorsJson = configJson["doors"];
+		for (auto it = doorsJson.begin(); it != doorsJson.end(); ++it)
+		{
+			if (it->contains("name") && (*it)["name"] == name)
+			{
 				doorsJson.erase(it);
 				break;
 			}
@@ -261,11 +291,13 @@ void ReaderHandler::rmDoor(std::shared_ptr<TcpConnection> connection, const std:
 	connection->write<std::string>("Door Removed Successfully");
 }
 
-void ReaderHandler::rmUser(std::shared_ptr<TcpConnection> connection, const std::string& userdata) {
+void ReaderHandler::rmUser(std::shared_ptr<TcpConnection> connection, const std::string &userdata)
+{
 	// Parse CLI command for correct syntax
 	static const std::regex cliSyntax(R"(^rmUser\s+([A-Za-z_]+)$)");
 	std::smatch match;
-	if (!std::regex_match(userdata, match, cliSyntax)) {
+	if (!std::regex_match(userdata, match, cliSyntax))
+	{
 		connection->write<std::string>("Failed to remove user - Incorrect CLI syntax");
 		return;
 	}
@@ -273,27 +305,34 @@ void ReaderHandler::rmUser(std::shared_ptr<TcpConnection> connection, const std:
 	std::string name = match[1].str();
 	to_snake_case(name);
 
-	if (users.erase(name) == 0) {
+	if (users.erase(name) == 0)
+	{
 		std::cout << "User not found in memory" << std::endl;
 		return;
 	}
 
 	nlohmann::json configJson;
-	try {
+	try
+	{
 		std::ifstream in("config.json");
 		if (in && in.peek() != std::ifstream::traits_type::eof())
 			in >> configJson;
 		else
 			configJson = {{"users", nlohmann::json::array()}, {"doors", nlohmann::json::array()}};
-	} catch (const nlohmann::json::parse_error& e) {
+	}
+	catch (const nlohmann::json::parse_error &e)
+	{
 		std::cerr << "Invalid JSON @ config.json" << e.what() << std::endl;
 		configJson = {{"users", nlohmann::json::array()}, {"doors", nlohmann::json::array()}};
 	}
 
-	if (configJson.contains("users")) {
-		auto& usersJson = configJson["users"];
-		for (auto it = usersJson.begin(); it != usersJson.end(); ++it) {
-			if (it->contains("name") && (*it)["name"] == name) {
+	if (configJson.contains("users"))
+	{
+		auto &usersJson = configJson["users"];
+		for (auto it = usersJson.begin(); it != usersJson.end(); ++it)
+		{
+			if (it->contains("name") && (*it)["name"] == name)
+			{
 				usersJson.erase(it);
 				break;
 			}
@@ -306,21 +345,26 @@ void ReaderHandler::rmUser(std::shared_ptr<TcpConnection> connection, const std:
 	connection->write<std::string>("User Removed Successfully");
 }
 
-void ReaderHandler::to_snake_case(std::string& input) {
+void ReaderHandler::to_snake_case(std::string &input)
+{
 	std::string result;
 
-	for (size_t i = 0; i < input.size(); ++i) {
+	for (size_t i = 0; i < input.size(); ++i)
+	{
 		char c = static_cast<unsigned char>(input[i]);
-		if (std::isupper(c)) {
+		if (std::isupper(c))
+		{
 			if (i > 0 && std::islower(static_cast<unsigned char>(input[i - 1])))
 				result += '_';
 			result += std::tolower(c);
-		} else
+		}
+		else
 			result += c;
 	}
 	input = result;
 }
 
-nlohmann::json ReaderHandler::getLog() const {
+nlohmann::json ReaderHandler::getLog() const
+{
 	return log;
 }
