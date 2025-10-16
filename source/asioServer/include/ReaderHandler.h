@@ -41,9 +41,8 @@ private: // Member Variables
 	TcpServer clientServer;
 	TcpServer cliServer;
 
-	int readerAccessLevel{3};
-
 	nlohmann::json log;
 	std::unordered_map<std::string, int> doors;
-	std::unordered_map<std::string, std::pair<std::string, int>> users;
+	std::unordered_map<std::string, std::pair<std::string, int>> usersByName;
+	std::unordered_map<std::string, std::pair<std::string, int>> usersByUID;
 };

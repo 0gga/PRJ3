@@ -58,9 +58,14 @@ ReaderHandler::ReaderHandler(const int& clientPort, const int& cliPort)
 	if (configJson.contains("users"))
 		for (const auto& user : configJson["users"]) {
 			if (user.contains("name") && user.contains("uid") && user.contains("accessLevel") &&
-				user["name"].is_string() && user["uid"].is_string() && user["accessLevel"].is_number_integer())
-				users[user["name"]] = {user["uid"], user["accessLevel"]};
-			else
+				user["name"].is_string() && user["uid"].is_string() && user["accessLevel"].is_number_integer()) {
+				const std::string name = user["name"];
+				const std::string uid  = user["uid"];
+				const int accessLevel  = user["accessLevel"];
+
+				usersByName[name] = {uid, accessLevel};
+				usersByUID[uid]   = {name, accessLevel};
+			} else
 				std::cout << "Invalid user entry in config.json - skipping one.\n";
 		}
 	//////////////////////////// Write onto hash maps ////////////////////////////
@@ -101,13 +106,13 @@ void ReaderHandler::handleClient(const std::shared_ptr<TcpConnection>& connectio
 			return;
 		}
 
-		const auto user       = users.find(uid); // Fix uid lookup. Want UID lookup for client, but name lookup for CLI.
-		const bool authorized = (user != users.end() && user->second.second >= door->second);
+		const auto user = usersByUID.find(uid); // Fix uid lookup. Want UID lookup for client, but name lookup for CLI.
+		const bool authorized = (user != usersByUID.end() && user->second.second >= door->second);
 
 		connection->write<std::string>(authorized ? "Approved" : "Denied");
-		state = ReaderState::Idle;
 		handleClient(connection);
 	});
+	state = ReaderState::Idle;
 }
 
 void ReaderHandler::handleCli(const std::shared_ptr<TcpConnection>& connection) {
@@ -130,9 +135,9 @@ void ReaderHandler::handleCli(const std::shared_ptr<TcpConnection>& connection) 
 		} else {
 			connection->write<std::string>("Unknown Command");
 		}
-		state = ReaderState::Idle;
 		handleCli(connection);
 	});
+	state = ReaderState::Idle;
 }
 
 void ReaderHandler::newDoor(const std::shared_ptr<TcpConnection>& connection, const std::string& doorData) {
@@ -203,7 +208,8 @@ void ReaderHandler::newUser(const std::shared_ptr<TcpConnection>& connection, co
 		if (!configJson.contains("users"))
 			configJson["users"] = nlohmann::json::array();
 
-		users[name] = {uid, accessLevel};
+		usersByName[name] = {uid, accessLevel};
+		usersByUID[uid]   = {name, accessLevel};
 		configJson["users"].push_back({
 										  {"name", name},
 										  {"uid", uid},
@@ -274,7 +280,11 @@ void ReaderHandler::rmUser(const std::shared_ptr<TcpConnection>& connection, con
 	std::string name = match[1].str();
 	to_snake_case(name);
 
-	if (users.erase(name) == 0) {
+	auto it = usersByName.find(name);
+	if (it != usersByName.end()) {
+		usersByUID.erase(it->second.first); // remove by uid
+		usersByName.erase(it);
+	} else {
 		std::cout << "User not found in memory" << std::endl;
 		return;
 	}
