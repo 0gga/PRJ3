@@ -30,14 +30,14 @@ ReaderHandler::ReaderHandler(const int& clientPort, const int& cliPort)
 	nlohmann::json configJson;
 
 	if (!file.is_open() || file.peek() == std::ifstream::traits_type::eof()) {
-		std::cerr << "config.json doesn't exist" << std::endl;
+		std::cout << "config.json doesn't exist" << std::endl;
 		std::ofstream("config.json") << R"({"users":[],"doors":[]})";
 		std::cout << "Created empty config.json" << std::endl;
 	} else {
 		try {
 			file >> configJson;
 		} catch (const nlohmann::json::parse_error& e) {
-			std::cerr << "Invalid JSON in config.json" << e.what() << std::endl;
+			std::cout << "Invalid JSON in config.json" << e.what() << std::endl;
 			configJson = {{"users", nlohmann::json::array()}, {"doors", nlohmann::json::array()}};
 
 			std::ofstream("config.json") << R"({"users":[],"doors":[]})";
@@ -52,20 +52,19 @@ ReaderHandler::ReaderHandler(const int& clientPort, const int& cliPort)
 				door["name"].is_string() && door["accessLevel"].is_number_integer())
 				doors[door["name"]] = door["accessLevel"];
 			else
-				std::cerr << "Invalid door entry in config.json - skipping one.\n";
+				std::cout << "Invalid door entry in config.json - skipping one.\n";
 		}
 
 	if (configJson.contains("users"))
-		for (const auto& user : configJson["doors"]) {
+		for (const auto& user : configJson["users"]) {
 			if (user.contains("name") && user.contains("uid") && user.contains("accessLevel") &&
 				user["name"].is_string() && user["uid"].is_string() && user["accessLevel"].is_number_integer())
 				users[user["name"]] = {user["uid"], user["accessLevel"]};
 			else
-				std::cerr << "Invalid user entry in config.json - skipping one.\n";
+				std::cout << "Invalid user entry in config.json - skipping one.\n";
 		}
 	//////////////////////////// Write onto hash maps ////////////////////////////
 	////////////////////////////// Read config JSON //////////////////////////////
-	runLoop();
 }
 
 ReaderHandler::~ReaderHandler() {
@@ -74,7 +73,8 @@ ReaderHandler::~ReaderHandler() {
 
 void ReaderHandler::stop() {
 	state = ReaderState::Idle;
-	TcpServer::stopAll();
+	clientServer.stop();
+	cliServer.stop();
 	std::cout << "Servers Shutting Down" << std::endl;
 }
 
@@ -94,14 +94,14 @@ void ReaderHandler::handleClient(const std::shared_ptr<TcpConnection>& connectio
 		std::string name       = pkg.substr(0, seperator);
 		std::string uid        = pkg.substr(seperator + 1);
 
-		auto door = doors.find(name);
+		const auto door = doors.find(name);
 		if (door == doors.end()) {
 			connection->write<std::string>("Unknown Door");
 			handleClient(connection);
 			return;
 		}
 
-		const auto user       = users.find(uid);
+		const auto user       = users.find(uid); // Fix uid lookup. Want UID lookup for client, but name lookup for CLI.
 		const bool authorized = (user != users.end() && user->second.second >= door->second);
 
 		connection->write<std::string>(authorized ? "Approved" : "Denied");
@@ -124,7 +124,8 @@ void ReaderHandler::handleCli(const std::shared_ptr<TcpConnection>& connection) 
 		} else if (pkg == "shutdown") {
 			connection->write<std::string>("Shutting Down...");
 			running = false;
-			TcpServer::stopAll();
+			clientServer.stop();
+			cliServer.stop();
 			return;
 		} else {
 			connection->write<std::string>("Unknown Command");
@@ -156,7 +157,7 @@ void ReaderHandler::newDoor(const std::shared_ptr<TcpConnection>& connection, co
 		else
 			configJson = {{"users", nlohmann::json::array()}, {"doors", nlohmann::json::array()}};
 	} catch (const nlohmann::json::parse_error& e) {
-		std::cerr << "Invalid JSON @ config.json" << e.what() << std::endl;
+		std::cout << "Invalid JSON @ config.json" << e.what() << std::endl;
 		configJson = {{"users", nlohmann::json::array()}, {"doors", nlohmann::json::array()}};
 	}
 	if (!configJson.contains("doors"))
@@ -196,7 +197,7 @@ void ReaderHandler::newUser(const std::shared_ptr<TcpConnection>& connection, co
 			else
 				configJson = {{"users", nlohmann::json::array()}, {"doors", nlohmann::json::array()}};
 		} catch (const nlohmann::json::parse_error& e) {
-			std::cerr << "Invalid JSON @ config.json" << e.what() << std::endl;
+			std::cout << "Invalid JSON @ config.json" << e.what() << std::endl;
 			configJson = {{"users", nlohmann::json::array()}, {"doors", nlohmann::json::array()}};
 		}
 		if (!configJson.contains("users"))
@@ -241,7 +242,7 @@ void ReaderHandler::rmDoor(const std::shared_ptr<TcpConnection>& connection, con
 		else
 			configJson = {{"users", nlohmann::json::array()}, {"doors", nlohmann::json::array()}};
 	} catch (const nlohmann::json::parse_error& e) {
-		std::cerr << "Invalid JSON @ config.json" << e.what() << std::endl;
+		std::cout << "Invalid JSON @ config.json" << e.what() << std::endl;
 		configJson = {{"users", nlohmann::json::array()}, {"doors", nlohmann::json::array()}};
 	}
 
@@ -286,7 +287,7 @@ void ReaderHandler::rmUser(const std::shared_ptr<TcpConnection>& connection, con
 		else
 			configJson = {{"users", nlohmann::json::array()}, {"doors", nlohmann::json::array()}};
 	} catch (const nlohmann::json::parse_error& e) {
-		std::cerr << "Invalid JSON @ config.json" << e.what() << std::endl;
+		std::cout << "Invalid JSON @ config.json" << e.what() << std::endl;
 		configJson = {{"users", nlohmann::json::array()}, {"doors", nlohmann::json::array()}};
 	}
 

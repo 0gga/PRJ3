@@ -32,23 +32,10 @@
   <component name="ChangeListManager">
     <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="const&amp; fixes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.source/CMakeLists.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.source/asioServer/CMakeLists.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.source/asioServer/TCP/TcpConnection.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.source/asioServer/TCP/TcpConnection.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.source/asioServer/TCP/TcpServer.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.source/asioServer/TCP/TcpServer.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.source/asioServer/include/ReaderHandler.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.source/asioServer/src/ReaderHandler.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.source/asioServer/src/main.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.source/client/CMakeLists.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.source/client/pn532-lib/pn532.c" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.source/client/pn532-lib/pn532.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.source/client/pn532-lib/pn532_rpi.c" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.source/client/pn532-lib/pn532_rpi.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.source/client/pn532-lib/rpi_tcptest/rpi_get_uid.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.source/client/pn532-lib/rpi_tcptest/rpi_read_uid.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/asioServer/TCP/TcpConnection.h" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/TCP/TcpConnection.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/asioServer/TCP/TcpServer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/TCP/TcpServer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/asioServer/TCP/TcpServer.h" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/TCP/TcpServer.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,36 +92,36 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
-    &quot;CMake Application.asioServer.executor&quot;: &quot;Run&quot;,
-    &quot;CMake Application.build_unix.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.RadMigrateCodeStyle&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.west.config.association.type.startup.service&quot;: &quot;true&quot;,
-    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/oscar/source/.repos/SW3PRJ3/.source/asioServer&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;CMakeSettings&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
+    "CMake Application.asioServer.executor": "Run",
+    "CMake Application.build_unix.executor": "Run",
+    "RunOnceActivity.RadMigrateCodeStyle": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "RunOnceActivity.west.config.association.type.startup.service": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "C:/Users/oscar/source/.repos/SW3PRJ3/.source/asioServer",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "CMakeSettings",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;ChangesTree.GroupingKeys&quot;: [
-      &quot;directory&quot;,
-      &quot;repository&quot;
+  "keyToStringList": {
+    "ChangesTree.GroupingKeys": [
+      "directory",
+      "repository"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\oscar\source\.repos\SW3PRJ3\.source\asioServer" />
@@ -148,9 +135,9 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.asioServer">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration name="asioServer" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="PRJ3" TARGET_NAME="asioServer" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="PRJ3" RUN_TARGET_NAME="asioServer">
@@ -186,6 +173,7 @@
       <workItem from="1760530840374" duration="557000" />
       <workItem from="1760553397425" duration="1865000" />
       <workItem from="1760605330153" duration="1077000" />
+      <workItem from="1760621174577" duration="4107000" />
     </task>
     <task id="LOCAL-00001" summary="Final touches">
       <option name="closed" value="true" />

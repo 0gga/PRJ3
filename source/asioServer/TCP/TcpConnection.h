@@ -24,36 +24,45 @@ private: // Member Variables
 
 template<typename Rx>
 void TcpConnection::read(std::function<void(const Rx&)> handler) {
-	auto self    = shared_from_this();
-	auto* buffer = new Rx();
+	auto self   = shared_from_this();
+	auto buffer = std::make_shared<boost::asio::streambuf>();
 
-	boost::asio::async_read(socket, boost::asio::buffer(buffer, sizeof(Rx)),
-							[this, self, buffer, handler](boost::system::error_code ec, std::size_t) {
-								if (ec) {
-									std::cerr << "Connection Read Failed: " << ec.message() << std::endl;
-									delete buffer;
-									return;
-								}
-								handler(*buffer);
-								delete buffer;
-								read<Rx>(handler);
-							});
+	boost::asio::async_read_until(socket, *buffer, '\n',
+								  [this, self, buffer, handler](boost::system::error_code ec,
+																std::size_t bytesTransferred) {
+									  if (ec) {
+										  std::cerr << "Connection Read Failed: " << ec.message() << std::endl;
+										  return;
+									  }
+
+									  std::istream is(buffer.get());
+									  std::string data;
+									  std::getline(is, data);
+
+									  if constexpr (std::is_same_v<Rx, std::string>)
+										  handler(data);
+									  else if constexpr (std::is_same_v<Rx, nlohmann::json>)
+										  handler(nlohmann::json::parse(data));
+
+									  read<Rx>(handler);
+								  });
 }
 
 template<typename Tx>
 void TcpConnection::write(const Tx& data) {
-	std::string bytes;
+	std::shared_ptr<std::string> bytes = std::make_shared<std::string>();
+
 	if constexpr (std::is_same_v<Tx, std::string>)
-		bytes = data;
+		*bytes = data + '\n';
 	else if constexpr (std::is_same_v<Tx, nlohmann::json>)
-		bytes = data.dump();
+		*bytes = data.dump() + '\n';
 	else
 		static_assert(std::is_same_v<Tx, std::string> || std::is_same_v<Tx, nlohmann::json>,
 					  "TcpServer::write() exclusively supports std::string or nlohmann::json");
 
 	auto self = shared_from_this();
-	boost::asio::async_write(socket, boost::asio::buffer(bytes),
-							 [this, self](boost::system::error_code ec, std::size_t) {
+	boost::asio::async_write(socket, boost::asio::buffer(*bytes),
+							 [this, self, bytes](boost::system::error_code ec, std::size_t) {
 								 if (ec) {
 									 std::cerr << "Connection Write Failed: " << ec.message() << std::endl;
 								 }
