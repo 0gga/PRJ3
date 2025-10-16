@@ -2,7 +2,7 @@
 build/
 bin/
 obj/
-Diagrams/out/
+.diagrams/out/
 *.exe
 *.dll
 *.so

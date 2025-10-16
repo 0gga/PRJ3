@@ -5,7 +5,6 @@
   </component>
   <component name="BackendCodeEditorMiscSettings">
     <option name="/Default/Housekeeping/OptionsDialog/SelectedPageId/@EntryValue" value="CppGeneralOptions" type="string" />
-    <option name="/Default/Housekeeping/RefactoringsMru/RenameRefactoring/DoSearchForTextInStrings/@EntryValue" value="true" type="bool" />
   </component>
   <component name="CMakePresetLoader">{
   &quot;useNewFormat&quot;: true
@@ -31,12 +30,25 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="changes to readme">
+    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="const&amp; fixes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.source/asioServer/TCP/TcpServer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/.source/asioServer/TCP/TcpServer.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.source/asioServer/TCP/TcpServer.h" beforeDir="false" afterPath="$PROJECT_DIR$/.source/asioServer/TCP/TcpServer.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.source/asioServer/include/ReaderHandler.h" beforeDir="false" afterPath="$PROJECT_DIR$/.source/asioServer/include/ReaderHandler.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.source/asioServer/src/ReaderHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/.source/asioServer/src/ReaderHandler.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.source/CMakeLists.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.source/asioServer/CMakeLists.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.source/asioServer/TCP/TcpConnection.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.source/asioServer/TCP/TcpConnection.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.source/asioServer/TCP/TcpServer.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.source/asioServer/TCP/TcpServer.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.source/asioServer/include/ReaderHandler.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.source/asioServer/src/ReaderHandler.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.source/asioServer/src/main.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.source/client/CMakeLists.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.source/client/pn532-lib/pn532.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.source/client/pn532-lib/pn532.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.source/client/pn532-lib/pn532_rpi.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.source/client/pn532-lib/pn532_rpi.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.source/client/pn532-lib/rpi_tcptest/rpi_get_uid.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.source/client/pn532-lib/rpi_tcptest/rpi_read_uid.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -136,6 +148,11 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.asioServer">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="asioServer" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="PRJ3" TARGET_NAME="asioServer" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="PRJ3" RUN_TARGET_NAME="asioServer">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -166,7 +183,9 @@
       <workItem from="1760478293884" duration="46000" />
       <workItem from="1760478355364" duration="22000" />
       <workItem from="1760521543043" duration="9182000" />
-      <workItem from="1760530840374" duration="550000" />
+      <workItem from="1760530840374" duration="557000" />
+      <workItem from="1760553397425" duration="1865000" />
+      <workItem from="1760605330153" duration="1077000" />
     </task>
     <task id="LOCAL-00001" summary="Final touches">
       <option name="closed" value="true" />
@@ -240,7 +259,15 @@
       <option name="project" value="LOCAL" />
       <updated>1760530768694</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="const&amp; fixes">
+      <option name="closed" value="true" />
+      <created>1760531396286</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1760531396286</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -280,7 +307,8 @@
     <MESSAGE value="added door handling and refactored users.json to config.json" />
     <MESSAGE value="Improvements - refactored most params to const&amp;" />
     <MESSAGE value="changes to readme" />
-    <option name="LAST_COMMIT_MESSAGE" value="changes to readme" />
+    <MESSAGE value="const&amp; fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="const&amp; fixes" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
