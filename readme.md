@@ -70,4 +70,4 @@
 >
 >> ### **To be implemented**<br>
 >>- The system currently doesn't write systemwide logs nor user logs,<br>
-    albeit this could easily be implemented since clients are already assigned names.
+    albeit this could easily be implemented since clients are already assigned names. 
