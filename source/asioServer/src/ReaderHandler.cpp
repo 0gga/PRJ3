@@ -5,26 +5,6 @@
 
 ReaderHandler::ReaderHandler(const int& clientPort, const int& cliPort)
 : clientServer(clientPort), cliServer(cliPort) {
-	//////////////////////////////// Init Servers ////////////////////////////////
-	clientServer.onClientConnect([this](std::shared_ptr<TcpConnection> connection) {
-		std::cout << "Client Connected\n";
-		handleClient(connection);
-	});
-
-	cliServer.onClientConnect([this](std::shared_ptr<TcpConnection> connection) {
-		std::cout << "CLI Connected\n";
-		handleCli(connection);
-	});
-
-	TcpServer::setThreadCount(4);
-
-	clientServer.start();
-	cliServer.start();
-
-	running = true;
-	std::cout << "Servers started and awaiting clients" << std::endl;
-	//////////////////////////////// Init Servers ////////////////////////////////
-
 	////////////////////////////// Read config JSON //////////////////////////////
 	std::ifstream file("config.json");
 	nlohmann::json configJson;
@@ -45,7 +25,6 @@ ReaderHandler::ReaderHandler(const int& clientPort, const int& cliPort)
 		}
 	}
 
-	//////////////////////////// Write onto hash maps ////////////////////////////
 	if (configJson.contains("doors"))
 		for (const auto& door : configJson["doors"]) {
 			if (door.contains("name") && door.contains("accessLevel") &&
@@ -68,8 +47,27 @@ ReaderHandler::ReaderHandler(const int& clientPort, const int& cliPort)
 			} else
 				std::cout << "Invalid user entry in config.json - skipping one.\n";
 		}
-	//////////////////////////// Write onto hash maps ////////////////////////////
 	////////////////////////////// Read config JSON //////////////////////////////
+
+	//////////////////////////////// Init Servers ////////////////////////////////
+	clientServer.onClientConnect([this](std::shared_ptr<TcpConnection> connection) {
+		std::cout << "Client Connected\n";
+		handleClient(connection);
+	});
+
+	cliServer.onClientConnect([this](std::shared_ptr<TcpConnection> connection) {
+		std::cout << "CLI Connected\n";
+		handleCli(connection);
+	});
+
+	TcpServer::setThreadCount(4);
+
+	clientServer.start();
+	cliServer.start();
+
+	running = true;
+	std::cout << "Servers started and awaiting clients" << std::endl;
+	//////////////////////////////// Init Servers ////////////////////////////////
 }
 
 ReaderHandler::~ReaderHandler() {
@@ -94,22 +92,33 @@ void ReaderHandler::runLoop() {
 
 void ReaderHandler::handleClient(const std::shared_ptr<TcpConnection>& connection) {
 	state = ReaderState::Active;
+
 	connection->read<std::string>([this, connection](const std::string& pkg) {
 		const size_t seperator = pkg.find(':');
-		std::string name       = pkg.substr(0, seperator);
-		std::string uid        = pkg.substr(seperator + 1);
-
-		const auto door = doors.find(name);
-		if (door == doors.end()) {
-			connection->write<std::string>("Unknown Door");
-			handleClient(connection);
+		if (seperator == std::string::npos || seperator == 0 || seperator == pkg.size() - 1) {
+			std::cout << "Invalid Client Package Syntax" << std::endl;
+			connection->write<std::string>("Invalid Client Package Syntax - Connection Closed");
+			connection->close();
 			return;
 		}
 
-		const auto user = usersByUID.find(uid); // Fix uid lookup. Want UID lookup for client, but name lookup for CLI.
-		const bool authorized = (user != usersByUID.end() && user->second.second >= door->second);
+		std::string name = pkg.substr(0, seperator);
+		std::string uid  = pkg.substr(seperator + 1);
 
-		connection->write<std::string>(authorized ? "Approved" : "Denied");
+		{
+			std::shared_lock rw_lock(rw_mtx);
+			const auto door = doors.find(name);
+			if (door == doors.end()) {
+				connection->write<std::string>("Unknown Door");
+				handleClient(connection);
+				return;
+			}
+			const auto user = usersByUID.find(uid);
+			// Fix uid lookup. Want UID lookup for client, but name lookup for CLI.
+			const bool authorized = (user != usersByUID.end() && user->second.second >= door->second);
+			connection->write<std::string>(authorized ? "Approved" : "Denied");
+		}
+
 		handleClient(connection);
 	});
 	state = ReaderState::Idle;
@@ -154,6 +163,7 @@ void ReaderHandler::newDoor(const std::shared_ptr<TcpConnection>& connection, co
 
 	uint8_t accessLevel = std::stoul(match[2].str());
 
+	std::unique_lock rw_lock(rw_mtx);
 	nlohmann::json configJson;
 	try {
 		std::ifstream in("config.json");
@@ -194,6 +204,7 @@ void ReaderHandler::newUser(const std::shared_ptr<TcpConnection>& connection, co
 
 	uint8_t accessLevel = std::stoul(match[2].str());
 	connection->read<std::string>([this, name, accessLevel, connection](const std::string& uid) {
+		std::unique_lock rw_lock(rw_mtx);
 		nlohmann::json configJson;
 		try {
 			std::ifstream in("config.json");
@@ -232,6 +243,7 @@ void ReaderHandler::rmDoor(const std::shared_ptr<TcpConnection>& connection, con
 		return;
 	}
 
+	std::unique_lock rw_lock(rw_mtx);
 	std::string name = match[1].str();
 	to_snake_case(name);
 
@@ -280,6 +292,7 @@ void ReaderHandler::rmUser(const std::shared_ptr<TcpConnection>& connection, con
 	std::string name = match[1].str();
 	to_snake_case(name);
 
+	std::unique_lock rw_lock(rw_mtx);
 	auto it = usersByName.find(name);
 	if (it != usersByName.end()) {
 		usersByUID.erase(it->second.first); // remove by uid

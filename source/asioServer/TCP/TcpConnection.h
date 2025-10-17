@@ -10,6 +10,8 @@ public:
 	explicit TcpConnection(boost::asio::ip::tcp::socket socket);
 	~TcpConnection();
 
+	void close();
+
 	template<typename Rx>
 	void read(std::function<void(const Rx&)> handler);
 
