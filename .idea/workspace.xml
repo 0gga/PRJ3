@@ -5,6 +5,7 @@
   </component>
   <component name="BackendCodeEditorMiscSettings">
     <option name="/Default/Housekeeping/OptionsDialog/SelectedPageId/@EntryValue" value="CppGeneralOptions" type="string" />
+    <option name="/Default/Housekeeping/RefactoringsMru/RenameRefactoring/DoSearchForTextInStrings/@EntryValue" value="true" type="bool" />
   </component>
   <component name="CMakePresetLoader">{
   &quot;useNewFormat&quot;: true
@@ -30,7 +31,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="added mutex for read/write &amp; updated readme.&#10;Also added TcpConnection::close for invalid client syntax." />
+    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="added mutex for read/write &amp; updated readme.&#10;Also added TcpConnection::close for invalid client syntax.">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -129,6 +132,11 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.asioServer">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="asioServer" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="PRJ3" TARGET_NAME="asioServer" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="PRJ3" RUN_TARGET_NAME="asioServer">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
