@@ -32,7 +32,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="added mutex for read/write &amp; updated readme.&#10;Also added TcpConnection::close for invalid client syntax.">
+      <change beforePath="$PROJECT_DIR$/.diagrams/AC_diagram.puml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.diagrams/STM_overordnet.puml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.diagrams/UC_diagram.puml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,12 +61,12 @@
     }
   }
 }</component>
-  <component name="GitLabMergeRequestsSettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;first&quot;: &quot;https://gitlab.au.dk/au761203/SW3PRJ3.git&quot;,
-    &quot;second&quot;: &quot;eecea205-3cbe-4958-b7b2-7637b50b1076&quot;
+  <component name="GitLabMergeRequestsSettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "first": "https://gitlab.au.dk/prj32/sw3prj3.git",
+    "second": "772517d4-2e14-4349-9883-be0437b3d106"
   }
-}</component>
+}]]></component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/.source/asioServer/TCP/TcpConnection.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/.source/asioServer/TCP/TcpConnection.h" root0="FORCE_HIGHLIGHTING" />
@@ -132,9 +136,9 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.asioServer">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration name="asioServer" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="PRJ3" TARGET_NAME="asioServer" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="PRJ3" RUN_TARGET_NAME="asioServer">
@@ -172,6 +176,7 @@
       <workItem from="1760605330153" duration="1077000" />
       <workItem from="1760621174577" duration="6164000" />
       <workItem from="1760695540439" duration="2551000" />
+      <workItem from="1761214951652" duration="189000" />
     </task>
     <task id="LOCAL-00001" summary="Final touches">
       <option name="closed" value="true" />

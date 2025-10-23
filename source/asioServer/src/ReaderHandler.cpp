@@ -70,10 +70,12 @@ ReaderHandler::ReaderHandler(const int& clientPort, const int& cliPort)
 	//////////////////////////////// Init Servers ////////////////////////////////
 }
 
+// Destructor
 ReaderHandler::~ReaderHandler() {
 	stop();
 }
 
+// Stop all servers.
 void ReaderHandler::stop() {
 	state = ReaderState::Idle;
 	clientServer.stop();
@@ -85,11 +87,13 @@ ReaderState ReaderHandler::getState() const {
 	return state;
 }
 
+// Runtime loop - necessary.
 void ReaderHandler::runLoop() {
 	while (running)
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }
 
+// Handles Client IO.
 void ReaderHandler::handleClient(const std::shared_ptr<TcpConnection>& connection) {
 	state = ReaderState::Active;
 
@@ -124,6 +128,7 @@ void ReaderHandler::handleClient(const std::shared_ptr<TcpConnection>& connectio
 	state = ReaderState::Idle;
 }
 
+// Handles CLI IO.
 void ReaderHandler::handleCli(const std::shared_ptr<TcpConnection>& connection) {
 	state = ReaderState::Active;
 	connection->read<std::string>([this, connection](const std::string& pkg) {
@@ -149,6 +154,7 @@ void ReaderHandler::handleCli(const std::shared_ptr<TcpConnection>& connection) 
 	state = ReaderState::Idle;
 }
 
+// Add new door function.
 void ReaderHandler::newDoor(const std::shared_ptr<TcpConnection>& connection, const std::string& doorData) {
 	// Parse CLI command for correct syntax
 	static const std::regex cliSyntax(R"(^newDoor\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
@@ -190,6 +196,7 @@ void ReaderHandler::newDoor(const std::shared_ptr<TcpConnection>& connection, co
 	connection->write<std::string>("Door Added Successfully");
 }
 
+// Add new user function.
 void ReaderHandler::newUser(const std::shared_ptr<TcpConnection>& connection, const std::string& userData) {
 	// Parse CLI command for correct syntax
 	static const std::regex cliSyntax(R"(^newUser\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
@@ -234,6 +241,7 @@ void ReaderHandler::newUser(const std::shared_ptr<TcpConnection>& connection, co
 	});
 }
 
+// Remove door function.
 void ReaderHandler::rmDoor(const std::shared_ptr<TcpConnection>& connection, const std::string& doorData) {
 	// Parse CLI command for correct syntax
 	static const std::regex cliSyntax(R"(^rmDoor\s+([A-Za-z_]+)$)");
@@ -280,6 +288,7 @@ void ReaderHandler::rmDoor(const std::shared_ptr<TcpConnection>& connection, con
 	connection->write<std::string>("Door Removed Successfully");
 }
 
+// Remove user function.
 void ReaderHandler::rmUser(const std::shared_ptr<TcpConnection>& connection, const std::string& userdata) {
 	// Parse CLI command for correct syntax
 	static const std::regex cliSyntax(R"(^rmUser\s+([A-Za-z_]+)$)");
@@ -330,6 +339,7 @@ void ReaderHandler::rmUser(const std::shared_ptr<TcpConnection>& connection, con
 	connection->write<std::string>("User Removed Successfully");
 }
 
+// Helper function for converting string to snake_case.
 void ReaderHandler::to_snake_case(std::string& input) {
 	std::string result;
 
