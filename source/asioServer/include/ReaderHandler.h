@@ -14,7 +14,7 @@ enum class ReaderState {
 
 class ReaderHandler {
 public:
-    ReaderHandler(const int& clientPort, const int& cliPort, const std::string& cliReader);
+    explicit ReaderHandler(const int& clientPort, const int& cliPort, const std::string& cliReader);
     ~ReaderHandler();
 
     void stop();
@@ -43,7 +43,7 @@ private: // Member Variables
     TcpServer cliServer;
 
     nlohmann::json log;
-    std::pair<std::string, std::shared_ptr<TcpConnection>&> cliReader;
+    std::pair<std::string, std::shared_ptr<TcpConnection>> cliReader;
     std::unordered_map<std::string, int> doors;
     std::unordered_map<std::string, std::pair<std::string, int>> usersByName;
     std::unordered_map<std::string, std::pair<std::string, int>> usersByUID;
