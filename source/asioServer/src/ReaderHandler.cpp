@@ -134,6 +134,9 @@ void ReaderHandler::handleCli(const std::shared_ptr<TcpConnection>& connection) 
     connection->read<std::string>([this, connection](const std::string& pkg) {
         if (cliReader.first == pkg) {
             cliReader.second = connection;
+        }
+        if (connection) {
+            connection->write<std::string>("cliReader is ready");
         } else if (pkg.rfind("newDoor", 0) == 0) {
             newDoor(connection, pkg);
         } else if (pkg.rfind("newUser", 0) == 0) {

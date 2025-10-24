@@ -31,11 +31,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="Refactor formatting.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/include/ReaderHandler.h" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/include/ReaderHandler.h" afterDir="false" />
+    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="Redoing CLI logic.">
       <change beforePath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/src/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -175,7 +172,7 @@
       <workItem from="1760605330153" duration="1077000" />
       <workItem from="1760621174577" duration="6164000" />
       <workItem from="1760695540439" duration="2551000" />
-      <workItem from="1761214951652" duration="10541000" />
+      <workItem from="1761214951652" duration="10814000" />
     </task>
     <task id="LOCAL-00001" summary="Final touches">
       <option name="closed" value="true" />
@@ -329,7 +326,15 @@
       <option name="project" value="LOCAL" />
       <updated>1761290524236</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Redoing CLI logic.">
+      <option name="closed" value="true" />
+      <created>1761300793644</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1761300793644</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -379,7 +384,8 @@
     <MESSAGE value="added mutex for read/write &amp; updated readme.&#10;Also added TcpConnection::close for invalid client syntax." />
     <MESSAGE value="Added comments in ReaderHandler implementation." />
     <MESSAGE value="Refactor formatting." />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor formatting." />
+    <MESSAGE value="Redoing CLI logic." />
+    <option name="LAST_COMMIT_MESSAGE" value="Redoing CLI logic." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
