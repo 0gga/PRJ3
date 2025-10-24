@@ -3,8 +3,8 @@
 #include <iostream>
 #include <regex>
 
-ReaderHandler::ReaderHandler(const int& clientPort, const int& cliPort)
-: clientServer(clientPort), cliServer(cliPort) {
+ReaderHandler::ReaderHandler(const int& clientPort, const int& cliPort, const std::string& cliReader)
+: clientServer(clientPort), cliServer(cliPort), cliReader(cliReader, nullptr) {
     ////////////////////////////// Read config JSON //////////////////////////////
     std::ifstream file("config.json");
     nlohmann::json configJson;
@@ -117,7 +117,8 @@ void ReaderHandler::handleClient(const std::shared_ptr<TcpConnection>& connectio
                 handleClient(connection);
                 return;
             }
-            const auto user = usersByUID.find(uid);
+
+            const auto user       = usersByUID.find(uid);
             const bool authorized = (user != usersByUID.end() && user->second.second >= door->second);
             connection->write<std::string>(authorized ? "Approved" : "Denied");
         }
@@ -131,7 +132,9 @@ void ReaderHandler::handleClient(const std::shared_ptr<TcpConnection>& connectio
 void ReaderHandler::handleCli(const std::shared_ptr<TcpConnection>& connection) {
     state = ReaderState::Active;
     connection->read<std::string>([this, connection](const std::string& pkg) {
-        if (pkg.rfind("newDoor", 0) == 0) {
+        if (cliReader.first == pkg) {
+            cliReader.second = connection;
+        } else if (pkg.rfind("newDoor", 0) == 0) {
             newDoor(connection, pkg);
         } else if (pkg.rfind("newUser", 0) == 0) {
             newUser(connection, pkg);
@@ -155,7 +158,7 @@ void ReaderHandler::handleCli(const std::shared_ptr<TcpConnection>& connection) 
     state = ReaderState::Idle;
 }
 
-// Add new door function.
+// Add new door - call within a read lambda with the .
 void ReaderHandler::newDoor(const std::shared_ptr<TcpConnection>& connection, const std::string& doorData) {
     // Parse CLI command for correct syntax
     static const std::regex cliSyntax(R"(^newDoor\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
@@ -211,7 +214,21 @@ void ReaderHandler::newUser(const std::shared_ptr<TcpConnection>& connection, co
     to_snake_case(name);
 
     uint8_t accessLevel = std::stoul(match[2].str());
-    connection->read<std::string>([this, name, accessLevel, connection](const std::string& uid) {
+    cliReader.second->read<std::string>([this, name, accessLevel, connection](const std::string& uid) {
+        connection->read<std::string>([this, uid, name, accessLevel, connection](const std::string& status) {
+            std::string confirmMsg("Are you sure you want to add user:\n"
+                                   "UID: " + uid + "\n" +
+                                   "Name: " + name + "\n" +
+                                   "Access Level: " + std::to_string(accessLevel));
+            connection->read<std::string>([this, confirmMsg, connection](const std::string& msg) {
+                if (msg == "Approved")
+                    connection->write<std::string>("It fucking works");
+            });
+
+            connection->write<std::string>(confirmMsg);
+            if (status == "Approved") {}
+        });
+
         std::unique_lock rw_lock(rw_mtx);
         nlohmann::json configJson;
         try {
