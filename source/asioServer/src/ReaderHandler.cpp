@@ -95,6 +95,7 @@ void ReaderHandler::runLoop() {
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }
 
+// Outputs server IPV4.
 void ReaderHandler::myIP() {
     boost::asio::io_context io;
     boost::asio::ip::tcp::resolver resolver(io);
