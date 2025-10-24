@@ -136,6 +136,8 @@ void ReaderHandler::handleCli(const std::shared_ptr<TcpConnection>& connection) 
             newDoor(connection, pkg);
         } else if (pkg.rfind("newUser", 0) == 0) {
             newUser(connection, pkg);
+        } else if (pkg.rfind("rmDoor", 0) == 0) {
+            rmDoor(connection, pkg);
         } else if (pkg.rfind("rmUser", 0) == 0) {
             rmUser(connection, pkg);
         } else if (pkg == "getLog") {

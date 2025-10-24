@@ -31,10 +31,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="added mutex for read/write &amp; updated readme.&#10;Also added TcpConnection::close for invalid client syntax.">
-      <change beforePath="$PROJECT_DIR$/.diagrams/AC_diagram.puml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.diagrams/STM_overordnet.puml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.diagrams/UC_diagram.puml" beforeDir="false" />
+    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="Refactor formatting.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" afterDir="false" />
     </list>
@@ -61,12 +58,12 @@
     }
   }
 }</component>
-  <component name="GitLabMergeRequestsSettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "first": "https://gitlab.au.dk/prj32/sw3prj3.git",
-    "second": "772517d4-2e14-4349-9883-be0437b3d106"
+  <component name="GitLabMergeRequestsSettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;first&quot;: &quot;https://gitlab.au.dk/prj32/sw3prj3.git&quot;,
+    &quot;second&quot;: &quot;772517d4-2e14-4349-9883-be0437b3d106&quot;
   }
-}]]></component>
+}</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/.source/asioServer/TCP/TcpConnection.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/.source/asioServer/TCP/TcpConnection.h" root0="FORCE_HIGHLIGHTING" />
@@ -176,7 +173,7 @@
       <workItem from="1760605330153" duration="1077000" />
       <workItem from="1760621174577" duration="6164000" />
       <workItem from="1760695540439" duration="2551000" />
-      <workItem from="1761214951652" duration="189000" />
+      <workItem from="1761214951652" duration="1670000" />
     </task>
     <task id="LOCAL-00001" summary="Final touches">
       <option name="closed" value="true" />
@@ -298,7 +295,23 @@
       <option name="project" value="LOCAL" />
       <updated>1760697860404</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Added comments in ReaderHandler implementation.">
+      <option name="closed" value="true" />
+      <created>1761215210132</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1761215210132</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Refactor formatting.">
+      <option name="closed" value="true" />
+      <created>1761215319535</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1761215319535</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -346,7 +359,9 @@
     <MESSAGE value="const&amp; fixes" />
     <MESSAGE value="Changes - Black Sabbath" />
     <MESSAGE value="added mutex for read/write &amp; updated readme.&#10;Also added TcpConnection::close for invalid client syntax." />
-    <option name="LAST_COMMIT_MESSAGE" value="added mutex for read/write &amp; updated readme.&#10;Also added TcpConnection::close for invalid client syntax." />
+    <MESSAGE value="Added comments in ReaderHandler implementation." />
+    <MESSAGE value="Refactor formatting." />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor formatting." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
