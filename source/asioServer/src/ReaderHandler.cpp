@@ -106,8 +106,8 @@ void ReaderHandler::handleClient(const std::shared_ptr<TcpConnection>& connectio
             return;
         }
 
-        std::string name = pkg.substr(0, seperator);
-        std::string uid  = pkg.substr(seperator + 1);
+        const std::string name = pkg.substr(0, seperator);
+        const std::string uid  = pkg.substr(seperator + 1);
 
         {
             std::shared_lock rw_lock(rw_mtx);
@@ -118,7 +118,6 @@ void ReaderHandler::handleClient(const std::shared_ptr<TcpConnection>& connectio
                 return;
             }
             const auto user = usersByUID.find(uid);
-            // Fix uid lookup. Want UID lookup for client, but name lookup for CLI.
             const bool authorized = (user != usersByUID.end() && user->second.second >= door->second);
             connection->write<std::string>(authorized ? "Approved" : "Denied");
         }
@@ -304,10 +303,10 @@ void ReaderHandler::rmUser(const std::shared_ptr<TcpConnection>& connection, con
     to_snake_case(name);
 
     std::unique_lock rw_lock(rw_mtx);
-    auto it = usersByName.find(name);
-    if (it != usersByName.end()) {
-        usersByUID.erase(it->second.first); // remove by uid
-        usersByName.erase(it);
+    auto user = usersByName.find(name);
+    if (user != usersByName.end()) {
+        usersByUID.erase(user->second.first); // remove by uid
+        usersByName.erase(user);
     } else {
         std::cout << "User not found in memory" << std::endl;
         return;
