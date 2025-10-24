@@ -7,6 +7,7 @@ ReaderHandler::ReaderHandler(const int& clientPort, const int& cliPort, const st
 : clientServer(clientPort),
   cliServer(cliPort),
   cliReader{cliReader, nullptr} {
+    myIP();
     ////////////////////////////// Read config JSON //////////////////////////////
     std::ifstream file("config.json");
     nlohmann::json configJson;
