@@ -95,6 +95,21 @@ void ReaderHandler::runLoop() {
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }
 
+void ReaderHandler::myIP() {
+    boost::asio::io_context io;
+    boost::asio::ip::tcp::resolver resolver(io);
+    auto results = resolver.resolve(boost::asio::ip::host_name(), "");
+    std::string ip_address;
+    for (const auto& e : results) {
+        auto addr = e.endpoint().address();
+        if (addr.is_v4() && !addr.is_loopback()) {
+            ip_address = addr.to_string();
+            break;
+        }
+    }
+    std::cout << ip_address << std::endl;
+}
+
 // Handles Client IO.
 void ReaderHandler::handleClient(const std::shared_ptr<TcpConnection>& connection) {
     state = ReaderState::Active;

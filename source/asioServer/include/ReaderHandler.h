@@ -12,6 +12,8 @@ enum class ReaderState {
     Active
 };
 
+void myIP();
+
 class ReaderHandler {
 public:
     explicit ReaderHandler(const int& clientPort, const int& cliPort, const std::string& cliReader);
@@ -20,6 +22,8 @@ public:
     void stop();
 
     static void runLoop();
+
+    static void myIP();
 
 private: // Member Functions
     void handleClient(const std::shared_ptr<TcpConnection>& connection);
