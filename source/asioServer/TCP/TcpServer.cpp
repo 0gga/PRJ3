@@ -69,9 +69,8 @@ void TcpServer::acceptConnection() {
         try {
             if (!ec) {
                 const auto connection = std::make_shared<TcpConnection>(std::move(*socket));
-                boost::system::error_code ep_ec;
-                auto ep = socket->remote_endpoint(ep_ec);
-                if (!ep_ec)
+                constexpr boost::system::error_code ep_ec;
+                if constexpr (!ep_ec)
                     std::cout << "Client connected: " << socket->remote_endpoint() << std::endl;
 
                 if (connectHandler)

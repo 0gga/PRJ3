@@ -14,6 +14,8 @@ enum class ReaderState {
 
 void myIP();
 
+using CONNECTION = std::shared_ptr<TcpConnection>;
+
 class ReaderHandler {
 public:
     explicit ReaderHandler(const int& clientPort, const int& cliPort, const std::string& cliReader);
@@ -26,13 +28,13 @@ public:
     static void myIP();
 
 private: // Member Functions
-    void handleClient(const std::shared_ptr<TcpConnection>& connection);
-    void handleCli(const std::shared_ptr<TcpConnection>& connection);
+    void handleClient(const CONNECTION& connection);
+    void handleCli(const CONNECTION& connection);
 
-    void newDoor(const std::shared_ptr<TcpConnection>& connection, const std::string&);
-    void newUser(const std::shared_ptr<TcpConnection>& connection, const std::string&);
-    void rmDoor(const std::shared_ptr<TcpConnection>& connection, const std::string&);
-    void rmUser(const std::shared_ptr<TcpConnection>& connection, const std::string&);
+    void newDoor(const CONNECTION& connection, const std::string&);
+    void newUser(const CONNECTION& connection, const std::string&);
+    void rmDoor(const CONNECTION& connection, const std::string&);
+    void rmUser(const CONNECTION& connection, const std::string&);
     static void to_snake_case(std::string&);
 
     ReaderState getState() const;
@@ -47,10 +49,10 @@ private: // Member Variables
     TcpServer cliServer;
 
     nlohmann::json log;
-    std::pair<std::string, std::shared_ptr<TcpConnection>> cliReader;
+    std::pair<std::string, CONNECTION> cliReader;
     std::unordered_map<std::string, int> doors;
     std::unordered_map<std::string, std::pair<std::string, int>> usersByName;
-    std::unordered_map<std::string, std::pair<std::string, int>> usersByUID;
+    std::unordered_map<std::string, std::pair<std::string, int>> usersByUid;
 
     std::shared_mutex rw_mtx; // Use shared_lock for reads and unique_lock for writes.
 };
