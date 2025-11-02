@@ -8,51 +8,52 @@
 #include "json.hpp"
 
 enum class ReaderState {
-    Idle,
-    Active
+	Idle,
+	Active
 };
 
 void myIP();
 
+/// @param [in] CONNECTION shared_ptr to the TcpConnection object which holds a unique client connection.
 using CONNECTION = std::shared_ptr<TcpConnection>;
 
 class ReaderHandler {
 public:
-    explicit ReaderHandler(const int& clientPort, const int& cliPort, const std::string& cliReader);
-    ~ReaderHandler();
+	explicit ReaderHandler(const int& clientPort, const int& cliPort, const std::string& cliReader);
+	~ReaderHandler();
 
-    void stop();
+	void stop();
 
-    static void runLoop();
+	static void runLoop();
 
-    static void myIP();
+	static void myIp();
 
 private: // Member Functions
-    void handleClient(const CONNECTION& connection);
-    void handleCli(const CONNECTION& connection);
+	void handleClient(const CONNECTION& connection);
+	void handleCli(const CONNECTION& connection);
 
-    void newDoor(const CONNECTION& connection, const std::string&);
-    void newUser(const CONNECTION& connection, const std::string&);
-    void rmDoor(const CONNECTION& connection, const std::string&);
-    void rmUser(const CONNECTION& connection, const std::string&);
-    static void to_snake_case(std::string&);
+	void newDoor(const CONNECTION& connection, const std::string&);
+	void newUser(const CONNECTION& connection, const std::string&);
+	void rmDoor(const CONNECTION& connection, const std::string&);
+	void rmUser(const CONNECTION& connection, const std::string&);
+	static void to_snake_case(std::string&);
 
-    ReaderState getState() const;
+	ReaderState getState() const;
 
-    nlohmann::json getLog() const;
+	nlohmann::json getLog() const;
 
 private: // Member Variables
-    ReaderState state          = ReaderState::Idle;
-    static inline bool running = true;
+	ReaderState state          = ReaderState::Idle;
+	static inline bool running = true;
 
-    TcpServer clientServer;
-    TcpServer cliServer;
+	TcpServer clientServer;
+	TcpServer cliServer;
 
-    nlohmann::json log;
-    std::pair<std::string, CONNECTION> cliReader;
-    std::unordered_map<std::string, int> doors;
-    std::unordered_map<std::string, std::pair<std::string, int>> usersByName;
-    std::unordered_map<std::string, std::pair<std::string, int>> usersByUid;
+	nlohmann::json log;
+	std::pair<std::string, CONNECTION> cliReader;
+	std::unordered_map<std::string, int> doors;
+	std::unordered_map<std::string, std::pair<std::string, int>> usersByName;
+	std::unordered_map<std::string, std::pair<std::string, int>> usersByUid;
 
-    std::shared_mutex rw_mtx; // Use shared_lock for reads and unique_lock for writes.
+	std::shared_mutex rw_mtx; // Use shared_lock for reads and unique_lock for writes.
 };

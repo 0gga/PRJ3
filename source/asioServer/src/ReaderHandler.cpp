@@ -7,7 +7,7 @@ ReaderHandler::ReaderHandler(const int& clientPort, const int& cliPort, const st
 : clientServer(clientPort),
   cliServer(cliPort),
   cliReader{cliReader, nullptr} {
-	myIP();
+	myIp();
 	////////////////////////////// Read config JSON //////////////////////////////
 	std::ifstream file("config.json");
 	nlohmann::json configJson;
@@ -97,7 +97,7 @@ void ReaderHandler::runLoop() {
 }
 
 // Outputs server IPV4.
-void ReaderHandler::myIP() {
+void ReaderHandler::myIp() {
 	boost::asio::io_context io;
 	boost::asio::ip::tcp::resolver resolver(io);
 	auto results = resolver.resolve(boost::asio::ip::host_name(), "");

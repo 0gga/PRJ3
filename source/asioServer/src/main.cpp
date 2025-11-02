@@ -9,7 +9,7 @@
 //  }
 
 int main() {
-    ReaderHandler reader(9000, 9001, "adminReader");
+    [[maybe_unused]] ReaderHandler reader(9000, 9001, "adminReader");
 
     ReaderHandler::runLoop();
 
