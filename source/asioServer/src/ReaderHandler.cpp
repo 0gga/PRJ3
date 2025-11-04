@@ -385,7 +385,8 @@ void ReaderHandler::rmUser(const CONNECTION& connection, const std::string& user
 // Helper function for converting string to snake_case.
 void ReaderHandler::to_snake_case(std::string& input) {
 	std::string result;
-	result.reserve(input.size());
+	result.reserve(input.size() + 2); // I reserved +2 in case of 3 names/words i.e. John Doe Jr.
+	// If larger than input.size() +2 it will just reallocate which is negligible regardless, considering the string sizes we'll be handling.
 
 	bool prevLower{false};
 	for (const unsigned char c : input) {
