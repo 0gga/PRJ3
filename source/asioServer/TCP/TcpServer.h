@@ -18,12 +18,12 @@ public:
 
     static void setThreadCount(uint8_t);
 
-private: // Member Functions
+private: /// Member Functions
     void acceptConnection();
 
-private: // Member Variables
+private: /// Member Variables
     boost::asio::io_context io_context;
-    std::vector<std::thread> asyncThreads_t; // Use strands instead
+    std::vector<std::thread> asyncThreads_t; /// Update to strands later
     boost::asio::executor_work_guard<boost::asio::io_context::executor_type> work_guard;
 
     boost::asio::ip::tcp::acceptor acceptor;

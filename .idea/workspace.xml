@@ -33,9 +33,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="to_string fixes">
+    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="Added comments to all ReaderHandler functions.">
+      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/asioServer/TCP/TcpServer.h" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/TCP/TcpServer.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -175,7 +177,7 @@
       <workItem from="1761814885376" duration="1277000" />
       <workItem from="1762112235978" duration="6320000" />
       <workItem from="1762293489972" duration="950000" />
-      <workItem from="1762298442616" duration="1398000" />
+      <workItem from="1762298442616" duration="1577000" />
     </task>
     <task id="LOCAL-00001" summary="Final touches">
       <option name="closed" value="true" />
@@ -401,7 +403,15 @@
       <option name="project" value="LOCAL" />
       <updated>1762294643520</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="Added comments to all ReaderHandler functions.">
+      <option name="closed" value="true" />
+      <created>1762299869531</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1762299869531</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -457,7 +467,8 @@
     <MESSAGE value="Minor performance &amp; readability fixes." />
     <MESSAGE value="Moneygang" />
     <MESSAGE value="to_string fixes" />
-    <option name="LAST_COMMIT_MESSAGE" value="to_string fixes" />
+    <MESSAGE value="Added comments to all ReaderHandler functions." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added comments to all ReaderHandler functions." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
