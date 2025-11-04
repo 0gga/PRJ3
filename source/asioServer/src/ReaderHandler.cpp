@@ -73,12 +73,16 @@ ReaderHandler::ReaderHandler(const int& clientPort, const int& cliPort, const st
 	//////////////////////////////// Init Servers ////////////////////////////////
 }
 
-// Destructor
+/// Destructor\n
+/// Calls stop()
 ReaderHandler::~ReaderHandler() {
 	stop();
 }
 
-// Stop all servers.
+/// Stop all servers.\n
+/// Called in DTOR when main goes out of scope.\n
+/// Also called if cli calls "shutdown".
+/// @returns void
 void ReaderHandler::stop() {
 	state = ReaderState::Idle;
 	clientServer.stop();
@@ -90,13 +94,15 @@ ReaderState ReaderHandler::getState() const {
 	return state;
 }
 
-// Runtime loop - necessary.
+/// Runtime loop.\n Necessary to avoid termination while callbacks await.
+/// @returns void
 void ReaderHandler::runLoop() {
 	while (running)
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }
 
-// Outputs server IPV4.
+/// Outputs server IPV4.
+/// @returns void
 void ReaderHandler::myIp() {
 	boost::asio::io_context io;
 	boost::asio::ip::tcp::resolver resolver(io);
@@ -112,7 +118,10 @@ void ReaderHandler::myIp() {
 	std::cout << ip_address << std::endl;
 }
 
-// Handles Client IO.
+/// Handles Client IO.\n
+/// Is automatically called via lambda callback in CTOR whenever a new TCP Connection is established on the clientServer. Recalls itself after each pass.
+/// @param connection shared_ptr to the current TCP client connection. This is established and passed in the CTOR callback.
+/// @returns void
 void ReaderHandler::handleClient(const CONNECTION& connection) {
 	state = ReaderState::Active;
 
@@ -147,7 +156,10 @@ void ReaderHandler::handleClient(const CONNECTION& connection) {
 	state = ReaderState::Idle;
 }
 
-// Handles CLI IO.
+/// Handles CLI IO.\n
+/// Is automatically called via lambda callback in CTOR whenever a new TCP Connection is established on the cliServer. Recalls itself after each pass.
+/// @param connection shared_ptr to the current TCP cli connection. This is established and passed in the CTOR callback.
+/// @returns void
 void ReaderHandler::handleCli(const CONNECTION& connection) {
 	state = ReaderState::Active;
 	connection->read<std::string>([this, connection](const std::string& pkg) {
@@ -182,7 +194,9 @@ void ReaderHandler::handleCli(const CONNECTION& connection) {
 	state = ReaderState::Idle;
 }
 
-// Add new door - call within a read lambda with the .
+/// Add new door function.
+/// @param connection shared_ptr to the current TCP client connection.
+/// @param doorData String representation of the door to be added i.e. "door1 1".
 void ReaderHandler::newDoor(const CONNECTION& connection, const std::string& doorData) {
 	// Parse CLI command for correct syntax
 	static const std::regex cliSyntax(R"(^newDoor\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
@@ -224,7 +238,9 @@ void ReaderHandler::newDoor(const CONNECTION& connection, const std::string& doo
 	connection->write<std::string>("Door Added Successfully");
 }
 
-// Add new user function.
+/// Add new user function.
+/// @param connection shared_ptr to the current TCP client connection.
+/// @param userData String representation of the user to be added i.e. "john_doe 1".
 void ReaderHandler::newUser(const CONNECTION& connection, const std::string& userData) {
 	// Parse CLI command for correct syntax
 	static const std::regex cliSyntax(R"(^newUser\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
@@ -284,7 +300,9 @@ void ReaderHandler::newUser(const CONNECTION& connection, const std::string& use
 	});
 }
 
-// Remove door function.
+/// Remove door function.
+/// @param connection shared_ptr to the current TCP client connection.
+/// @param doorData String representation of the door to be removed i.e. "door1".
 void ReaderHandler::rmDoor(const CONNECTION& connection, const std::string& doorData) {
 	// Parse CLI command for correct syntax
 	static const std::regex cliSyntax(R"(^rmDoor\s+([A-Za-z_]+)$)");
@@ -331,12 +349,14 @@ void ReaderHandler::rmDoor(const CONNECTION& connection, const std::string& door
 	connection->write<std::string>("Door Removed Successfully");
 }
 
-// Remove user function.
-void ReaderHandler::rmUser(const CONNECTION& connection, const std::string& userdata) {
+/// Remove user function.
+/// @param connection shared_ptr to the current TCP client connection.
+/// @param userData String representation of the user to be removed i.e. "john_doe".
+void ReaderHandler::rmUser(const CONNECTION& connection, const std::string& userData) {
 	// Parse CLI command for correct syntax
 	static const std::regex cliSyntax(R"(^rmUser\s+([A-Za-z_]+)$)");
 	std::smatch match;
-	if (!std::regex_match(userdata, match, cliSyntax)) {
+	if (!std::regex_match(userData, match, cliSyntax)) {
 		connection->write<std::string>("Failed to remove user - Incorrect CLI syntax");
 		return;
 	}
@@ -382,11 +402,14 @@ void ReaderHandler::rmUser(const CONNECTION& connection, const std::string& user
 	connection->write<std::string>("User Removed Successfully");
 }
 
-// Helper function for converting string to snake_case.
+/// Helper function for converting std::string to snake_case.\n
+/// Takes std::string by reference.
+/// @param input std::string input
+/// @returns void
 void ReaderHandler::to_snake_case(std::string& input) {
 	std::string result;
-	result.reserve(input.size() + 2); // I reserved +2 in case of 3 names/words i.e. John Doe Jr.
-	// If larger than input.size() +2 it will just reallocate which is negligible regardless, considering the string sizes we'll be handling.
+	result.reserve(input.size()); /// Albeit reserving only input.size(), more usually get's allocated.
+	/// If larger than input.size() it will just reallocate which is negligible regardless, considering the string sizes we'll be handling.
 
 	bool prevLower{false};
 	for (const unsigned char c : input) {
@@ -403,6 +426,8 @@ void ReaderHandler::to_snake_case(std::string& input) {
 	input = std::move(result);
 }
 
+/// Log getter function.
+/// @returns nlohmann::json
 nlohmann::json ReaderHandler::getLog() const {
 	return log;
 }
