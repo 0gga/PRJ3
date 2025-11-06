@@ -189,8 +189,8 @@ void ReaderHandler::handleCli(const CONNECTION& connection) {
 		} else {
 			connection->write<std::string>("Unknown Command");
 		}
-		handleCli(connection);
 	});
+	handleCli(connection);
 	state = ReaderState::Idle;
 }
 
@@ -408,8 +408,9 @@ void ReaderHandler::rmUser(const CONNECTION& connection, const std::string& user
 /// @returns void
 void ReaderHandler::to_snake_case(std::string& input) {
 	std::string result;
-	result.reserve(input.size()); /// Albeit reserving only input.size(), more usually get's allocated.
-	/// If larger than input.size() it will just reallocate which is negligible regardless, considering the string sizes we'll be handling.
+	result.reserve(input.size());
+	/// Albeit reserving only input.size(), more usually get's allocated.
+	   /// If larger than input.size() it will just reallocate which is negligible regardless, considering the string sizes we'll be handling.
 
 	bool prevLower{false};
 	for (const unsigned char c : input) {
