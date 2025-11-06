@@ -14,9 +14,6 @@ enum class ReaderState {
 
 void myIP();
 
-/// @param [in] CONNECTION shared_ptr to the TcpConnection object which holds a unique client connection.
-using CONNECTION = std::shared_ptr<TcpConnection>;
-
 class ReaderHandler {
 public:
 	explicit ReaderHandler(const int& clientPort, const int& cliPort, const std::string& cliReader);
@@ -29,13 +26,13 @@ public:
 	static void myIp();
 
 private: // Member Functions
-	void handleClient(const CONNECTION& connection);
-	void handleCli(const CONNECTION& connection);
+	void handleClient(CONNECTION connection);
+	void handleCli(CONNECTION connection);
 
-	void newDoor(const CONNECTION& connection, const std::string&);
-	void newUser(const CONNECTION& connection, const std::string&);
-	void rmDoor(const CONNECTION& connection, const std::string&);
-	void rmUser(const CONNECTION& connection, const std::string&);
+	void newDoor(CONNECTION connection, const std::string&);
+	void newUser(CONNECTION connection, const std::string&);
+	void rmDoor(CONNECTION connection, const std::string&);
+	void rmUser(CONNECTION connection, const std::string&);
 	static void to_snake_case(std::string&);
 
 	ReaderState getState() const;

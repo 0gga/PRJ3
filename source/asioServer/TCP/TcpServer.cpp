@@ -2,9 +2,8 @@
 #include <iostream>
 
 TcpServer::TcpServer(int port)
-: work_guard(make_work_guard(io_context)),
-  acceptor(io_context, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port)) {}
-
+: acceptor(io_context, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port)),
+  work_guard(make_work_guard(io_context)) {}
 
 TcpServer::~TcpServer() {
 	stop();
@@ -13,7 +12,6 @@ TcpServer::~TcpServer() {
 void TcpServer::start() {
 	if (running)
 		return;
-
 	running = true;
 
 	io_context.restart();
@@ -44,10 +42,12 @@ void TcpServer::stop() {
 	acceptor.close(ec);
 
 	if (ec)
-		std::cout << "Stop error: " << ec.message() << std::endl;
+		std::cout << "Acceptor close error: " << ec.message() << std::endl;
+
+	connections.clear();
 }
 
-void TcpServer::onClientConnect(std::function<void(std::shared_ptr<TcpConnection>)> callback) {
+void TcpServer::onClientConnect(std::function<void(CONNECTION)> callback) {
 	connectHandler = std::move(callback);
 }
 
@@ -58,23 +58,32 @@ void TcpServer::setThreadCount(uint8_t count) {
 		std::cout << "Thread count cannot be greater than " << threadLimit << std::endl;
 }
 
+void TcpServer::removeConnection(uint32_t id) {
+	connections.erase(id);
+}
+
 void TcpServer::acceptConnection() {
 	if (!running)
 		return;
 
-	auto socket = std::make_shared<boost::asio::ip::tcp::socket>(io_context);
-	acceptor.async_accept(*socket, [this, socket](boost::system::error_code ec) {
+	auto socket = std::make_unique<boost::asio::ip::tcp::socket>(io_context);
+	acceptor.async_accept(*socket, [this, socket = std::move(socket)](boost::system::error_code ec) {
 		if (!running)
 			return;
 		try {
 			if (!ec) {
-				const auto connection = std::make_shared<TcpConnection>(std::move(*socket));
+				uint32_t id = nextId++;
+
+				auto connection = std::make_unique<TcpConnection>(std::move(*socket), id, this);
+				CONNECTION raw  = connection.get();
+				connections.emplace(id, std::move(connection));
+
 				const boost::system::error_code ep_ec;
 				if (!ep_ec)
 					std::cout << "Client connected: " << socket->remote_endpoint() << std::endl;
 
 				if (connectHandler)
-					connectHandler(connection);
+					connectHandler(raw);
 			} else {
 				std::cout << "Accept Failed: " << ec.message() << std::endl;
 			}

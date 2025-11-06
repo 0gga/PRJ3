@@ -2,12 +2,13 @@
 
 #include <iostream>
 #include <boost/asio.hpp>
-
 #include "json.hpp"
 
-class TcpConnection : public std::enable_shared_from_this<TcpConnection> {
+class TcpServer;
+
+class TcpConnection {
 public:
-	explicit TcpConnection(boost::asio::ip::tcp::socket socket);
+	TcpConnection(boost::asio::ip::tcp::socket socket, uint32_t id, TcpServer* owner);
 	~TcpConnection();
 
 	void close();
@@ -21,18 +22,19 @@ public:
 	bool connected = false;
 
 private: // Member Variables
-	boost::asio::ip::tcp::socket socket;
-	boost::asio::strand<boost::asio::any_io_executor> strand;
+	boost::asio::ip::tcp::socket socket_;
+	boost::asio::strand<boost::asio::any_io_executor> strand_;
+	TcpServer* owner_;
+	int32_t id_;
 };
 
 template<typename Rx>
 void TcpConnection::read(std::function<void(const Rx&)> handler) {
-	const auto self = shared_from_this(); // Keep to avoid termination before callback. Keeps a reference alive until callback returns.
-	auto buffer     = std::make_shared<boost::asio::streambuf>();
+	auto buffer = std::make_shared<boost::asio::streambuf>();
 
-	boost::asio::async_read_until(socket, *buffer, '\n',
-								  boost::asio::bind_executor(strand,
-															 [this, self, buffer, handler](const boost::system::error_code& ec, size_t bytesTransferred) {
+	boost::asio::async_read_until(socket_, *buffer, '\n',
+								  boost::asio::bind_executor(strand_,
+															 [this, buffer, handler](const boost::system::error_code& ec, size_t bytesTransferred) {
 																 if (ec) {
 																	 std::cerr << "Read Failed: " << ec.message() << std::endl;
 																	 return;
@@ -53,7 +55,6 @@ void TcpConnection::read(std::function<void(const Rx&)> handler) {
 
 template<typename Tx>
 void TcpConnection::write(const Tx& data) {
-	const auto self                    = shared_from_this(); // Keep to avoid termination before callback. Keeps a reference alive until callback returns.
 	std::shared_ptr<std::string> bytes = std::make_shared<std::string>();
 
 	if constexpr (std::is_same_v<Tx, std::string>)
@@ -64,8 +65,8 @@ void TcpConnection::write(const Tx& data) {
 		static_assert(std::is_same_v<Tx, std::string> || std::is_same_v<Tx, nlohmann::json>,
 					  "TcpServer::write() exclusively supports std::string or nlohmann::json");
 
-	boost::asio::async_write(socket, boost::asio::buffer(*bytes),
-							 boost::asio::bind_executor(strand, [this, self](const boost::system::error_code& ec, std::size_t) {
+	boost::asio::async_write(socket_, boost::asio::buffer(*bytes),
+							 boost::asio::bind_executor(strand_, [this](const boost::system::error_code& ec, std::size_t) {
 								 if (ec) {
 									 std::cerr << "Connection Write Failed: " << ec.message() << std::endl;
 								 }

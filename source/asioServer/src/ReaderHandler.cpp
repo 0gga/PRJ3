@@ -53,12 +53,12 @@ ReaderHandler::ReaderHandler(const int& clientPort, const int& cliPort, const st
 	////////////////////////////// Read config JSON //////////////////////////////
 
 	//////////////////////////////// Init Servers ////////////////////////////////
-	clientServer.onClientConnect([this](const CONNECTION& connection) {
+	clientServer.onClientConnect([this](CONNECTION connection) {
 		std::cout << "Client Connected\n";
 		handleClient(connection);
 	});
 
-	cliServer.onClientConnect([this](const CONNECTION& connection) {
+	cliServer.onClientConnect([this](CONNECTION connection) {
 		std::cout << "CLI Connected\n";
 		handleCli(connection);
 	});
@@ -122,7 +122,7 @@ void ReaderHandler::myIp() {
 /// Is automatically called via lambda callback in CTOR whenever a new TCP Connection is established on the clientServer. Recalls itself after each pass.
 /// @param connection shared_ptr to the current TCP client connection. This is established and passed in the CTOR callback.
 /// @returns void
-void ReaderHandler::handleClient(const CONNECTION& connection) {
+void ReaderHandler::handleClient(CONNECTION connection) {
 	state = ReaderState::Active;
 
 	connection->read<std::string>([this, connection](const std::string& pkg) {
@@ -160,7 +160,7 @@ void ReaderHandler::handleClient(const CONNECTION& connection) {
 /// Is automatically called via lambda callback in CTOR whenever a new TCP Connection is established on the cliServer. Recalls itself after each pass.
 /// @param connection shared_ptr to the current TCP cli connection. This is established and passed in the CTOR callback.
 /// @returns void
-void ReaderHandler::handleCli(const CONNECTION& connection) {
+void ReaderHandler::handleCli(CONNECTION connection) {
 	state = ReaderState::Active;
 	connection->read<std::string>([this, connection](const std::string& pkg) {
 		if (cliReader.first == pkg) {
@@ -197,7 +197,7 @@ void ReaderHandler::handleCli(const CONNECTION& connection) {
 /// Add new door function.
 /// @param connection shared_ptr to the current TCP client connection.
 /// @param doorData String representation of the door to be added i.e. "door1 1".
-void ReaderHandler::newDoor(const CONNECTION& connection, const std::string& doorData) {
+void ReaderHandler::newDoor(CONNECTION connection, const std::string& doorData) {
 	// Parse CLI command for correct syntax
 	static const std::regex cliSyntax(R"(^newDoor\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
 	std::smatch match;
@@ -241,7 +241,7 @@ void ReaderHandler::newDoor(const CONNECTION& connection, const std::string& doo
 /// Add new user function.
 /// @param connection shared_ptr to the current TCP client connection.
 /// @param userData String representation of the user to be added i.e. "john_doe 1".
-void ReaderHandler::newUser(const CONNECTION& connection, const std::string& userData) {
+void ReaderHandler::newUser(CONNECTION connection, const std::string& userData) {
 	// Parse CLI command for correct syntax
 	static const std::regex cliSyntax(R"(^newUser\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
 	std::smatch match;
@@ -303,7 +303,7 @@ void ReaderHandler::newUser(const CONNECTION& connection, const std::string& use
 /// Remove door function.
 /// @param connection shared_ptr to the current TCP client connection.
 /// @param doorData String representation of the door to be removed i.e. "door1".
-void ReaderHandler::rmDoor(const CONNECTION& connection, const std::string& doorData) {
+void ReaderHandler::rmDoor(CONNECTION connection, const std::string& doorData) {
 	// Parse CLI command for correct syntax
 	static const std::regex cliSyntax(R"(^rmDoor\s+([A-Za-z_]+)$)");
 	std::smatch match;
@@ -352,7 +352,7 @@ void ReaderHandler::rmDoor(const CONNECTION& connection, const std::string& door
 /// Remove user function.
 /// @param connection shared_ptr to the current TCP client connection.
 /// @param userData String representation of the user to be removed i.e. "john_doe".
-void ReaderHandler::rmUser(const CONNECTION& connection, const std::string& userData) {
+void ReaderHandler::rmUser(CONNECTION connection, const std::string& userData) {
 	// Parse CLI command for correct syntax
 	static const std::regex cliSyntax(R"(^rmUser\s+([A-Za-z_]+)$)");
 	std::smatch match;

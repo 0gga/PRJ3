@@ -33,9 +33,13 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="Use strands in read/write for ACID compliance.">
+    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="Minor fixes.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/asioServer/TCP/TcpConnection.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/TCP/TcpConnection.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/asioServer/TCP/TcpConnection.h" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/TCP/TcpConnection.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/asioServer/TCP/TcpServer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/TCP/TcpServer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/asioServer/TCP/TcpServer.h" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/TCP/TcpServer.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/asioServer/include/ReaderHandler.h" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/include/ReaderHandler.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -177,7 +181,7 @@
       <workItem from="1762112235978" duration="6320000" />
       <workItem from="1762293489972" duration="950000" />
       <workItem from="1762298442616" duration="1598000" />
-      <workItem from="1762446696508" duration="3064000" />
+      <workItem from="1762446696508" duration="5995000" />
     </task>
     <task id="LOCAL-00001" summary="Final touches">
       <option name="closed" value="true" />
@@ -427,7 +431,15 @@
       <option name="project" value="LOCAL" />
       <updated>1762448664293</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="Minor fixes.">
+      <option name="closed" value="true" />
+      <created>1762449786564</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1762449786564</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -486,7 +498,8 @@
     <MESSAGE value="Added comments to all ReaderHandler functions." />
     <MESSAGE value="Fixes" />
     <MESSAGE value="Use strands in read/write for ACID compliance." />
-    <option name="LAST_COMMIT_MESSAGE" value="Use strands in read/write for ACID compliance." />
+    <MESSAGE value="Minor fixes." />
+    <option name="LAST_COMMIT_MESSAGE" value="Minor fixes." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
