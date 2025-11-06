@@ -1,7 +1,7 @@
 #include "TcpServer.h"
 #include <iostream>
 
-TcpServer::TcpServer(const int& port)
+TcpServer::TcpServer(int port)
 : work_guard(make_work_guard(io_context)),
   acceptor(io_context, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port)) {}
 
@@ -69,8 +69,8 @@ void TcpServer::acceptConnection() {
         try {
             if (!ec) {
                 const auto connection = std::make_shared<TcpConnection>(std::move(*socket));
-                constexpr boost::system::error_code ep_ec;
-                if constexpr (!ep_ec)
+                const boost::system::error_code ep_ec;
+                if (!ep_ec)
                     std::cout << "Client connected: " << socket->remote_endpoint() << std::endl;
 
                 if (connectHandler)

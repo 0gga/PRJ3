@@ -8,7 +8,7 @@
 
 class TcpServer {
 public:
-    explicit TcpServer(const int& port);
+    explicit TcpServer(int port);
     ~TcpServer();
 
     void start();
@@ -23,7 +23,7 @@ private: /// Member Functions
 
 private: /// Member Variables
     boost::asio::io_context io_context;
-    std::vector<std::thread> asyncThreads_t; /// Update to strands later
+    std::vector<std::thread> asyncThreads_t; /// Strands are ACID compliant for boost::asio
     boost::asio::executor_work_guard<boost::asio::io_context::executor_type> work_guard;
 
     boost::asio::ip::tcp::acceptor acceptor;
