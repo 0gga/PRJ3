@@ -5,13 +5,13 @@ project(${PROJ_NAME} LANGUAGES C CXX)
 # Collect all .c, .cpp, .h, .tpp files from src/ & include/
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS src/*.cpp src/*.c src/*.tpp)
 file(GLOB_RECURSE HEADERS CONFIGURE_DEPENDS include/*.cpp include/*.c include/*.tpp include/*.hpp include/*.h)
-file(GLOB_RECURSE SERVERS CONFIGURE_DEPENDS TCP/*.cpp TCP/*.c TCP/*.hpp TCP/*.h TCP/*.tpp)
+file(GLOB_RECURSE SERVER CONFIGURE_DEPENDS TCP/*.cpp TCP/*.c TCP/*.hpp TCP/*.h TCP/*.tpp)
 
 # Define executable path
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
 # Create the executable
-add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS} ${SERVERS})
+add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS} ${SERVER})
 
 # Include headers from include/
 target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/include PRIVATE ${PROJECT_SOURCE_DIR}/TCP)

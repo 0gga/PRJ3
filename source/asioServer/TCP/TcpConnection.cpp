@@ -9,17 +9,24 @@ TcpConnection::TcpConnection(boost::asio::ip::tcp::socket socket, uint32_t id, T
   id_(id) {}
 
 TcpConnection::~TcpConnection() {
-	close();
+    boost::system::error_code ec;
+    socket_.shutdown(boost::asio::ip::tcp::socket::shutdown_both, ec);
+    socket_.close(ec);
 }
 
 void TcpConnection::close() {
-	boost::system::error_code ec;
-	socket_.shutdown(boost::asio::ip::tcp::socket::shutdown_both, ec);
-	if (ec && ec != boost::asio::error::not_connected)
-		std::cout << "Shutdown Error: " << ec.message() << std::endl;
+    boost::system::error_code ec;
+    socket_.cancel(ec);
+    socket_.shutdown(boost::asio::ip::tcp::socket::shutdown_both, ec);
+    socket_.close(ec);
 
-	socket_.close(ec);
-	if (ec)
-		std::cout << "Close Error: " << ec.message() << std::endl;
-	if (owner_) owner_->removeConnection(id_);
+    if (owner_) {
+        auto owner = owner_;
+        auto id    = id_;
+        post(strand_, [owner, id] { owner->removeConnection(id); });
+    }
+}
+
+void TcpConnection::onDisconnect() {
+    if (owner_) owner_->removeConnection(id_);
 }

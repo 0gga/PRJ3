@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="BackendCodeEditorMiscSettings">
-    <option name="/Default/CodeEditing/TypingAssist/Cpp/CloseBlockComment/@EntryValue" value="true" type="bool" />
     <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
-    <option name="/Default/Housekeeping/OptionsDialog/SelectedPageId/@EntryValue" value="CppCodeGeneration" type="string" />
+    <option name="/Default/Housekeeping/OptionsDialog/SelectedPageId/@EntryValue" value="CppGeneralOptions" type="string" />
     <option name="/Default/Housekeeping/RefactoringsMru/RenameRefactoring/DoSearchForTextInStrings/@EntryValue" value="true" type="bool" />
   </component>
   <component name="CMakePresetLoader">{
@@ -33,14 +32,12 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="Minor fixes.">
+    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="Cleanup">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/asioServer/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/asioServer/TCP/TcpConnection.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/TCP/TcpConnection.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/asioServer/TCP/TcpConnection.h" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/TCP/TcpConnection.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/asioServer/TCP/TcpServer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/TCP/TcpServer.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/TCP/TcpServer.h" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/TCP/TcpServer.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/include/ReaderHandler.h" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/include/ReaderHandler.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,18 +64,21 @@
 }</component>
   <component name="GitLabMergeRequestsSettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;first&quot;: &quot;https://gitlab.au.dk/SWPRJ3/PRJ3.git&quot;,
-    &quot;second&quot;: &quot;eecea205-3cbe-4958-b7b2-7637b50b1076&quot;
+    &quot;first&quot;: &quot;https://gitlab.au.dk/prj32/sw3prj3.git&quot;,
+    &quot;second&quot;: &quot;772517d4-2e14-4349-9883-be0437b3d106&quot;
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/.source/asioServer/TCP/TcpConnection.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/.source/asioServer/TCP/TcpConnection.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/.source/asioServer/TCP/TcpServer.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/.source/asioServer/TCP/TcpServer.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/.source/asioServer/include/Reader.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/.source/asioServer/src/Reader.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/.source/asioServer/src/main.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="NamedScopeManager">
     <order>
@@ -118,7 +118,8 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.keymap",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "show.migrate.to.gradle.popup": "false",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -141,6 +142,11 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.asioServer">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="asioServer" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="PRJ3" TARGET_NAME="asioServer" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="PRJ3" RUN_TARGET_NAME="asioServer">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -178,10 +184,6 @@
       <workItem from="1760695540439" duration="2551000" />
       <workItem from="1761214951652" duration="17473000" />
       <workItem from="1761814885376" duration="1277000" />
-      <workItem from="1762112235978" duration="6320000" />
-      <workItem from="1762293489972" duration="950000" />
-      <workItem from="1762298442616" duration="1598000" />
-      <workItem from="1762446696508" duration="5995000" />
     </task>
     <task id="LOCAL-00001" summary="Final touches">
       <option name="closed" value="true" />
@@ -383,63 +385,7 @@
       <option name="project" value="LOCAL" />
       <updated>1761307017065</updated>
     </task>
-    <task id="LOCAL-00026" summary="Minor performance &amp; readability fixes.">
-      <option name="closed" value="true" />
-      <created>1762115925538</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1762115925538</updated>
-    </task>
-    <task id="LOCAL-00027" summary="Moneygang">
-      <option name="closed" value="true" />
-      <created>1762117302540</created>
-      <option name="number" value="00027" />
-      <option name="presentableId" value="LOCAL-00027" />
-      <option name="project" value="LOCAL" />
-      <updated>1762117302540</updated>
-    </task>
-    <task id="LOCAL-00028" summary="to_string fixes">
-      <option name="closed" value="true" />
-      <created>1762294643520</created>
-      <option name="number" value="00028" />
-      <option name="presentableId" value="LOCAL-00028" />
-      <option name="project" value="LOCAL" />
-      <updated>1762294643520</updated>
-    </task>
-    <task id="LOCAL-00029" summary="Added comments to all ReaderHandler functions.">
-      <option name="closed" value="true" />
-      <created>1762299869531</created>
-      <option name="number" value="00029" />
-      <option name="presentableId" value="LOCAL-00029" />
-      <option name="project" value="LOCAL" />
-      <updated>1762299869531</updated>
-    </task>
-    <task id="LOCAL-00030" summary="Fixes">
-      <option name="closed" value="true" />
-      <created>1762300046483</created>
-      <option name="number" value="00030" />
-      <option name="presentableId" value="LOCAL-00030" />
-      <option name="project" value="LOCAL" />
-      <updated>1762300046483</updated>
-    </task>
-    <task id="LOCAL-00031" summary="Use strands in read/write for ACID compliance.">
-      <option name="closed" value="true" />
-      <created>1762448664293</created>
-      <option name="number" value="00031" />
-      <option name="presentableId" value="LOCAL-00031" />
-      <option name="project" value="LOCAL" />
-      <updated>1762448664293</updated>
-    </task>
-    <task id="LOCAL-00032" summary="Minor fixes.">
-      <option name="closed" value="true" />
-      <created>1762449786564</created>
-      <option name="number" value="00032" />
-      <option name="presentableId" value="LOCAL-00032" />
-      <option name="project" value="LOCAL" />
-      <updated>1762449786564</updated>
-    </task>
-    <option name="localTasksCounter" value="33" />
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -492,14 +438,7 @@
     <MESSAGE value="Redoing CLI logic." />
     <MESSAGE value="Show IP Address on boot" />
     <MESSAGE value="Cleanup" />
-    <MESSAGE value="Minor performance &amp; readability fixes." />
-    <MESSAGE value="Moneygang" />
-    <MESSAGE value="to_string fixes" />
-    <MESSAGE value="Added comments to all ReaderHandler functions." />
-    <MESSAGE value="Fixes" />
-    <MESSAGE value="Use strands in read/write for ACID compliance." />
-    <MESSAGE value="Minor fixes." />
-    <option name="LAST_COMMIT_MESSAGE" value="Minor fixes." />
+    <option name="LAST_COMMIT_MESSAGE" value="Cleanup" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
