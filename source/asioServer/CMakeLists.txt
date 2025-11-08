@@ -21,6 +21,7 @@ include_directories(${CMAKE_SOURCE_DIR}/extern/json/single_include/nlohmann)
 
 ########################## Boost ##########################
 include_directories(
+${CMAKE_SOURCE_DIR}/extern/ogga/include
 ${CMAKE_SOURCE_DIR}/extern/asio/include
 ${CMAKE_SOURCE_DIR}/extern/system/include
 ${CMAKE_SOURCE_DIR}/extern/config/include

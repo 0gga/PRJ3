@@ -1,6 +1,6 @@
 [submodule "extern/ogga"]
-   path = extern/ogga
-   url = https://github.com/0gga/oggaLib.git
+	path = extern/ogga
+	url = https://github.com/0gga/oggaLib.git
 [submodule "extern/asio"]
 	path = extern/asio
 	url = https://github.com/boostorg/asio.git

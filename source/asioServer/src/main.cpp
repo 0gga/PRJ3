@@ -1,5 +1,5 @@
 ﻿#include "ReaderHandler.h"
-
+#include <ogga/print.hpp>
 //  int main(int argc, char* argv[]) {
 //  	ReaderHandler reader(argv[1], argv[2], std::to_string(argv[3])); // Use arguments for client- & cliPort parameters
 //
@@ -11,7 +11,8 @@
 int main() {
     [[maybe_unused]] ReaderHandler reader(9000, 9001, "adminReader");
 
-    ReaderHandler::runLoop();
+    ogga::print("Server Successfully Constructed");
 
+    ReaderHandler::runLoop();
     return 0;
 }
