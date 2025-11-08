@@ -33,21 +33,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="oggaLib">
-      <change afterPath="$PROJECT_DIR$/extern/ogga" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitmodules" beforeDir="false" afterPath="$PROJECT_DIR$/.gitmodules" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="OggaLib added to gitmodules">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/asio" beforeDir="false" afterPath="$PROJECT_DIR$/extern/asio" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/assert" beforeDir="false" afterPath="$PROJECT_DIR$/extern/assert" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/config" beforeDir="false" afterPath="$PROJECT_DIR$/extern/config" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/core" beforeDir="false" afterPath="$PROJECT_DIR$/extern/core" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/json" beforeDir="false" afterPath="$PROJECT_DIR$/extern/json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/move" beforeDir="false" afterPath="$PROJECT_DIR$/extern/move" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/system" beforeDir="false" afterPath="$PROJECT_DIR$/extern/system" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/type_index" beforeDir="false" afterPath="$PROJECT_DIR$/extern/type_index" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/asioServer/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/src/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -197,7 +184,7 @@
       <workItem from="1762298442616" duration="1598000" />
       <workItem from="1762446696508" duration="5995000" />
       <workItem from="1762634727439" duration="111000" />
-      <workItem from="1762634905430" duration="1334000" />
+      <workItem from="1762634905430" duration="1552000" />
     </task>
     <task id="LOCAL-00001" summary="Final touches">
       <option name="closed" value="true" />
@@ -471,7 +458,15 @@
       <option name="project" value="LOCAL" />
       <updated>1762633988346</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="OggaLib added to gitmodules">
+      <option name="closed" value="true" />
+      <created>1762636262366</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1762636262366</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -532,7 +527,8 @@
     <MESSAGE value="Use strands in read/write for ACID compliance." />
     <MESSAGE value="Minor fixes." />
     <MESSAGE value="oggaLib" />
-    <option name="LAST_COMMIT_MESSAGE" value="oggaLib" />
+    <MESSAGE value="OggaLib added to gitmodules" />
+    <option name="LAST_COMMIT_MESSAGE" value="OggaLib added to gitmodules" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
