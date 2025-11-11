@@ -33,11 +33,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="OggaLib added to gitmodules">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/TCP/TcpServer.h" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/TCP/TcpServer.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/include/ReaderHandler.h" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/include/ReaderHandler.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" afterDir="false" />
+    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="Fixed comments.">
+      <change beforePath="$PROJECT_DIR$/source/asioServer/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/src/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -182,7 +179,7 @@
       <workItem from="1762446696508" duration="5995000" />
       <workItem from="1762634727439" duration="111000" />
       <workItem from="1762634905430" duration="1580000" />
-      <workItem from="1762888814795" duration="770000" />
+      <workItem from="1762888814795" duration="877000" />
     </task>
     <task id="LOCAL-00001" summary="Final touches">
       <option name="closed" value="true" />
@@ -472,7 +469,15 @@
       <option name="project" value="LOCAL" />
       <updated>1762636479961</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="Fixed comments.">
+      <option name="closed" value="true" />
+      <created>1762889604815</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1762889604815</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -534,7 +539,8 @@
     <MESSAGE value="Minor fixes." />
     <MESSAGE value="oggaLib" />
     <MESSAGE value="OggaLib added to gitmodules" />
-    <option name="LAST_COMMIT_MESSAGE" value="OggaLib added to gitmodules" />
+    <MESSAGE value="Fixed comments." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed comments." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -19,7 +19,7 @@ int main(int argc, char* argv[]) {
 int main() {
 	[[maybe_unused]] ReaderHandler reader(9000, 9001, "adminReader");
 
-	ogga::scopetimer runTimer("Server ran for", "min");
+	ogga::scopetimer runTimer("Server Uptime", "min");
 
 	ogga::print("Server Successfully Constructed");
 
