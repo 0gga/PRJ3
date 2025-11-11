@@ -26,6 +26,7 @@ public:
 	static void myIp();
 
 private: // Member Functions
+	/// Do not pass by const reference since pointer copy is trivial.<br>Additional benefit: Avoids any unintended interference with the TcpConnection objects.
 	void handleClient(CONNECTION connection);
 	void handleCli(CONNECTION connection);
 

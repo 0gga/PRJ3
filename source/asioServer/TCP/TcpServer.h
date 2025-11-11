@@ -6,7 +6,7 @@
 
 #include "TcpConnection.h"
 
-/// @param [in] CONNECTION shared_ptr to the TcpConnection object which holds a unique client connection.
+/// @param [in] CONNECTION unique_ptr to a TcpConnection object which holds a unique client connection.
 using CONNECTION = TcpConnection*;
 
 class TcpServer {

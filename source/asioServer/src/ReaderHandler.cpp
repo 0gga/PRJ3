@@ -53,12 +53,12 @@ ReaderHandler::ReaderHandler(const int& clientPort, const int& cliPort, const st
 	////////////////////////////// Read config JSON //////////////////////////////
 
 	//////////////////////////////// Init Servers ////////////////////////////////
-	clientServer.onClientConnect([this](CONNECTION connection) {
+	clientServer.onClientConnect([this](const CONNECTION& connection) {
 		std::cout << "Client Connected\n";
 		handleClient(connection);
 	});
 
-	cliServer.onClientConnect([this](CONNECTION connection) {
+	cliServer.onClientConnect([this](const CONNECTION& connection) {
 		std::cout << "CLI Connected\n";
 		handleCli(connection);
 	});
@@ -119,8 +119,8 @@ void ReaderHandler::myIp() {
 }
 
 /// Handles Client IO.\n
-/// Is automatically called via lambda callback in CTOR whenever a new TCP Connection is established on the clientServer. Recalls itself after each pass.
-/// @param connection shared_ptr to the current TCP client connection. This is established and passed in the CTOR callback.
+/// Is automatically called via lambda callback in CTOR whenever a new TCP Connection is established on the clientServer.<br>Recalls itself after each pass.
+/// @param connection ptr to the relative TcpConnection object. This is established and passed in the CTOR callback.
 /// @returns void
 void ReaderHandler::handleClient(CONNECTION connection) {
 	state = ReaderState::Active;
@@ -158,7 +158,7 @@ void ReaderHandler::handleClient(CONNECTION connection) {
 
 /// Handles CLI IO.\n
 /// Is automatically called via lambda callback in CTOR whenever a new TCP Connection is established on the cliServer. Recalls itself after each pass.
-/// @param connection shared_ptr to the current TCP cli connection. This is established and passed in the CTOR callback.
+/// @param connection ptr to the relative TcpConnection object. This is established and passed in the CTOR callback.
 /// @returns void
 void ReaderHandler::handleCli(CONNECTION connection) {
 	state = ReaderState::Active;
@@ -195,7 +195,7 @@ void ReaderHandler::handleCli(CONNECTION connection) {
 }
 
 /// Add new door function.
-/// @param connection shared_ptr to the current TCP client connection.
+/// /// @param connection ptr to the relative TcpConnection object.
 /// @param doorData String representation of the door to be added i.e. "door1 1".
 void ReaderHandler::newDoor(CONNECTION connection, const std::string& doorData) {
 	// Parse CLI command for correct syntax
@@ -239,7 +239,7 @@ void ReaderHandler::newDoor(CONNECTION connection, const std::string& doorData) 
 }
 
 /// Add new user function.
-/// @param connection shared_ptr to the current TCP client connection.
+/// @param connection ptr to the relative TcpConnection object.
 /// @param userData String representation of the user to be added i.e. "john_doe 1".
 void ReaderHandler::newUser(CONNECTION connection, const std::string& userData) {
 	// Parse CLI command for correct syntax
@@ -301,7 +301,7 @@ void ReaderHandler::newUser(CONNECTION connection, const std::string& userData) 
 }
 
 /// Remove door function.
-/// @param connection shared_ptr to the current TCP client connection.
+/// @param connection ptr to the relative TcpConnection object.
 /// @param doorData String representation of the door to be removed i.e. "door1".
 void ReaderHandler::rmDoor(CONNECTION connection, const std::string& doorData) {
 	// Parse CLI command for correct syntax
@@ -350,7 +350,7 @@ void ReaderHandler::rmDoor(CONNECTION connection, const std::string& doorData) {
 }
 
 /// Remove user function.
-/// @param connection shared_ptr to the current TCP client connection.
+/// @param connection ptr to the relative TcpConnection object.
 /// @param userData String representation of the user to be removed i.e. "john_doe".
 void ReaderHandler::rmUser(CONNECTION connection, const std::string& userData) {
 	// Parse CLI command for correct syntax
