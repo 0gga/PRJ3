@@ -163,7 +163,7 @@ void ReaderHandler::handleClient(CONNECTION connection) {
 void ReaderHandler::handleCli(CONNECTION connection) {
 	state = ReaderState::Active;
 	connection->read<std::string>([this, connection](const std::string& pkg) {
-		if (cliReader.first == pkg) {
+		if (pkg.rfind(cliReader.first, 0) == 0) {
 			cliReader.second = connection;
 			connection->write<std::string>("cliReader is ready");
 		}
