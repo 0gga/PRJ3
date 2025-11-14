@@ -2,7 +2,7 @@
 
 > ## **Dependencies**<br>
 >
->> Run `git submodule update --init --recursive` in root to clone external dependencies:
+>> Run `git submodule update --init --recursive --remote --merge` in root to clone external dependencies:
 >
 >
 >> ### **Current dependencies:**
