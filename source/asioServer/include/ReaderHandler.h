@@ -5,6 +5,7 @@
 #include <fstream>
 #include <shared_mutex>
 
+#include "csv.hpp"
 #include "json.hpp"
 
 enum class ReaderState {
@@ -38,6 +39,7 @@ private: // Member Functions
 
 	ReaderState getState() const;
 
+	void log();
 	nlohmann::json getLog() const;
 
 private: // Member Variables
@@ -47,7 +49,9 @@ private: // Member Variables
 	TcpServer clientServer;
 	TcpServer cliServer;
 
-	nlohmann::json log;
+	CsvLogger allLogger;
+
+	nlohmann::json allLog;
 	std::pair<std::string, CONNECTION> cliReader;
 	std::unordered_map<std::string, int> doors;
 	std::unordered_map<std::string, std::pair<std::string, int>> usersByName;
