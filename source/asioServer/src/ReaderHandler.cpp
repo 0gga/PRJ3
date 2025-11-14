@@ -427,8 +427,8 @@ void ReaderHandler::to_snake_case(std::string& input) {
 	input = std::move(result);
 }
 
-void ReaderHandler::log() {
-	allLogger.log();
+void ReaderHandler::log(const std::string& info) {
+	allLogger.log(info);
 }
 /// Log getter function.
 /// @returns nlohmann::json

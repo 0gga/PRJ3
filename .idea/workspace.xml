@@ -33,9 +33,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="Readme fixes">
-      <change afterPath="$PROJECT_DIR$/source/asioServer/include/csv.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/include/ReaderHandler.h" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/include/ReaderHandler.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/asioServer/include/csv.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/include/csv.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -393,7 +391,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763114722453</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="Readme fixes">
+      <option name="closed" value="true" />
+      <created>1763115355131</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1763115355131</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

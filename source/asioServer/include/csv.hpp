@@ -2,7 +2,7 @@
 
 class CsvLogger {
 public:
-    void log();
+    void log(const std::string& info);
     std::string getLog();
 
 private:
