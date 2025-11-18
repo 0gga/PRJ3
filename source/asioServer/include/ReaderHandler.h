@@ -39,7 +39,7 @@ private: // Member Functions
 
 	ReaderState getState() const;
 
-	void log();
+	void log(const std::string& info);
 	nlohmann::json getLog() const;
 
 private: // Member Variables

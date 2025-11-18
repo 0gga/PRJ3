@@ -26,7 +26,7 @@ private: // Member Variables
     boost::asio::ip::tcp::socket socket_;
     boost::asio::strand<boost::asio::any_io_executor> strand_;
     TcpServer* owner_;
-    int32_t id_;
+    uint32_t id_;
 };
 
 //clang-format off

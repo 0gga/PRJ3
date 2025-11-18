@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="BackendCodeEditorMiscSettings">
+    <option name="/Default/CodeEditing/TypingAssist/Cpp/CloseBlockComment/@EntryValue" value="true" type="bool" />
     <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
-    <option name="/Default/Housekeeping/OptionsDialog/SelectedPageId/@EntryValue" value="CppGeneralOptions" type="string" />
+    <option name="/Default/Housekeeping/OptionsDialog/SelectedPageId/@EntryValue" value="CppCodeGeneration" type="string" />
     <option name="/Default/Housekeeping/RefactoringsMru/RenameRefactoring/DoSearchForTextInStrings/@EntryValue" value="true" type="bool" />
   </component>
   <component name="CMakePresetLoader">{
@@ -32,10 +33,13 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="Readme fixes">
+    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="Fixed comments.">
+      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/ogga" beforeDir="false" afterPath="$PROJECT_DIR$/extern/ogga" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/asioServer/TCP/TcpConnection.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/TCP/TcpConnection.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/asioServer/TCP/TcpConnection.h" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/TCP/TcpConnection.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/asioServer/include/ReaderHandler.h" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/include/ReaderHandler.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/asioServer/include/csv.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/include/csv.hpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,21 +66,18 @@
 }</component>
   <component name="GitLabMergeRequestsSettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;first&quot;: &quot;https://gitlab.au.dk/prj32/sw3prj3.git&quot;,
-    &quot;second&quot;: &quot;772517d4-2e14-4349-9883-be0437b3d106&quot;
+    &quot;first&quot;: &quot;https://gitlab.au.dk/SWPRJ3/PRJ3.git&quot;,
+    &quot;second&quot;: &quot;eecea205-3cbe-4958-b7b2-7637b50b1076&quot;
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/.source/asioServer/TCP/TcpConnection.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/.source/asioServer/TCP/TcpConnection.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/.source/asioServer/TCP/TcpServer.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/.source/asioServer/TCP/TcpServer.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/.source/asioServer/include/Reader.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/.source/asioServer/src/Reader.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/.source/asioServer/src/main.cpp" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="NamedScopeManager">
     <order>
@@ -116,7 +117,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
     &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
@@ -134,7 +135,6 @@
       <recent name="C:\Users\oscar\source\.repos\SW3PRJ3\.source\asioServer\TCP" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Ogga\Documents\Repos\sw3prj3\source\asioServer\include" />
       <recent name="C:\Users\oscar\source\.repos\SW3PRJ3\Diagrams" />
       <recent name="C:\Users\oscar\source\.repos\SW3PRJ3\.source\asioServer\bin" />
       <recent name="C:\Users\oscar\source\.repos\SW3PRJ3\.source" />
@@ -178,7 +178,14 @@
       <workItem from="1760695540439" duration="2551000" />
       <workItem from="1761214951652" duration="17473000" />
       <workItem from="1761814885376" duration="1277000" />
-      <workItem from="1763125602617" duration="68000" />
+      <workItem from="1762112235978" duration="6320000" />
+      <workItem from="1762293489972" duration="950000" />
+      <workItem from="1762298442616" duration="1598000" />
+      <workItem from="1762446696508" duration="5995000" />
+      <workItem from="1762634727439" duration="111000" />
+      <workItem from="1762634905430" duration="1580000" />
+      <workItem from="1762888814795" duration="877000" />
+      <workItem from="1763503352831" duration="282000" />
     </task>
     <task id="LOCAL-00001" summary="Final touches">
       <option name="closed" value="true" />
@@ -380,47 +387,103 @@
       <option name="project" value="LOCAL" />
       <updated>1761307017065</updated>
     </task>
-    <task id="LOCAL-00026" summary="Readme fixes">
+    <task id="LOCAL-00026" summary="Minor performance &amp; readability fixes.">
       <option name="closed" value="true" />
-      <created>1763114722453</created>
+      <created>1762115925538</created>
       <option name="number" value="00026" />
       <option name="presentableId" value="LOCAL-00026" />
       <option name="project" value="LOCAL" />
-      <updated>1763114722453</updated>
+      <updated>1762115925538</updated>
     </task>
-    <task id="LOCAL-00027" summary="Readme fixes">
+    <task id="LOCAL-00027" summary="Moneygang">
       <option name="closed" value="true" />
-      <created>1763115355131</created>
+      <created>1762117302540</created>
       <option name="number" value="00027" />
       <option name="presentableId" value="LOCAL-00027" />
       <option name="project" value="LOCAL" />
-      <updated>1763115355131</updated>
+      <updated>1762117302540</updated>
     </task>
-    <task id="LOCAL-00028" summary="Readme fixes">
+    <task id="LOCAL-00028" summary="to_string fixes">
       <option name="closed" value="true" />
-      <created>1763115447770</created>
+      <created>1762294643520</created>
       <option name="number" value="00028" />
       <option name="presentableId" value="LOCAL-00028" />
       <option name="project" value="LOCAL" />
-      <updated>1763115447770</updated>
+      <updated>1762294643520</updated>
     </task>
-    <task id="LOCAL-00029" summary="Readme fixes">
+    <task id="LOCAL-00029" summary="Added comments to all ReaderHandler functions.">
       <option name="closed" value="true" />
-      <created>1763115666062</created>
+      <created>1762299869531</created>
       <option name="number" value="00029" />
       <option name="presentableId" value="LOCAL-00029" />
       <option name="project" value="LOCAL" />
-      <updated>1763115666062</updated>
+      <updated>1762299869531</updated>
     </task>
-    <task id="LOCAL-00030" summary="Readme fixes">
+    <task id="LOCAL-00030" summary="Fixes">
       <option name="closed" value="true" />
-      <created>1763115777345</created>
+      <created>1762300046483</created>
       <option name="number" value="00030" />
       <option name="presentableId" value="LOCAL-00030" />
       <option name="project" value="LOCAL" />
-      <updated>1763115777345</updated>
+      <updated>1762300046483</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="Use strands in read/write for ACID compliance.">
+      <option name="closed" value="true" />
+      <created>1762448664293</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1762448664293</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Minor fixes.">
+      <option name="closed" value="true" />
+      <created>1762449786564</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1762449786564</updated>
+    </task>
+    <task id="LOCAL-00033" summary="oggaLib">
+      <option name="closed" value="true" />
+      <created>1762633976582</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1762633976582</updated>
+    </task>
+    <task id="LOCAL-00034" summary="oggaLib">
+      <option name="closed" value="true" />
+      <created>1762633988346</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1762633988346</updated>
+    </task>
+    <task id="LOCAL-00035" summary="OggaLib added to gitmodules">
+      <option name="closed" value="true" />
+      <created>1762636262366</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1762636262366</updated>
+    </task>
+    <task id="LOCAL-00036" summary="OggaLib added to gitmodules">
+      <option name="closed" value="true" />
+      <created>1762636479961</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1762636479961</updated>
+    </task>
+    <task id="LOCAL-00037" summary="Fixed comments.">
+      <option name="closed" value="true" />
+      <created>1762889604815</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1762889604815</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -473,8 +536,17 @@
     <MESSAGE value="Redoing CLI logic." />
     <MESSAGE value="Show IP Address on boot" />
     <MESSAGE value="Cleanup" />
-    <MESSAGE value="Readme fixes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Readme fixes" />
+    <MESSAGE value="Minor performance &amp; readability fixes." />
+    <MESSAGE value="Moneygang" />
+    <MESSAGE value="to_string fixes" />
+    <MESSAGE value="Added comments to all ReaderHandler functions." />
+    <MESSAGE value="Fixes" />
+    <MESSAGE value="Use strands in read/write for ACID compliance." />
+    <MESSAGE value="Minor fixes." />
+    <MESSAGE value="oggaLib" />
+    <MESSAGE value="OggaLib added to gitmodules" />
+    <MESSAGE value="Fixed comments." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed comments." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
