@@ -28,13 +28,13 @@ public:
 
 private: // Member Functions
 	/// Do not pass by const reference since pointer copy is trivial.<br>Additional benefit: Avoids any unintended interference with the TcpConnection objects.
-	void handleClient(CONNECTION connection);
-	void handleCli(CONNECTION connection);
+	void handleClient(CONNECTION_T connection);
+	void handleCli(CONNECTION_T connection);
 
-	void newDoor(CONNECTION connection, const std::string&);
-	void newUser(CONNECTION connection, const std::string&);
-	void rmDoor(CONNECTION connection, const std::string&);
-	void rmUser(CONNECTION connection, const std::string&);
+	void newDoor(CONNECTION_T connection, const std::string&);
+	void newUser(CONNECTION_T connection, const std::string&);
+	void rmDoor(CONNECTION_T connection, const std::string&);
+	void rmUser(CONNECTION_T connection, const std::string&);
 	static void to_snake_case(std::string&);
 
 	ReaderState getState() const;
@@ -52,7 +52,7 @@ private: // Member Variables
 	CsvLogger allLogger;
 
 	nlohmann::json allLog;
-	std::pair<std::string, CONNECTION> cliReader;
+	std::pair<std::string, CONNECTION_T> cliReader;
 	std::unordered_map<std::string, int> doors;
 	std::unordered_map<std::string, std::pair<std::string, int>> usersByName;
 	std::unordered_map<std::string, std::pair<std::string, int>> usersByUid;

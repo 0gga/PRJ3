@@ -47,7 +47,7 @@ void TcpServer::stop() {
     connections.clear();
 }
 
-void TcpServer::onClientConnect(std::function<void(CONNECTION)> callback) {
+void TcpServer::onClientConnect(std::function<void(CONNECTION_T)> callback) {
     connectHandler = std::move(callback);
 }
 
@@ -82,7 +82,7 @@ void TcpServer::acceptConnection() {
                 auto ep = sock.remote_endpoint(ep_ec);
 
                 auto connection = std::make_unique<TcpConnection>(std::move(sock), id, this);
-                CONNECTION raw  = connection.get();
+                CONNECTION_T raw  = connection.get();
                 connections.emplace(id, std::move(connection));
 
                 if (!ep_ec)
