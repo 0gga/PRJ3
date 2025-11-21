@@ -22,7 +22,8 @@
 >>- Edit an existing door: `mvDoor <string>door1 <int>accessLevel`
 >>- Edit an existing door: `mvDoor <string>0gga <int>accessLevel`
 >>- Shutdown the CLI connection: `shutdown`
->>- Get client logs: `getLog`
+>>- Get all logs: `getLog`
+>>- Get user-specific logs: `getUserLog <string>0gga`
 >
 >> ### **Syntax**<br>
 >>
