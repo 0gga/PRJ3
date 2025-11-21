@@ -33,26 +33,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="Fixes to read/write">
-      <change afterPath="$PROJECT_DIR$/source/asioServer/logger/csv.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/source/asioServer/logger/csv.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="Server stability fixes.">
+      <change afterPath="$PROJECT_DIR$/source/asioServer/TCP/PayloadEncoder.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/json" beforeDir="false" afterPath="$PROJECT_DIR$/extern/json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/ogga" beforeDir="false" afterPath="$PROJECT_DIR$/extern/ogga" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/throw_exception" beforeDir="false" afterPath="$PROJECT_DIR$/extern/throw_exception" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/asioServer/TCP/TcpConnection.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/TCP/TcpConnection.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/TCP/TcpConnection.h" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/TCP/TcpConnection.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/TCP/TcpServer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/TCP/TcpServer.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/TCP/TcpServer.h" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/TCP/TcpServer.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/include/ReaderHandler.h" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/include/ReaderHandler.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/include/csv.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/include/csv.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/logs/systemLogs/Log_2025_11_21.csv" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/logger/logs/systemLogs/Log_2025_11_21.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/logs/userLogs/Log_JohnDoe.csv" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/logger/logs/userLogs/Log_JohnDoe.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/src/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/asioServer/TCP/TcpConnection.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/TCP/TcpConnection.hpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -163,7 +148,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
-    "CMake Application.asioServer.executor": "Run",
+    "CMake Application.asioServer.executor": "Debug",
     "CMake Application.build_unix.executor": "Run",
     "RunOnceActivity.RadMigrateCodeStyle": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -208,6 +193,11 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.asioServer">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="asioServer" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="PRJ3" TARGET_NAME="asioServer" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="PRJ3" RUN_TARGET_NAME="asioServer">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -254,7 +244,7 @@
       <workItem from="1762888814795" duration="877000" />
       <workItem from="1763503352831" duration="343000" />
       <workItem from="1763547164105" duration="861000" />
-      <workItem from="1763738210794" duration="1513000" />
+      <workItem from="1763738210794" duration="7135000" />
     </task>
     <task id="LOCAL-00001" summary="Final touches">
       <option name="closed" value="true" />
@@ -560,7 +550,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763503692704</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="Server stability fixes.">
+      <option name="closed" value="true" />
+      <created>1763740055844</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1763740055844</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -624,7 +622,8 @@
     <MESSAGE value="OggaLib added to gitmodules" />
     <MESSAGE value="Fixed comments." />
     <MESSAGE value="Fixed logs" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed logs" />
+    <MESSAGE value="Server stability fixes." />
+    <option name="LAST_COMMIT_MESSAGE" value="Server stability fixes." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

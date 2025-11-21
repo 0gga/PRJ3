@@ -1,9 +1,12 @@
 #pragma once
 
+#include <fstream>
 #include <iostream>
 #include <json.hpp>
 
 #include <boost/asio.hpp>
+
+#include "PayloadEncoder.hpp"
 
 class TcpServer;
 
@@ -13,7 +16,6 @@ public:
 	~TcpConnection();
 
 	void close();
-	void onDisconnect();
 
 	template<typename Rx>
 	void read(std::function<void(const Rx&)> handler);
@@ -21,60 +23,63 @@ public:
 	template<typename Tx>
 	void write(const Tx& data);
 
-	bool connected = false;
-
 private: // Member Variables
 	boost::asio::ip::tcp::socket socket_;
 	boost::asio::strand<boost::asio::any_io_executor> strand_;
 	TcpServer* owner_;
 	uint32_t id_;
+	bool alive_{true};
+	boost::asio::streambuf readBuffer_;
 };
 
 //clang-format off
 template<typename Rx>
 void TcpConnection::read(std::function<void(const Rx&)> handler) {
-    auto buffer = std::make_shared<boost::asio::streambuf>();
-	TcpConnection* self = this;
+	if (!alive_)
+		return;
 
-    boost::asio::async_read_until(socket_, *buffer, '\n', boost::asio::bind_executor(strand_,
-         [this, self, buffer, handler](const boost::system::error_code& ec, size_t bytesTransferred) {
+    boost::asio::async_read_until(socket_, readBuffer_, '\n', boost::asio::bind_executor(strand_,
+         [this, handler = std::move(handler)](const boost::system::error_code& ec, size_t bytesTransferred) {
+         	if (!alive_)
+				return;
+
+         	if (ec == boost::asio::error::eof) {
+         		close();
+         		return;
+         	}
+
              if (ec) {
-                 std::cerr << "Read Failed: " << ec.message() << std::endl;
-                 return;
+             	std::cerr << "Read Failed: " << ec.message() << std::endl;
+             	close();
+             	return;
              }
-             std::istream is(buffer.get());
-             std::string data;
-             std::getline(is, data);
+         	try {
+         		std::istream is(&readBuffer_);
+				std::string data;
+				std::getline(is, data);
 
-             if constexpr (std::is_same_v<Rx, std::string>)
-                 handler(data);
-             else
-                 handler(nlohmann::json::parse(data));
+         		if constexpr (std::is_same_v<Rx, std::string>)
+			 		handler(data);
+         	} catch (const std::exception& e) {
+         		std::cerr << "Read Error" << e.what() << std::endl;
+         	}
 
-             boost::asio::post(strand_, [self, handler]() {
-				self->read<Rx>(handler);
-             });
+             if (alive_)
+				read<Rx>(handler);
     }));
 }
 
 //clang-format on
 template<typename Tx>
 void TcpConnection::write(const Tx& data) {
-	std::shared_ptr<std::string> bytes = std::make_shared<std::string>();
-	TcpConnection* self = this;
+	if (!alive_)
+		return;
 
-	if constexpr (std::is_same_v<Tx, std::string>)
-		*bytes = data + '\n';
-	else if constexpr (std::is_same_v<Tx, nlohmann::json>)
-		*bytes = data.dump() + '\n';
-	else
-		static_assert(std::is_same_v<Tx, std::string> || std::is_same_v<Tx, nlohmann::json>,
-					  "TcpServer::write() exclusively supports std::string or nlohmann::json");
+	auto bytes = encodePayload(data);
 
 	boost::asio::async_write(socket_, boost::asio::buffer(*bytes),
-							 boost::asio::bind_executor(strand_, [this, self, bytes](const boost::system::error_code& ec, std::size_t) {
-								 if (ec) {
-									 std::cerr << "Connection Write Failed: " << ec.message() << std::endl;
-								 }
+							 boost::asio::bind_executor(strand_, [this, bytes](const boost::system::error_code& ec, std::size_t) {
+								 if (ec)
+									 close();
 							 }));
 }
