@@ -210,6 +210,7 @@ void ReaderHandler::newDoor(CONNECTION_T connection, const std::string& doorData
 	to_snake_case(name);
 
 	uint8_t accessLevel = std::stoul(match[2].str());
+	// CLI Parse stop
 
 	std::unique_lock rw_lock(rw_mtx);
 	nlohmann::json configJson;
@@ -254,6 +255,7 @@ void ReaderHandler::newUser(CONNECTION_T connection, const std::string& userData
 	to_snake_case(name);
 
 	uint8_t accessLevel = std::stoul(match[2].str());
+	// CLI Parse stop
 	bool exitFunction{false};
 
 	cliReader.second->read<std::string>([this, &exitFunction, name, accessLevel, connection](const std::string& uid) {
@@ -314,6 +316,7 @@ void ReaderHandler::rmDoor(CONNECTION_T connection, const std::string& doorData)
 
 	std::unique_lock rw_lock(rw_mtx);
 	std::string name = match[1].str();
+	// CLI Parse stop
 	to_snake_case(name);
 
 	if (doors.erase(name) == 0) {
@@ -363,6 +366,7 @@ void ReaderHandler::rmUser(CONNECTION_T connection, const std::string& userData)
 
 	std::string name = match[1].str();
 	to_snake_case(name);
+	// CLI Parse stop
 
 	std::unique_lock rw_lock(rw_mtx);
 	auto user = usersByName.find(name);
