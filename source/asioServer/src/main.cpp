@@ -1,6 +1,7 @@
-﻿#include "ReaderHandler.h"
+﻿#include "ReaderHandler.hpp"
 #include <ogga/print.hpp>
 #include <ogga/scopetimer.hpp>
+#include <ogga/random.hpp>
 
 #ifdef Args
 int main(int argc, char* argv[]) {
@@ -19,7 +20,7 @@ int main(int argc, char* argv[]) {
 int main() {
 	[[maybe_unused]] ReaderHandler reader(9000, 9001, "adminReader");
 
-	[[maybe_unused]] ogga::scopetimer runTimer("Server Uptime", "min");
+	[[maybe_unused]] ogga::scopetimer runTimer("Server Uptime", "ns");
 
 	ogga::print("Server Successfully Constructed");
 

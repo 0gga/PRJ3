@@ -1,6 +1,7 @@
-#include "TcpConnection.h"
-#include "TcpServer.h"
 #include <iostream>
+
+#include "TcpConnection.hpp"
+#include "TcpServer.hpp"
 
 TcpConnection::TcpConnection(boost::asio::ip::tcp::socket socket, const uint32_t id, TcpServer* owner)
 : socket_(std::move(socket)),
@@ -23,7 +24,7 @@ void TcpConnection::close() {
     if (owner_) {
         auto owner = owner_;
         auto id    = id_;
-        post(strand_, [owner, id] { owner->removeConnection(id); });
+        boost::asio::post(strand_, [owner, id] { owner->removeConnection(id); });
     }
 }
 

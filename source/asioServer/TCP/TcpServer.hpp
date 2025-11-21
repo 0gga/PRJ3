@@ -4,7 +4,7 @@
 #include <thread>
 #include <boost/asio.hpp>
 
-#include "TcpConnection.h"
+#include "TcpConnection.hpp"
 
 /// @param [in] CONNECTION_T unique_ptr to a TcpConnection object which holds a unique client connection.
 using CONNECTION_T = TcpConnection*;
@@ -20,7 +20,7 @@ public:
     void onClientConnect(std::function<void(CONNECTION_T)> callback);
     void removeConnection(uint32_t id);
 
-    static void setThreadCount(uint8_t);
+    static void setThreadCount(uint8_t count);
 
 private: /// Member Functions
     void acceptConnection();

@@ -1,12 +1,12 @@
-﻿#include "ReaderHandler.h"
+﻿#include "ReaderHandler.hpp"
 
 #include <iostream>
 #include <regex>
 
-ReaderHandler::ReaderHandler(const int& clientPort, const int& cliPort, const std::string& cliReader)
+ReaderHandler::ReaderHandler(const int& clientPort, const int& cliPort, const std::string& cliName)
 : clientServer(clientPort),
   cliServer(cliPort),
-  cliReader{cliReader, nullptr} {
+  cliReader{cliName, nullptr} {
 	myIp();
 	////////////////////////////// Read config JSON //////////////////////////////
 	std::ifstream file("config.json");
@@ -53,6 +53,11 @@ ReaderHandler::ReaderHandler(const int& clientPort, const int& cliPort, const st
 	////////////////////////////// Read config JSON //////////////////////////////
 
 	//////////////////////////////// Init Servers ////////////////////////////////
+	TcpServer::setThreadCount(4);
+
+	clientServer.start();
+	cliServer.start();
+
 	clientServer.onClientConnect([this](const CONNECTION_T& connection) {
 		std::cout << "Client Connected\n";
 		handleClient(connection);
@@ -62,11 +67,6 @@ ReaderHandler::ReaderHandler(const int& clientPort, const int& cliPort, const st
 		std::cout << "CLI Connected\n";
 		handleCli(connection);
 	});
-
-	TcpServer::setThreadCount(4);
-
-	clientServer.start();
-	cliServer.start();
 
 	running = true;
 	std::cout << "Servers started and awaiting clients" << std::endl;
@@ -179,7 +179,7 @@ void ReaderHandler::handleCli(CONNECTION_T connection) {
 		} else if (pkg.rfind("rmUser", 0) == 0) {
 			rmUser(connection, pkg);
 		} else if (pkg == "getLog") {
-			connection->write<nlohmann::json>(getLog());
+			//connection->write<csv>(getLog());
 		} else if (pkg == "shutdown") {
 			connection->write<std::string>("Shutting Down...");
 			running = false;
@@ -266,7 +266,7 @@ void ReaderHandler::newUser(CONNECTION_T connection, const std::string& userData
 		connection->write<std::string>(confirmMsg);
 
 		connection->read<std::string>([&exitFunction](const std::string& status) {
-			if (status == "Approved")
+			if (status == "denied")
 				exitFunction = true;
 		});
 		if (exitFunction)
@@ -429,13 +429,4 @@ void ReaderHandler::to_snake_case(std::string& input) {
 		}
 	}
 	input = std::move(result);
-}
-
-void ReaderHandler::log(const std::string& info) {
-	allLogger.log(info);
-}
-/// Log getter function.
-/// @returns nlohmann::json
-nlohmann::json ReaderHandler::getLog() const {
-	return allLogger.getLog();
 }

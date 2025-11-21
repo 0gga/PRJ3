@@ -1,11 +1,11 @@
 ﻿#pragma once
-#include "TcpServer.h"
+#include "TcpServer.hpp"
 
 #include <unordered_map>
 #include <fstream>
 #include <shared_mutex>
 
-#include "csv.hpp"
+#include "../logger/csv.hpp"
 #include "json.hpp"
 
 enum class ReaderState {
@@ -17,7 +17,7 @@ void myIP();
 
 class ReaderHandler {
 public:
-	explicit ReaderHandler(const int& clientPort, const int& cliPort, const std::string& cliReader);
+	explicit ReaderHandler(const int& clientPort, const int& cliPort, const std::string& cliName);
 	~ReaderHandler();
 
 	void stop();
@@ -38,9 +38,6 @@ private: // Member Functions
 	static void to_snake_case(std::string&);
 
 	ReaderState getState() const;
-
-	void log(const std::string& info);
-	nlohmann::json getLog() const;
 
 private: // Member Variables
 	ReaderState state          = ReaderState::Idle;

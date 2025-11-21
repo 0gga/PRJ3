@@ -1,102 +1,95 @@
-#include "TcpServer.h"
 #include <iostream>
+
+#include "TcpServer.hpp"
 
 TcpServer::TcpServer(int port)
 : acceptor(io_context, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port)),
   work_guard(make_work_guard(io_context)) {}
 
 TcpServer::~TcpServer() {
-    stop();
+	stop();
 }
 
 void TcpServer::start() {
-    if (running)
-        return;
-    running = true;
+	if (running)
+		return;
 
-    io_context.restart();
-    acceptConnection();
+	running = true;
 
-    asyncThreads_t.clear();
-    for (int i = 0; i < threadCount; ++i)
-        asyncThreads_t.emplace_back([this] {
-            try {
-                io_context.run();
-            } catch (const std::exception& e) {
-                std::cout << "io_context thread exception: " << e.what() << std::endl;
-            }
-        });
+	io_context.restart();
+	acceptConnection();
+
+	for (int i = 0; i < threadCount; ++i)
+		asyncThreads_t.emplace_back([this] {
+			try {
+				io_context.run();
+			} catch (const std::exception& e) {
+				std::cout << "io_context thread exception: " << e.what() << std::endl;
+			}
+		});
 }
 
 void TcpServer::stop() {
-    if (!running)
-        return;
-    running = false;
+	if (!running)
+		return;
 
-    io_context.stop();
-    for (auto& t : asyncThreads_t)
-        if (t.joinable())
-            t.join();
+	running = false;
 
-    boost::system::error_code ec;
-    acceptor.close(ec);
+	boost::system::error_code ec;
+	acceptor.cancel(ec);
+	io_context.stop();
 
-    if (ec)
-        std::cout << "Acceptor close error: " << ec.message() << std::endl;
+	for (auto& t : asyncThreads_t)
+		if (t.joinable())
+			t.join();
 
-    connections.clear();
+	asyncThreads_t.clear();
+	connections.clear();
+	acceptor.close(ec);
 }
 
 void TcpServer::onClientConnect(std::function<void(CONNECTION_T)> callback) {
-    connectHandler = std::move(callback);
+	connectHandler = std::move(callback);
 }
 
-void TcpServer::setThreadCount(uint8_t count) {
-    if (count <= threadLimit) {
-        threadCount = count;
-    } else
-        std::cout << "Thread count cannot be greater than " << threadLimit << std::endl;
+void TcpServer::setThreadCount(const uint8_t count) {
+	if (count <= threadLimit) {
+		threadCount = count;
+	} else
+		std::cout << "Thread count cannot be greater than " << threadLimit << std::endl;
 }
 
-void TcpServer::removeConnection(uint32_t id) {
-    connections.erase(id);
+void TcpServer::removeConnection(const uint32_t id) {
+	connections.erase(id);
 }
 
 void TcpServer::acceptConnection() {
-    if (!running)
-        return;
+	if (!running || !acceptor.is_open())
+		return;
 
-    auto up = std::make_unique<boost::asio::ip::tcp::socket>(io_context);
-    auto& sock = *up;
+	auto up    = std::make_unique<boost::asio::ip::tcp::socket>(io_context);
+	auto* sock = up.get();
 
-    acceptor.async_accept(sock, [this, up = std::move(up)](boost::system::error_code ec) {
-        if (!running)
-            return;
-        try {
-            if (!ec) {
-                uint32_t id = nextId++;
+	acceptor.async_accept(*sock, [this, up = std::move(up)](boost::system::error_code ec) {
+		if (!running)
+			return;
 
-                auto sock = std::move(*up);
+		if (!ec) {
+			uint32_t id = nextId++;
 
-                boost::system::error_code ep_ec;
-                auto ep = sock.remote_endpoint(ep_ec);
+			auto connection  = std::make_unique<TcpConnection>(std::move(*up), id, this);
+			CONNECTION_T raw = connection.get();
+			connections.emplace(id, std::move(connection));
 
-                auto connection = std::make_unique<TcpConnection>(std::move(sock), id, this);
-                CONNECTION_T raw  = connection.get();
-                connections.emplace(id, std::move(connection));
-
-                if (!ep_ec)
-                    std::cout << "Client connected: " << ep << std::endl;
-
-                if (connectHandler)
-                    connectHandler(raw);
-            } else {
-                std::cout << "Accept Failed: " << ec.message() << std::endl;
-            }
-        } catch (std::exception& e) {
-            std::cout << "Exception: " << e.what() << std::endl;
-        }
-        if (running)
-            acceptConnection();
-    });
+			if (connectHandler)
+				connectHandler(raw);
+		} else {
+			std::cout << "Accept failed: " << ec.message() << std::endl;
+		}
+		if (running && acceptor.is_open())
+			acceptConnection();
+		else {
+			std::cout << "Acceptor is closed - Recursion stopped" << std::endl;
+		}
+	});
 }

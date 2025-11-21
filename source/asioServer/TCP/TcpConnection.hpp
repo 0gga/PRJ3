@@ -1,12 +1,13 @@
 #pragma once
 
 #include <iostream>
+#include <json.hpp>
+
 #include <boost/asio.hpp>
-#include "json.hpp"
 
 class TcpServer;
 
-class TcpConnection : public std::enable_shared_from_this<TcpConnection> {
+class TcpConnection {
 public:
 	TcpConnection(boost::asio::ip::tcp::socket socket, uint32_t id, TcpServer* owner);
 	~TcpConnection();
@@ -33,7 +34,7 @@ private: // Member Variables
 template<typename Rx>
 void TcpConnection::read(std::function<void(const Rx&)> handler) {
     auto buffer = std::make_shared<boost::asio::streambuf>();
-	auto self = shared_from_this();
+	TcpConnection* self = this;
 
     boost::asio::async_read_until(socket_, *buffer, '\n', boost::asio::bind_executor(strand_,
          [this, self, buffer, handler](const boost::system::error_code& ec, size_t bytesTransferred) {
@@ -60,7 +61,7 @@ void TcpConnection::read(std::function<void(const Rx&)> handler) {
 template<typename Tx>
 void TcpConnection::write(const Tx& data) {
 	std::shared_ptr<std::string> bytes = std::make_shared<std::string>();
-	auto self                          = shared_from_this();
+	TcpConnection* self = this;
 
 	if constexpr (std::is_same_v<Tx, std::string>)
 		*bytes = data + '\n';
