@@ -6,8 +6,8 @@
 
 #include "TcpConnection.h"
 
-/// @param [in] CONNECTION unique_ptr to a TcpConnection object which holds a unique client connection.
-using CONNECTION = TcpConnection*;
+/// @param [in] CONNECTION_T unique_ptr to a TcpConnection object which holds a unique client connection.
+using CONNECTION_T = TcpConnection*;
 
 class TcpServer {
 public:
@@ -17,7 +17,7 @@ public:
     void start();
     void stop();
 
-    void onClientConnect(std::function<void(CONNECTION)> callback);
+    void onClientConnect(std::function<void(CONNECTION_T)> callback);
     void removeConnection(uint32_t id);
 
     static void setThreadCount(uint8_t);
@@ -31,7 +31,7 @@ private: /// Member Variables
     boost::asio::executor_work_guard<boost::asio::io_context::executor_type> work_guard;
 
     std::unordered_map<uint32_t, std::unique_ptr<TcpConnection>> connections;
-    std::function<void(CONNECTION)> connectHandler;
+    std::function<void(CONNECTION_T)> connectHandler;
 
     bool running = false;
     uint32_t nextId{};

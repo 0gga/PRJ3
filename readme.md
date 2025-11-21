@@ -13,6 +13,18 @@
 
 > ## **CLI Syntax & Cmdlets**<br>
 >
+>> ### **Cmdlets**<br>
+>>
+>>- Add a new door by name: `newDoor <string>door1 <int>accessLevel`
+>>- Create a new user: `newUser <string>0gga <int>accessLevel`
+>>- Remove an existing door: `rmDoor <string>door1`
+>>- Remove an existing user: `rmUser <string>0gga`
+>>- Edit an existing door: `mvDoor <string>door1 <int>accessLevel`
+>>- Edit an existing door: `mvDoor <string>0gga <int>accessLevel`
+>>- Shutdown the CLI connection: `shutdown`
+>>- Get all logs: `getLog`
+>>- Get user-specific logs: `getUserLog <string>0gga`
+>
 >> ### **Syntax**<br>
 >>
 >>_**To make the CLI commands parseable, they must be syntactically correct:**_  
@@ -34,17 +46,14 @@
 >>The following combinations will not work:  
 >> `newUser JOHNDOE`  
 >> `newUser johNdoe`
+>>
+>>When editing a user/door specific syntax must be followed:
+>>`mvUser 0gga ogga 1`
+>>`mvUser door1 door2 1`
+>> The 1st argument after the cmdlet is the user/door you wish to edit,
+>> the 2nd is their new name,
+>> the 3rd is their new accessLevel.
 >
->> ### **Cmdlets**<br>
->>
->>- Add a new door by name: `newDoor <string>door1 <int>accesslevel`
->>- Create a new user: `newUser <string>0gga <int>accesslevel`
->>- Remove an existing user: `rmDoor <string>door1`
->>- Remove an existing user: `rmUser <string>0gga`
->>- Shutdown the CLI connection: `shutdown`
->>- Get client logs: `getLog`
->>
->>
 >>#### **Possible additions:**
 >>
 >>- Get user specific logs: `getULog 0gga`

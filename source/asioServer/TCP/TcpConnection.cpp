@@ -2,7 +2,7 @@
 #include "TcpServer.h"
 #include <iostream>
 
-TcpConnection::TcpConnection(boost::asio::ip::tcp::socket socket, uint32_t id, TcpServer* owner)
+TcpConnection::TcpConnection(boost::asio::ip::tcp::socket socket, const uint32_t id, TcpServer* owner)
 : socket_(std::move(socket)),
   strand_(socket_.get_executor()),
   owner_(owner),

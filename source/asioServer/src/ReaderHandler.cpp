@@ -53,12 +53,12 @@ ReaderHandler::ReaderHandler(const int& clientPort, const int& cliPort, const st
 	////////////////////////////// Read config JSON //////////////////////////////
 
 	//////////////////////////////// Init Servers ////////////////////////////////
-	clientServer.onClientConnect([this](const CONNECTION& connection) {
+	clientServer.onClientConnect([this](const CONNECTION_T& connection) {
 		std::cout << "Client Connected\n";
 		handleClient(connection);
 	});
 
-	cliServer.onClientConnect([this](const CONNECTION& connection) {
+	cliServer.onClientConnect([this](const CONNECTION_T& connection) {
 		std::cout << "CLI Connected\n";
 		handleCli(connection);
 	});
@@ -122,7 +122,7 @@ void ReaderHandler::myIp() {
 /// Is automatically called via lambda callback in CTOR whenever a new TCP Connection is established on the clientServer.<br>Recalls itself after each pass.
 /// @param connection ptr to the relative TcpConnection object. This is established and passed in the CTOR callback.
 /// @returns void
-void ReaderHandler::handleClient(CONNECTION connection) {
+void ReaderHandler::handleClient(CONNECTION_T connection) {
 	state = ReaderState::Active;
 
 	connection->read<std::string>([this, connection](const std::string& pkg) {
@@ -160,10 +160,10 @@ void ReaderHandler::handleClient(CONNECTION connection) {
 /// Is automatically called via lambda callback in CTOR whenever a new TCP Connection is established on the cliServer. Recalls itself after each pass.
 /// @param connection ptr to the relative TcpConnection object. This is established and passed in the CTOR callback.
 /// @returns void
-void ReaderHandler::handleCli(CONNECTION connection) {
+void ReaderHandler::handleCli(CONNECTION_T connection) {
 	state = ReaderState::Active;
 	connection->read<std::string>([this, connection](const std::string& pkg) {
-		if (cliReader.first == pkg) {
+		if (pkg.rfind(cliReader.first, 0) == 0) {
 			cliReader.second = connection;
 			connection->write<std::string>("cliReader is ready");
 		}
@@ -197,7 +197,7 @@ void ReaderHandler::handleCli(CONNECTION connection) {
 /// Add new door function.
 /// /// @param connection ptr to the relative TcpConnection object.
 /// @param doorData String representation of the door to be added i.e. "door1 1".
-void ReaderHandler::newDoor(CONNECTION connection, const std::string& doorData) {
+void ReaderHandler::newDoor(CONNECTION_T connection, const std::string& doorData) {
 	// Parse CLI command for correct syntax
 	static const std::regex cliSyntax(R"(^newDoor\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
 	std::smatch match;
@@ -210,6 +210,7 @@ void ReaderHandler::newDoor(CONNECTION connection, const std::string& doorData) 
 	to_snake_case(name);
 
 	uint8_t accessLevel = std::stoul(match[2].str());
+	// CLI Parse stop
 
 	std::unique_lock rw_lock(rw_mtx);
 	nlohmann::json configJson;
@@ -241,7 +242,7 @@ void ReaderHandler::newDoor(CONNECTION connection, const std::string& doorData) 
 /// Add new user function.
 /// @param connection ptr to the relative TcpConnection object.
 /// @param userData String representation of the user to be added i.e. "john_doe 1".
-void ReaderHandler::newUser(CONNECTION connection, const std::string& userData) {
+void ReaderHandler::newUser(CONNECTION_T connection, const std::string& userData) {
 	// Parse CLI command for correct syntax
 	static const std::regex cliSyntax(R"(^newUser\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
 	std::smatch match;
@@ -254,6 +255,7 @@ void ReaderHandler::newUser(CONNECTION connection, const std::string& userData) 
 	to_snake_case(name);
 
 	uint8_t accessLevel = std::stoul(match[2].str());
+	// CLI Parse stop
 	bool exitFunction{false};
 
 	cliReader.second->read<std::string>([this, &exitFunction, name, accessLevel, connection](const std::string& uid) {
@@ -303,7 +305,7 @@ void ReaderHandler::newUser(CONNECTION connection, const std::string& userData) 
 /// Remove door function.
 /// @param connection ptr to the relative TcpConnection object.
 /// @param doorData String representation of the door to be removed i.e. "door1".
-void ReaderHandler::rmDoor(CONNECTION connection, const std::string& doorData) {
+void ReaderHandler::rmDoor(CONNECTION_T connection, const std::string& doorData) {
 	// Parse CLI command for correct syntax
 	static const std::regex cliSyntax(R"(^rmDoor\s+([A-Za-z_]+)$)");
 	std::smatch match;
@@ -314,6 +316,7 @@ void ReaderHandler::rmDoor(CONNECTION connection, const std::string& doorData) {
 
 	std::unique_lock rw_lock(rw_mtx);
 	std::string name = match[1].str();
+	// CLI Parse stop
 	to_snake_case(name);
 
 	if (doors.erase(name) == 0) {
@@ -352,7 +355,7 @@ void ReaderHandler::rmDoor(CONNECTION connection, const std::string& doorData) {
 /// Remove user function.
 /// @param connection ptr to the relative TcpConnection object.
 /// @param userData String representation of the user to be removed i.e. "john_doe".
-void ReaderHandler::rmUser(CONNECTION connection, const std::string& userData) {
+void ReaderHandler::rmUser(CONNECTION_T connection, const std::string& userData) {
 	// Parse CLI command for correct syntax
 	static const std::regex cliSyntax(R"(^rmUser\s+([A-Za-z_]+)$)");
 	std::smatch match;
@@ -363,6 +366,7 @@ void ReaderHandler::rmUser(CONNECTION connection, const std::string& userData) {
 
 	std::string name = match[1].str();
 	to_snake_case(name);
+	// CLI Parse stop
 
 	std::unique_lock rw_lock(rw_mtx);
 	auto user = usersByName.find(name);
