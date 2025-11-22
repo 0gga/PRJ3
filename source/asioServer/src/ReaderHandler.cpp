@@ -1,4 +1,4 @@
-﻿#include "ReaderHandler.hpp"
+#include "ReaderHandler.hpp"
 
 #include <iostream>
 #include <regex>
@@ -163,22 +163,73 @@ void ReaderHandler::handleClient(CONNECTION_T connection) {
 void ReaderHandler::handleCli(CONNECTION_T connection) {
 	state = ReaderState::Active;
 	connection->read<std::string>([this, connection](const std::string& pkg) {
+		// Phase 1: Is the connection registered as admin 
 		if (pkg.rfind(cliReader.first, 0) == 0) {
+
+			std::lock_guard<std::mutex> clilock(cli_mutex); 
+			auto currAdmin = cliReader.second.lock(); 
+			if(currAdmin && currAdmin != connection){
+				connection->write<std::string("Another Admin is connected"); 
+				connection.close();
+				return; 
+			}
 			cliReader.second = connection;
 			connection->write<std::string>("cliReader is ready");
+			handleCli(connection);
+			return;  
 		}
-		if (!connection) {
-			connection->write<std::string>("Awaiting cliReader connection...");
-			std::this_thread::sleep_for(std::chrono::milliseconds(500));
-		} else if (pkg.rfind("newDoor", 0) == 0) {
+		
+		// Phase 2: Check if this connection is adminReader
+		{
+			std::lock_guard<std::mutex> clilock(cli_mutex); 
+			auto admin = cliReader.second.lock(); 
+			if(admin != connection){
+				connection->write<std::string("Please identify by typing adminReader"); 
+				handleCli(connection);
+				return; 
+			}
+		}
+
+		// Phase 3: Handle command
+		if (pkg.rfind("newDoor", 0) == 0) {
+			std::unique_lock<std::mutex> cmdlock(cli_command_mutex, std::try_to_lock);
+			if(!cmdlock.owns_lock()){
+				connection->write<std::string("Another CLI operation already underway, cant process.")
+				handleCli(connection);
+				return; 
+			}
 			newDoor(connection, pkg);
 		} else if (pkg.rfind("newUser", 0) == 0) {
+			std::unique_lock<std::mutex> cmdlock(cli_command_mutex, std::try_to_lock);
+			if(!cmdlock.owns_lock()){
+				connection->write<std::string("Another CLI operation already underway, cant process.")
+				handleCli(connection);
+				return; 
+			}
 			newUser(connection, pkg);
 		} else if (pkg.rfind("rmDoor", 0) == 0) {
+			std::unique_lock<std::mutex> cmdlock(cli_command_mutex, std::try_to_lock);
+			if(!cmdlock.owns_lock()){
+				connection->write<std::string("Another CLI operation already underway, cant process.")
+				handleCli(connection);
+				return; 
+			}
 			rmDoor(connection, pkg);
 		} else if (pkg.rfind("rmUser", 0) == 0) {
+			std::unique_lock<std::mutex> cmdlock(cli_command_mutex, std::try_to_lock);
+			if(!cmdlock.owns_lock()){
+				connection->write<std::string("Another CLI operation already underway, cant process.")
+				handleCli(connection);
+				return; 
+			}
 			rmUser(connection, pkg);
 		} else if (pkg == "getLog") {
+			std::unique_lock<std::mutex> cmdlock(cli_command_mutex, std::try_to_lock);
+			if(!cmdlock.owns_lock()){
+				connection->write<std::string("Another CLI operation already underway, cant process.")
+				handleCli(connection);
+				return; 
+			}
 			//connection->write<csv>(getLog());
 		} else if (pkg == "shutdown") {
 			connection->write<std::string>("Shutting Down...");
@@ -189,8 +240,10 @@ void ReaderHandler::handleCli(CONNECTION_T connection) {
 		} else {
 			connection->write<std::string>("Unknown Command");
 		}
+
+		handleCli(connection);
 	});
-	handleCli(connection);
+	
 	state = ReaderState::Idle;
 }
 
@@ -256,7 +309,8 @@ void ReaderHandler::newUser(CONNECTION_T connection, const std::string& userData
 
 	uint8_t accessLevel = std::stoul(match[2].str());
 	// CLI Parse stop
-	bool exitFunction{false};
+
+	bool exitFlag = std::make_shared<std::atomic<bool>>(false); //atomic boolean flag, to track through callbacks.
 
 	cliReader.second->read<std::string>([this, &exitFunction, name, accessLevel, connection](const std::string& uid) {
 		std::string confirmMsg("Are you sure you want to add user:\n"
@@ -266,39 +320,45 @@ void ReaderHandler::newUser(CONNECTION_T connection, const std::string& userData
 		connection->write<std::string>(confirmMsg);
 
 		connection->read<std::string>([&exitFunction](const std::string& status) {
-			if (status == "denied")
-				exitFunction = true;
-		});
-		if (exitFunction)
-			return;
+			if (status == "denied"){
+				exitFlag->store(true);
+			}
 
-		std::unique_lock rw_lock(rw_mtx);
-		nlohmann::json configJson;
-		try {
-			std::ifstream in("config.json");
-			if (in && in.peek() != std::ifstream::traits_type::eof())
-				in >> configJson;
-			else
+			if (exitFlag->load()){
+				connection->write<std::string>("Connection cancelled");
+				return;
+			}
+			
+			std::unique_lock rw_lock(rw_mtx);
+			nlohmann::json configJson;
+			try {
+				std::ifstream in("config.json");
+				if (in && in.peek() != std::ifstream::traits_type::eof())
+					in >> configJson;
+				else
+					configJson = {{"users", nlohmann::json::array()}, {"doors", nlohmann::json::array()}};
+			} catch (const nlohmann::json::parse_error& e) {
+				std::cout << "Invalid JSON @ config.json" << e.what() << std::endl;
 				configJson = {{"users", nlohmann::json::array()}, {"doors", nlohmann::json::array()}};
-		} catch (const nlohmann::json::parse_error& e) {
-			std::cout << "Invalid JSON @ config.json" << e.what() << std::endl;
-			configJson = {{"users", nlohmann::json::array()}, {"doors", nlohmann::json::array()}};
-		}
-		if (!configJson.contains("users"))
-			configJson["users"] = nlohmann::json::array();
+			}
+			if (!configJson.contains("users"))
+				configJson["users"] = nlohmann::json::array();
 
-		usersByName[name] = {uid, accessLevel};
-		usersByUid[uid]   = {name, accessLevel};
-		configJson["users"].push_back({
-										  {"name", name},
-										  {"uid", uid},
-										  {"accessLevel", accessLevel}
-									  });
+			usersByName[name] = {uid, accessLevel};
+			usersByUid[uid]   = {name, accessLevel};
+			configJson["users"].push_back({
+											{"name", name},
+											{"uid", uid},
+											{"accessLevel", accessLevel}
+										});
 
-		std::ofstream out{"config_tmp.json"};
-		out << configJson.dump(4);
-		std::filesystem::rename("config_tmp.json", "config.json");
-		connection->write<std::string>("User Added Successfully");
+			std::ofstream out{"config_tmp.json"};
+			out << configJson.dump(4);
+			std::filesystem::rename("config_tmp.json", "config.json");
+			connection->write<std::string>("User Added Successfully");
+			
+		
+		});
 	});
 }
 
