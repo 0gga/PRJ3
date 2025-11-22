@@ -7,7 +7,7 @@
 #include "TcpConnection.hpp"
 
 /// @param [in] CONNECTION_T unique_ptr to a TcpConnection object which holds a unique client connection.
-using CONNECTION_T = TcpConnection*;
+using CONNECTION_T = TcpConnection*; //should be std::shared_ptr<TcpConnection>
 
 class TcpServer {
 public:
@@ -30,7 +30,7 @@ private: /// Member Variables
     boost::asio::ip::tcp::acceptor acceptor;
     boost::asio::executor_work_guard<boost::asio::io_context::executor_type> work_guard;
 
-    std::unordered_map<uint32_t, std::unique_ptr<TcpConnection>> connections;
+    std::unordered_map<uint32_t, std::unique_ptr<TcpConnection>> connections; //this should also be changed then to shared_ptr
     std::function<void(CONNECTION_T)> connectHandler;
 
     bool running = false;
