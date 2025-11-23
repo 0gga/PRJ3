@@ -1,4 +1,4 @@
-#include "ReaderHandler.hpp"
+﻿#include "ReaderHandler.hpp"
 
 #include <iostream>
 #include <regex>
@@ -310,16 +310,18 @@ void ReaderHandler::newUser(CONNECTION_T connection, const std::string& userData
 	uint8_t accessLevel = std::stoul(match[2].str());
 	// CLI Parse stop
 
-	bool exitFlag = std::make_shared<std::atomic<bool>>(false); //atomic boolean flag, to track through callbacks.
+	auto exitFlag = std::make_shared<std::atomic<bool>>(false); //atomic boolean flag, to track through callbacks.
 
-	cliReader.second->read<std::string>([this, &exitFunction, name, accessLevel, connection](const std::string& uid) {
+	connection->write<std::string>("Scan NFC-kort"); 
+	
+	cliReader.second->read<std::string>([this, exitFlag, name, accessLevel, connection](const std::string& uid) {
 		std::string confirmMsg("Are you sure you want to add user:\n"
 							   "UID: " + uid + "\n" +
 							   "Name: " + name + "\n" +
 							   "Access Level: " + std::to_string(accessLevel));
 		connection->write<std::string>(confirmMsg);
 
-		connection->read<std::string>([&exitFunction](const std::string& status) {
+		connection->read<std::string>([exitFlag, this, name, accessLevel, uid, connection](const std::string& status) {
 			if (status == "denied"){
 				exitFlag->store(true);
 			}
