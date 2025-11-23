@@ -77,12 +77,12 @@ void TcpServer::acceptConnection() {
 		if (!ec) {
 			uint32_t id = nextId++;
 
-			auto connection  = std::make_unique<TcpConnection>(std::move(*up), id, this);
+			auto connection  = std::make_unique<TcpConnection>(std::move(*up), id, this); //make this shared aswell
 			CONNECTION_T raw = connection.get();
 			connections.emplace(id, std::move(connection));
 
 			if (connectHandler)
-				connectHandler(raw);
+				connectHandler(raw); //should just be connection
 		} else {
 			std::cout << "Accept failed: " << ec.message() << std::endl;
 		}
