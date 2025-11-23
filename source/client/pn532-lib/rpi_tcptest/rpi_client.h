@@ -1,18 +1,12 @@
 #pragma once
+#include "pn532_wrapper.h"
+#include <memory>
 
-#include <stdint.h>
-#include <iostream>
-
-extern "C"
-{
-#include "pn532.h"
-#include "pn532_rpi.h"
-}
 
 class client
 {
 public:
-    client(int portno, const char *server_ip);
+    client(int portno, const char *server_ip, std::string doorname);
     ~client();
 
     void run();
@@ -21,20 +15,13 @@ private:
     int sockfd;
     int portno;
     const char *server_ip;
+    std::string doorname;
 
-    PN532 pn532;
-    bool setup_complete = false;
-
-    uint8_t uid[MIFARE_UID_MAX_LENGTH];
-    int32_t uid_len = 0;
-    char uid_string[32];
+    std::unique_ptr<PN532Reader> rfid_reader; 
     char buffer_receive[256];
-    bool has_read = false;
 
-    void init_pn532();
-    void get_uid();
     int connect_to_server();
-    void send_data();
+    void send_data(const std::string& uidstring);
     bool recieve_data();
     void io_feedback();
 };
