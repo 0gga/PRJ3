@@ -17,21 +17,15 @@ private:
     int portno;
     const char *server_ip;
 
-    char buffer_receive[256];
+    char buffer_receive[256]; // Evt større?
 
     int connect_to_server();
-    bool send_line(const std::string& line);
-    bool recieve_line(std::string& out);
+    void send_data(const std::string& msg);
+    bool recieve_data();
 
-    void trim(std::string& s) const;
+    // Helper function
+    bool format(std::string& outMessage, const std::string& input);
     void to_snake_case(std::string& input) const;
-
-    
-    bool starts_with(const std::string& s, const std::string& prefix) const;
-    void format_newDoor(const std::string& doorData) const;
-    void format_newUser(const std::string& userData) const;
-    void format_rmDoor(const std::string& doorData)const;
-    void format_rmUser(const std::string& userData)const;
 
     void printCommands() const;
 

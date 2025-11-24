@@ -1,9 +1,10 @@
+#include "cli.h"
+
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <cstring>
 #include <algorithm>
-#include "cli.h"
 
 cli::cli(int portno, const char *server_ip) 
 {
@@ -21,8 +22,8 @@ cli::~cli()
 }
 
 
-
-int cli::connect_to_server()()
+// TCP connect
+int cli::connect_to_server()
 {
     struct sockaddr_in serv_addr;
 
@@ -55,22 +56,20 @@ int cli::connect_to_server()()
     return sockfd;
 }
 
-bool cli::send_line(const std::string& line)
+void cli::send_data(const std::string& msg)
 {
-   std::string cmd = line + "\n";
+   std::string cmd = msg + "\n";
 
    ssize_t n = write(sockfd, cmd.c_str(), cmd.size());
 
    if(n < 0)
    {
-    perror("write");
-    return false;
+        perror("write");
+        return;
    }
-
-   return true;
 }
 
-bool cli::recieve_line(std::string& out)
+bool cli::recieve_data()
 {
     size_t total = 0; // antallet af bytes modtaget
     ssize_t n = 0;    // antallet af bytes læst
@@ -98,87 +97,19 @@ bool cli::recieve_line(std::string& out)
     }
 
     buffer_receive[total] = '\0'; // null termination
-
-    // std::cerr << "Recieved data: " << buffer_receive << std::endl;
-
     return true;
 }
 
-void cli::trim(std::string& s) const
-{
-    auto notSpace = [](int ch) { return !std::isspace(ch); };
-
-    s.erase(s.begin(), std::find_if(s.begin(), s.end(), notSpace));
-    s.erase(std::find_if(s.rbegin(), s.rend(), notSpace).base(), s.end());
-}
-
-
-void cli::format_newDoor(const std::string& doorData) const
-{
-    static const std::regex cliSyntax(R"(^newDoor\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
-	std::smatch match;
-
-	if (!std::regex_match(doorData, match, cliSyntax)) {
-    std::cerr << "Failed to add new door - Incorrect CLI syntax\n";
-    return;
-	}
-
-	std::string name = match[1].str();
-	to_snake_case(name);
-}
-
-void cli::format_newUser(const std::string& userData) const
-{
-    static const std::regex cliSyntax(R"(^newUser\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
-	std::smatch match;
-	
-    if (!std::regex_match(userData, match, cliSyntax)) {
-        std::cerr << "Failed to add new user - Incorrect CLI syntax\n";
-		return;
-	}
-
-	std::string name = match[1].str();
-	to_snake_case(name);
-}
-
-
-void cli::format_rmDoor(const std::string& doorData)
-{
-    static const std::regex cliSyntax(R"(^rmDoor\s+([A-Za-z_]+)$)");
-	std::smatch match;
-	
-    if (!std::regex_match(doorData, match, cliSyntax)) {
-        std::cerr << "Failed to remove door - Incorrect CLI syntax\n";
-		return;
-	}
-
-	std::string name = match[1].str();
-    to_snake_case(name);
-}
-
-void format_rmUser(const std::string& userData)
-{
-    static const std::regex cliSyntax(R"(^rmUser\s+([A-Za-z_]+)$)");
-	std::smatch match;
-	if (!std::regex_match(userData, match, cliSyntax)) {
-        std::cerr << "Failed to remove user - Incorrect CLI syntax\n";
-		return;
-	}
-
-	std::string name = match[1].str();
-	to_snake_case(name);
-}
-
-
-/// Helper function for converting std::string to snake_case.\n
-/// Takes std::string by reference.
+// Helper function for converting std::string to snake_case.\n
+// Takes std::string by reference.
 /// @param input std::string input
 /// @returns void
 void cli::to_snake_case(std::string& input) {
     std::string result;
     result.reserve(input.size());
-    /// Albeit reserving only input.size(), more usually get's allocated.
-	   /// If larger than input.size() it will just reallocate which is negligible regardless, considering the string sizes we'll be handling.
+
+    // Albeit reserving only input.size(), more usually get's allocated.
+	// If larger than input.size() it will just reallocate which is negligible regardless, considering the string sizes we'll be handling.
     bool prevLower{false};
     for (const unsigned char c : input) {
         if (std::isupper(c)) {
@@ -194,23 +125,79 @@ void cli::to_snake_case(std::string& input) {
     input = std::move(result);
 }
 
+bool cli::format(std::string& outMessage, const std::string& input)
+{
+    static std::regex newUserRx(R"(newUser\s+([A-Za-z0-9_]+)\s+(\d+))");
+    static std::regex newDoorRx(R"(newDoor\s+([A-Za-z0-9_]+)\s+(\d+))");
+    static std::regex rmUserRx(R"(rmUser\s+([A-Za-z0-9_]+))");
+    static std::regex rmDoorRx(R"(rmDoor\s+([A-Za-z0-9_]+))"); 
+
+    std::smatch m;
+
+    //newUser
+    if(std::regex_match(input, m, newUserRx))
+    {
+        std::string name = m[1];
+        to_snake_case(name);
+        outMessage = "newUser:" + name + ":" + m[2];
+        return true;
+    }
+
+    // newDoor
+    if (std::regex_match(input, m, newDoorRx)) {
+        std::string name = m[1];
+        to_snake_case(name);
+        outMessage = "newDoor:" + name + ":" + m[2];
+        return true;
+    }
+
+    // rmUser
+    if (std::regex_match(input, m, rmUserRx)) {
+        std::string name = m[1];
+        to_snake_case(name);
+        outMessage = "rmUser:" + name;
+        return true;
+    }
+
+    // rmDoor
+    if (std::regex_match(input, m, rmDoorRx)) {
+        std::string name = m[1];
+        to_snake_case(name);
+        outMessage = "rmDoor:" + name;
+        return true;
+    }
+
+    // shutdown
+    if (input == "shutdown") {
+        outMessage = "shutdown";
+        return true;
+    }
+
+    return false;
+}
+
+
 void cli::run() 
 {
     printCommands();
+    std::cout << "CLI ready. Type commands:\n";
+    std::cout << " newUser <User name> <accesslevel>\n";
+    std::cout << " newDoor <Door name> <accesslevel>\n";
+    std::cout << " rmUser <User name>\n";
+    std::cout << " rmDoor <Door name>\n";
+    std::cout << " shutdown\n";
+    std::cout << " 'help' to print command overview\n\n";
 
     while(true)
     {
         std::cout << "<";
-        std::string line;
-        std::getline(std::cin, line)
-        
-        // Funktion til at trimme <line> så der ikke er trailing spaces og argumenter er sepereret med et enkelt mellemrum
-        trim(line);
+        std::string input;
+        std::getline(std::cin, input)
 
-        if(line.empty())
+        if(input.empty())
             continue;
 
-        if(line == "help")
+        if(input == "help")
         {
             printCommands();
             continue;
@@ -218,25 +205,28 @@ void cli::run()
 
         std::string formatted;
 
-        /*
-        formater line til korrekt syntaks
-        */
+        if(!format(formatted, input))
+        {
+            std::cout << "Invalid syntax. Type 'help' to see correct syntax\n";
+            continue;
+        }
 
         // Send to server
-        if(!send_line(formatted))
+        send_data(formatted);
+
+        // Wait for server response
+        if(!recieve_data())
         {
-            std::cerr << "Failed to send command\n";
+            std::cerr << "Server lost.\n";
             break;
         }
 
-        std::string response;
-        if(!recieve_line(response));
-        {
-            std::cerr << "Connection closed by server\n";
-            break;
-        }
+        std::cout <<"[SERVER] " << buffer_receive << "\n";
+
+        // If server needs confirmation for addUser??
         
-        if(line == "shutdown")
+        
+        if(input == "shutdown")
         {
             std::cout << "Shutdown command send.  Closing admin terminal\n";
             break;
@@ -252,14 +242,13 @@ void cli::run()
 
 void cli::printCommands() const {
     std::cout
-        << "SmartLock kommandoer samt syntaks\n"
-        << "Kommandoer:\n"
-        << "  help                       - Printer denne oversigt over kommandoer\n"
-        << "  newDoor <Door name> <accessLevel>   - Tilføj dør\n"
-        << "  newUser <Username> <accessLevel>   - Tilføj bruger (kræver NFC-scan)\n"
-        << "  rmDoor <Door name>                  - Slet dør\n"
-        << "  rmUser <Username>                  - Slet bruger\n"
-        << "  getLog                         - Hent log \n"
-        << "  shutdown                       - Luk serveren ned\n"
+        << "  SmartLock commands\n"
+        << "  Commands :\n"
+        << "  newDoor <Door name> <accessLevel>   - Add door\n"
+        << "  newUser <Username> <accessLevel>    - Add user (includes NFC-scan)\n"
+        << "  rmDoor <Door name>                  - Delete door\n"
+        << "  rmUser <Username>                   - Delete user\n"
+        << "  getLog                              - Get log of entries\n"
+        << "  shutdown                            - Close server\n"
         << "\n";
 }
