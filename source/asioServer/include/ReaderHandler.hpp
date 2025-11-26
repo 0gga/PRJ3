@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "TcpServer.hpp"
 
 #include <unordered_map>
@@ -31,10 +31,12 @@ private: // Member Functions
 	void handleClient(CONNECTION_T connection);
 	void handleCli(CONNECTION_T connection);
 
-	void newDoor(CONNECTION_T connection, const std::string&);
 	void newUser(CONNECTION_T connection, const std::string&);
-	void rmDoor(CONNECTION_T connection, const std::string&);
+	void newDoor(CONNECTION_T connection, const std::string&);
 	void rmUser(CONNECTION_T connection, const std::string&);
+	void rmDoor(CONNECTION_T connection, const std::string&);
+	void mvUser(CONNECTION_T connection, const std::string&);
+	void mvDoor(CONNECTION_T connection, const std::string&);
 	static void to_snake_case(std::string&);
 
 	ReaderState getState() const;
