@@ -50,13 +50,11 @@ private: // Member Variables
 
 	CsvLogger allLogger;
 
-	nlohmann::json allLog;
 	std::pair<std::string, CONNECTION_T> cliReader; //brug weak_ptr her perchance
 	std::unordered_map<std::string, int> doors;
 	std::unordered_map<std::string, std::pair<std::string, int>> usersByName;
 	std::unordered_map<std::string, std::pair<std::string, int>> usersByUid;
 
-	std::mutex cli_mutex; // for cli admin control
-	std::mutex cli_command_mutex; // for command control
-	std::shared_mutex rw_mtx; // Use shared_lock for reads and unique_lock for writes.
+	std::mutex cli_mtx; // for cli admin control
+	std::shared_mutex rw_mtx; // Use shared_lock for json reads and unique_lock for json writes.
 };
