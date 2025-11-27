@@ -214,7 +214,6 @@ void ReaderHandler::handleCli(CONNECTION_T connection) {
             running = false;
             clientServer.stop();
             cliServer.stop();
-            return;
         } else {
             connection->write<std::string>("Unknown Command");
         }
@@ -251,6 +250,7 @@ void ReaderHandler::newUser(CONNECTION_T connection, const std::string& userData
         connection->read<std::string>([this, name, accessLevel, uid, connection](const std::string& status) {
             if (status == "denied" || status != "approved") {
                 connection->write<std::string>("Did not add user");
+                handleCli(connection);
                 return;
             }
 
