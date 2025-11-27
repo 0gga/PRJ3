@@ -6,7 +6,7 @@
 #include <cstring>
 #include <algorithm>
 
-cli::cli(int portno, const char *server_ip) 
+cli::cli(int portno, const char *server_ip) : portno(portno), server_ip(server_ip)
 {
     while((sockfd = connect_to_server()) < 0)
     {
@@ -192,7 +192,7 @@ void cli::run()
     {
         std::cout << "<";
         std::string input;
-        std::getline(std::cin, input)
+        std::getline(std::cin, input);
 
         if(input.empty())
             continue;
@@ -234,8 +234,9 @@ void cli::run()
     }
 
     if(sockfd >= 0) {
-        ~cli();
+        close(sockfd);
         sockfd = -1;
+        return;
     }
 }
 
