@@ -18,9 +18,6 @@ int main(int argc, char* argv[]) {
 
 #else
 int main() {
-    {
-        ogga::csv_log log(ogga::csv_log::minutely("MinutelyLogs"), "STATUS", "MSG");
-    }
     [[maybe_unused]] ReaderHandler reader(9000, 9001, "adminReader");
 
     [[maybe_unused]] ogga::scopetimer runTimer("Server Uptime", "ns");
