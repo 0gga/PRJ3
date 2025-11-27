@@ -227,6 +227,7 @@ void ReaderHandler::newUser(CONNECTION_T connection, const std::string& userData
 	std::smatch match;
 	if (!std::regex_match(userData, match, cliSyntax)) {
 		connection->write<std::string>("Failed to add new user - Incorrect CLI syntax");
+		handleCli(connection);
 		return;
 	}
 
@@ -290,6 +291,7 @@ void ReaderHandler::newDoor(CONNECTION_T connection, const std::string& doorData
 	std::smatch match;
 	if (!std::regex_match(doorData, match, cliSyntax)) {
 		connection->write<std::string>("Failed to add new door - Incorrect CLI syntax");
+		handleCli(connection);
 		return;
 	}
 
@@ -346,6 +348,7 @@ void ReaderHandler::rmUser(CONNECTION_T connection, const std::string& userData)
 	std::smatch match;
 	if (!std::regex_match(userData, match, cliSyntax)) {
 		connection->write<std::string>("Failed to remove user - Incorrect CLI syntax");
+		handleCli(connection);
 		return;
 	}
 
@@ -412,6 +415,7 @@ void ReaderHandler::rmDoor(CONNECTION_T connection, const std::string& doorData)
 	std::smatch match;
 	if (!std::regex_match(doorData, match, cliSyntax)) {
 		connection->write<std::string>("Failed to remove door - Incorrect CLI syntax");
+		handleCli(connection);
 		return;
 	}
 
