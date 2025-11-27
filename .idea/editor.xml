@@ -244,6 +244,8 @@
     <option name="/Default/CodeInspection/Highlighting/InspectionSeverities/=IfStdIsConstantEvaluatedCanBeReplaced/@EntryIndexedValue" value="SUGGESTION" type="string" />
     <option name="/Default/CodeInspection/Highlighting/InspectionSeverities/=StdIsConstantEvaluatedWillAlwaysEvaluateToConstant/@EntryIndexedValue" value="WARNING" type="string" />
     <option name="/Default/CodeInspection/Highlighting/InspectionSeverities/=StringLiteralTypo/@EntryIndexedValue" value="DO_NOT_SHOW" type="string" />
+    <option name="/Default/CodeStyle/CodeFormatting/CppFormatting/PLACE_ELSE_ON_NEW_LINE/@EntryValue" value="false" type="bool" />
+    <option name="/Default/CodeStyle/CodeFormatting/CppFormatting/SIMPLE_EMBEDDED_STATEMENT_STYLE/@EntryValue" value="ON_SINGLE_LINE" type="string" />
     <option name="/Default/CodeStyle/CppSortIncludes/CaseSensitive/@EntryValue" value="true" type="bool" />
     <option name="/Default/CodeStyle/CppSortIncludes/GroupByRootDirectory/@EntryValue" value="true" type="bool" />
     <option name="/Default/CodeStyle/CppSortIncludes/IncludeSortCategories/@EntryValue" value="&lt;CppIncludeCategories&gt;&#13;&#10;  &lt;CppIncludeCategorySetting Pattern=&quot;^&amp;lt;.*&quot; Description=&quot;#include &amp;lt;header&amp;gt;&quot; Group=&quot;0&quot; Order=&quot;0&quot; /&gt;&#13;&#10;  &lt;CppIncludeCategorySetting Pattern=&quot;^&amp;quot;.*&quot; Description=&quot;#include &amp;quot;header&amp;quot;&quot; Group=&quot;1&quot; Order=&quot;3&quot; /&gt;&#13;&#10;&lt;/CppIncludeCategories&gt;" type="string" />

@@ -15,8 +15,7 @@ ReaderHandler::ReaderHandler(const int& clientPort, const int& cliPort, const st
 		std::cout << "config.json doesn't exist" << std::endl;
 		std::ofstream("config.json") << R"({"users":[],"doors":[]})";
 		std::cout << "Created empty config.json" << std::endl;
-	}
-	else {
+	} else {
 		try {
 			file >> configJson;
 		}
@@ -34,8 +33,7 @@ ReaderHandler::ReaderHandler(const int& clientPort, const int& cliPort, const st
 			if (door.contains("name") && door.contains("accessLevel") &&
 				door["name"].is_string() && door["accessLevel"].is_number_integer())
 				doors[door["name"]] = door["accessLevel"];
-			else
-				std::cout << "Invalid door entry in config.json - skipping one.\n";
+			else std::cout << "Invalid door entry in config.json - skipping one.\n";
 		}
 
 	if (configJson.contains("users"))
@@ -48,9 +46,7 @@ ReaderHandler::ReaderHandler(const int& clientPort, const int& cliPort, const st
 
 				usersByName[name] = {uid, accessLevel};
 				usersByUid[uid]   = {name, accessLevel};
-			}
-			else
-				std::cout << "Invalid user entry in config.json - skipping one.\n";
+			} else std::cout << "Invalid user entry in config.json - skipping one.\n";
 		}
 	////////////////////////////// Read config JSON //////////////////////////////
 
@@ -99,8 +95,7 @@ ReaderState ReaderHandler::getState() const {
 /// Runtime loop.\n Necessary to avoid termination while callbacks await.
 /// @returns void
 void ReaderHandler::runLoop() {
-	while (running)
-		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+	while (running) std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }
 
 /// Outputs server IPV4.
@@ -167,11 +162,9 @@ void ReaderHandler::handleCli(CONNECTION_T connection) {
 
 	if (cliReader.second == connection) {
 		connection->write<std::string>("CLI is ready");
-	}
-	else if (!cliReader.second) {
+	} else if (!cliReader.second) {
 		connection->write<std::string>("Input CLI identification");
-	}
-	else {
+	} else {
 		connection->write<std::string>("Another Admin is connected");
 		connection->close();
 		return;
@@ -181,8 +174,7 @@ void ReaderHandler::handleCli(CONNECTION_T connection) {
 		// Phase 2: Handle admin duplicates the connection registered as admin
 		if (cliReader.second != connection && pkg.rfind(cliReader.first, 0) == 0) {
 			cliReader.second = connection;
-		}
-		else {
+		} else {
 			connection->write<std::string>("Incorrect CLI identification");
 			handleCli(connection);
 			return;
@@ -219,8 +211,7 @@ void ReaderHandler::handleCli(CONNECTION_T connection) {
 			running = false;
 			clientServer.stop();
 			cliServer.stop();
-		}
-		else {
+		} else {
 			connection->write<std::string>("Unknown Command");
 		}
 	});
@@ -264,17 +255,14 @@ void ReaderHandler::newUser(CONNECTION_T connection, const std::string& userData
 			nlohmann::json configJson;
 			try {
 				std::ifstream in("config.json");
-				if (in && in.peek() != std::ifstream::traits_type::eof())
-					in >> configJson;
-				else
-					configJson = {{"users", nlohmann::json::array()}, {"doors", nlohmann::json::array()}};
+				if (in && in.peek() != std::ifstream::traits_type::eof()) in >> configJson;
+				else configJson = {{"users", nlohmann::json::array()}, {"doors", nlohmann::json::array()}};
 			}
 			catch (const nlohmann::json::parse_error& e) {
 				std::cout << "Invalid JSON @ config.json" << e.what() << std::endl;
 				configJson = {{"users", nlohmann::json::array()}, {"doors", nlohmann::json::array()}};
 			}
-			if (!configJson.contains("users"))
-				configJson["users"] = nlohmann::json::array();
+			if (!configJson.contains("users")) configJson["users"] = nlohmann::json::array();
 
 			usersByName[name] = {uid, accessLevel};
 			usersByUid[uid]   = {name, accessLevel};
@@ -326,17 +314,14 @@ void ReaderHandler::newDoor(CONNECTION_T connection, const std::string& doorData
 		nlohmann::json configJson;
 		try {
 			std::ifstream in("config.json");
-			if (in && in.peek() != std::ifstream::traits_type::eof())
-				in >> configJson;
-			else
-				configJson = {{"users", nlohmann::json::array()}, {"doors", nlohmann::json::array()}};
+			if (in && in.peek() != std::ifstream::traits_type::eof()) in >> configJson;
+			else configJson = {{"users", nlohmann::json::array()}, {"doors", nlohmann::json::array()}};
 		}
 		catch (const nlohmann::json::parse_error& e) {
 			std::cout << "Invalid JSON @ config.json" << e.what() << std::endl;
 			configJson = {{"users", nlohmann::json::array()}, {"doors", nlohmann::json::array()}};
 		}
-		if (!configJson.contains("doors"))
-			configJson["doors"] = nlohmann::json::array();
+		if (!configJson.contains("doors")) configJson["doors"] = nlohmann::json::array();
 
 		doors[name] = accessLevel;
 		configJson["doors"].push_back({
@@ -384,8 +369,7 @@ void ReaderHandler::rmUser(CONNECTION_T connection, const std::string& userData)
 		if (user != usersByName.end()) {
 			usersByUid.erase(user->second.first); // remove by uid
 			usersByName.erase(user);
-		}
-		else {
+		} else {
 			std::cout << "User not found in memory" << std::endl;
 			return;
 		}
@@ -393,10 +377,8 @@ void ReaderHandler::rmUser(CONNECTION_T connection, const std::string& userData)
 		nlohmann::json configJson;
 		try {
 			std::ifstream in("config.json");
-			if (in && in.peek() != std::ifstream::traits_type::eof())
-				in >> configJson;
-			else
-				configJson = {{"users", nlohmann::json::array()}, {"doors", nlohmann::json::array()}};
+			if (in && in.peek() != std::ifstream::traits_type::eof()) in >> configJson;
+			else configJson = {{"users", nlohmann::json::array()}, {"doors", nlohmann::json::array()}};
 		}
 		catch (const nlohmann::json::parse_error& e) {
 			std::cout << "Invalid JSON @ config.json" << e.what() << std::endl;
@@ -463,10 +445,8 @@ void ReaderHandler::rmDoor(CONNECTION_T connection, const std::string& doorData)
 		nlohmann::json configJson;
 		try {
 			std::ifstream in("config.json");
-			if (in && in.peek() != std::ifstream::traits_type::eof())
-				in >> configJson;
-			else
-				configJson = {{"users", nlohmann::json::array()}, {"doors", nlohmann::json::array()}};
+			if (in && in.peek() != std::ifstream::traits_type::eof()) in >> configJson;
+			else configJson = {{"users", nlohmann::json::array()}, {"doors", nlohmann::json::array()}};
 		}
 		catch (const nlohmann::json::parse_error& e) {
 			std::cout << "Invalid JSON @ config.json" << e.what() << std::endl;
@@ -503,12 +483,10 @@ void ReaderHandler::to_snake_case(std::string& input) {
 	bool prevLower{false};
 	for (const unsigned char c : input) {
 		if (std::isupper(c)) {
-			if (prevLower)
-				result += '_';
+			if (prevLower) result += '_';
 			result += static_cast<char>(std::tolower(c));
 			prevLower = false;
-		}
-		else {
+		} else {
 			result += static_cast<char>(c);
 			prevLower = true;
 		}
