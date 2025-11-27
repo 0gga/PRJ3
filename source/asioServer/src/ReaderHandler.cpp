@@ -179,11 +179,13 @@ void ReaderHandler::handleCli(CONNECTION_T connection) {
 
 	connection->read<std::string>([this, connection](const std::string& pkg) {
 		// Phase 2: Handle admin duplicates the connection registered as admin
-		if (pkg.rfind(cliReader.first, 0) == 0) {
+		if (cliReader.second != connection && pkg.rfind(cliReader.first, 0) == 0) {
 			cliReader.second = connection;
 		}
 		else {
 			connection->write<std::string>("Incorrect CLI identification");
+			handleCli(connection);
+			return;
 		}
 
 		// Phase 3: Handle cmdlets

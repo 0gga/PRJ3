@@ -33,7 +33,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="Readme fixes">
+    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="ReaderHandler refactor/fixes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" afterDir="false" />
     </list>
@@ -436,7 +436,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763714341728</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="ReaderHandler refactor/fixes">
+      <option name="closed" value="true" />
+      <created>1764250208421</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1764250208421</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -490,7 +498,8 @@
     <MESSAGE value="Show IP Address on boot" />
     <MESSAGE value="Cleanup" />
     <MESSAGE value="Readme fixes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Readme fixes" />
+    <MESSAGE value="ReaderHandler refactor/fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="ReaderHandler refactor/fixes" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
