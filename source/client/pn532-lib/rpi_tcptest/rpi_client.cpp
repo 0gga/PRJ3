@@ -1,4 +1,5 @@
 #include "rpi_client.h"
+
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <sys/socket.h>
@@ -6,14 +7,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-client::client(int portno, const char *server_ip) : portno(portno), server_ip(server_ip)
+client::client(int portno, const char *server_ip, std::string doorname) : portno(portno), server_ip(server_ip), doorname(doorname)
 {
-    init_pn532();
+    rfid_reader = std::make_unique<PN532Reader>(); 
+
+    if(!rfid_reader->init_pn532()){
+        std::cerr << "Failed to initialize PN532" << std::endl; 
+    }
 
     while ((sockfd = connect_to_server()) < 0)
     {
         std::cerr << "trying to connect.. 2 seconds wait..";
-        sleep(2); // sleeps 2 seconds -> blocking call
+        sleep(2); //should be 2s
     }
 }
 
@@ -22,49 +27,6 @@ client::~client()
     close(sockfd);
 }
 
-void client::init_pn532()
-{
-    uint8_t buff_firmware[255];
-    // PN532_SPI_Init(&pn532);
-    PN532_I2C_Init(&pn532);
-    // PN532_UART_Init(&pn532);
-    if (PN532_GetFirmwareVersion(&pn532, buff_firmware) == PN532_STATUS_OK)
-    {
-        std::cerr << "Found PN532 with firmware version: " << int(buff_firmware[1]) << "." << int(buff_firmware[2]) << std::endl;
-    }
-    else
-    {
-        std::cerr << "Setup incomplete" << std::endl;
-        return;
-    }
-    PN532_SamConfiguration(&pn532);
-    setup_complete = true;
-}
-
-void client::get_uid()
-{
-    while (!has_read)
-    {
-        // Check if a card is available to read
-        uid_len = PN532_ReadPassiveTarget(&pn532, uid, PN532_MIFARE_ISO14443A, 1000);
-        if (uid_len == PN532_STATUS_ERROR)
-        {
-            // std::cerr << "." << std::endl; //optimize this add sleep periode to reduce cpu usage (100ms-1s)
-            // fflush(stdout);
-            usleep(100000); // 100k microsec -> 100ms -> 0.1s (blocking call)
-            continue;
-        }
-        else
-        {
-            for (uint8_t i = 0; i < uid_len; i++)
-            {
-                sprintf(uid_string + i * 2, "%02x", uid[i]); // stores contents of uid in uid_str in hex format (2-characters)
-            }
-            // std::cerr << "Scanned card with uid:" << uid_string << std::endl;
-            has_read = true;
-        }
-    }
-}
 
 int client::connect_to_server()
 {
@@ -98,12 +60,15 @@ int client::connect_to_server()
     return sockfd;
 }
 
-void client::send_data()
+void client::send_data(const std::string& uidstring)
 {
-    std::string msg_nullterm(uid_string);
-    msg_nullterm.push_back('\n'); // null terminate, the uid aswell
+    std::string totalstring(doorname);
+    totalstring += ':';
+    totalstring += uidstring;
+    totalstring += '\n';
+    std::cerr << totalstring << std::endl;
 
-    ssize_t n = write(sockfd, msg_nullterm.c_str(), strlen(msg_nullterm.c_str()));
+    ssize_t n = write(sockfd, totalstring.c_str(), strlen(totalstring.c_str()));
     if (n < 0)
     {
         perror("ERROR writing to socket");
@@ -173,24 +138,27 @@ void client::run()
 
     State curr_state = State::WAIT_INPUT;
 
-    while (setup_complete)
+    std::string uid; 
+    while (rfid_reader->isInitialized())
     {
         switch (curr_state)
         {
         case State::WAIT_INPUT:
             std::cerr << "In state: " << curr_state << std::endl;
-            if (!has_read)
-                get_uid();
-            curr_state = State::SEND;
-            std::cerr << "State is now updated to: " << curr_state << std::endl;
+            if(rfid_reader->waitForScan()){
+                uid = rfid_reader->getStringUID();
+                curr_state = State::SEND;
+            }
+            else{
+                const long time = 200*1000*1000L;
+                nanosleep((const struct timespec[]){{0, time}}, NULL); //200ms
+            }
             break;
 
         case State::SEND:
             std::cerr << "In state: " << curr_state << std::endl;
-            if (has_read)
-                send_data();
+            send_data(uid);
             curr_state = State::RESPONSE;
-            std::cerr << "State is now updated to: " << curr_state << std::endl;
             break;
 
         case State::RESPONSE:
@@ -201,18 +169,17 @@ void client::run()
                 curr_state = State::FEEDBACK;
                 std::cerr << "Recieved data: " << buffer_receive << std::endl;
             }
-            else
-                has_read = false;
-            std::cerr << "State is now updated to: " << curr_state << std::endl;
+            else {
+                std::cerr << "No data recieved, set rfid status to false" << std::endl; 
+                curr_state = State::WAIT_INPUT; 
+            }
             break;
         }
 
         case State::FEEDBACK:
             std::cerr << "In state: " << curr_state << std::endl;
             io_feedback();
-            has_read = false;
             curr_state = State::WAIT_INPUT;
-            std::cerr << "State is now updated to: " << curr_state << std::endl;
             break;
         }
     }

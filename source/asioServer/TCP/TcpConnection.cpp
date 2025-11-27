@@ -1,32 +1,39 @@
-#include "TcpConnection.h"
-#include "TcpServer.h"
 #include <iostream>
 
-TcpConnection::TcpConnection(boost::asio::ip::tcp::socket socket, uint32_t id, TcpServer* owner)
+#include "TcpConnection.hpp"
+#include "TcpServer.hpp"
+
+TcpConnection::TcpConnection(boost::asio::ip::tcp::socket socket, const uint32_t id, TcpServer* owner)
 : socket_(std::move(socket)),
   strand_(socket_.get_executor()),
   owner_(owner),
-  id_(id) {}
+  id_(id) {
+	readBuffer_.prepare(4096);
+}
 
 TcpConnection::~TcpConnection() {
-    boost::system::error_code ec;
-    socket_.shutdown(boost::asio::ip::tcp::socket::shutdown_both, ec);
-    socket_.close(ec);
+	alive_ = false;
+
+	boost::system::error_code ec;
+	socket_.shutdown(boost::asio::ip::tcp::socket::shutdown_both, ec);
+	socket_.close(ec);
 }
 
 void TcpConnection::close() {
-    boost::system::error_code ec;
-    socket_.cancel(ec);
-    socket_.shutdown(boost::asio::ip::tcp::socket::shutdown_both, ec);
-    socket_.close(ec);
+	if (!alive_)
+		return;
+	alive_ = false;
 
-    if (owner_) {
-        auto owner = owner_;
-        auto id    = id_;
-        post(strand_, [owner, id] { owner->removeConnection(id); });
-    }
-}
+	boost::system::error_code ec;
+	socket_.cancel(ec);
+	socket_.shutdown(boost::asio::ip::tcp::socket::shutdown_both, ec);
+	socket_.close(ec);
 
-void TcpConnection::onDisconnect() {
-    if (owner_) owner_->removeConnection(id_);
+	if (owner_) {
+		auto owner = owner_;
+		auto id    = id_;
+		boost::asio::post(strand_, [owner, id] {
+			owner->removeConnection(id);
+		});
+	}
 }
