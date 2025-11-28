@@ -1,11 +1,10 @@
 ﻿#pragma once
 #include "TcpServer.hpp"
+#include "csv.hpp"
 
 #include <unordered_map>
-#include <fstream>
 #include <shared_mutex>
 
-#include "../logger/csv.hpp"
 #include "json.hpp"
 
 enum class ReaderState {
@@ -38,6 +37,8 @@ private: // Member Functions
 	void mvUser(CONNECTION_T connection, const std::string&);
 	void mvDoor(CONNECTION_T connection, const std::string&);
 	static void to_snake_case(std::string&);
+
+
 
 	ReaderState getState() const;
 

@@ -18,6 +18,9 @@ int main(int argc, char* argv[]) {
 
 #else
 int main() {
+    ogga::csvlog log(ogga::csvlog::daily("Daily"), "STATUS", "MSG");
+    log.log("SUCCESS", "Alive.");
+    auto vec = log.getMatches("Daily/2025-11-28", "STATUS", "SUCCESS");
     [[maybe_unused]] ReaderHandler reader(9000, 9001, "adminReader");
 
     [[maybe_unused]] ogga::scopetimer runTimer("Server Uptime", "ns");
