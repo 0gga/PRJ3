@@ -31,6 +31,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\2025-11-28.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\source\asioServer\bin\DailyLogs\2025-11-27.csv">
           <value>
             <Attribute>
@@ -46,6 +53,13 @@
           </value>
         </entry>
         <entry key="\source\asioServer\bin\DailyLogs\2025-11-27_10-47.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\source\asioServer\bin\Daily\2025-11-28.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

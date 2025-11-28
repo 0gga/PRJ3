@@ -3,6 +3,7 @@
 #include <iostream>
 #include <regex>
 
+///
 ReaderHandler::ReaderHandler(const int& clientPort, const int& cliPort, const std::string& cliName)
 : clientServer(clientPort),
   cliServer(cliPort),
@@ -187,20 +188,24 @@ void ReaderHandler::handleCli(CONNECTION_T connection) {
         }
 
         // Phase 3: Handle cmdlets
-        if (pkg.rfind("newDoor", 0) == 0) {
-            newDoor(connection, pkg);
-            return;
-        }
         if (pkg.rfind("newUser", 0) == 0) {
-            newUser(connection, pkg);
+            if (stoi(checkSyntax(newUser_).first) != -1)
+                newUser(connection, pkg);
             return;
         }
-        if (pkg.rfind("rmDoor", 0) == 0) {
-            rmDoor(connection, pkg);
+        if (pkg.rfind("newDoor", 0) == 0) {
+            if (stoi(checkSyntax(newDoor_).first) != -1)
+                newDoor(connection, pkg);
             return;
         }
         if (pkg.rfind("rmUser", 0) == 0) {
-            rmUser(connection, pkg);
+            if (stoi(checkSyntax(rmUser_).first) != -1)
+                rmUser(connection, pkg);
+            return;
+        }
+        if (pkg.rfind("rmDoor", 0) == 0) {
+            if (stoi(checkSyntax(rmDoor_).first) != -1)
+                rmDoor(connection, pkg);
             return;
         }
         if (pkg == "getLog") {
@@ -219,6 +224,7 @@ void ReaderHandler::handleCli(CONNECTION_T connection) {
             cliServer.stop();
         } else {
             connection->write<std::string>("Unknown Command");
+            handleCli(connection);
         }
     });
     state = ReaderState::Idle;
@@ -475,6 +481,12 @@ void ReaderHandler::rmDoor(CONNECTION_T connection, const std::string& doorData)
         connection->write<std::string>("Door Removed Successfully");
     });
 }
+
+void ReaderHandler::mvUser(CONNECTION_T connection, const std::string&) {}
+
+void ReaderHandler::mvDoor(CONNECTION_T connection, const std::string&) {}
+
+std::pair<std::string, uint8_t> ReaderHandler::checkSyntax(command pkg) {}
 
 /// Helper function for converting std::string to snake_case.\n
 /// Takes std::string by reference.
