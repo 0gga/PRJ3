@@ -6,7 +6,7 @@
 #include <cstring>
 #include <algorithm>
 
-cli::cli(int portno, const char *server_ip) 
+cli::cli(int portno, const char *server_ip) : portno(portno), server_ip(server_ip)
 {
     while((sockfd = connect_to_server()) < 0)
     {
@@ -53,8 +53,12 @@ int cli::connect_to_server()
 
     std::cerr << "Connection established" << std::endl;
 
+    connection = true;
+
     return sockfd;
 }
+
+
 
 void cli::send_data(const std::string& msg)
 {
@@ -100,142 +104,78 @@ bool cli::recieve_data()
     return true;
 }
 
-// Helper function for converting std::string to snake_case.\n
-// Takes std::string by reference.
-/// @param input std::string input
-/// @returns void
-void cli::to_snake_case(std::string& input) {
-    std::string result;
-    result.reserve(input.size());
+bool admin_identification(){
 
-    // Albeit reserving only input.size(), more usually get's allocated.
-	// If larger than input.size() it will just reallocate which is negligible regardless, considering the string sizes we'll be handling.
-    bool prevLower{false};
-    for (const unsigned char c : input) {
-        if (std::isupper(c)) {
-            if (prevLower)
-                result += '_';
-            result += static_cast<char>(std::tolower(c));
-            prevLower = false;
-        } else {
-            result += static_cast<char>(c);
-            prevLower = true;
-        }
+    std::string cli_identification;
+    while(true){
+        if(!receive_data())
+            return false;
+
+        
+        if (strcmp(buffer_receive, "Input CLI identification") == 0 
+           || strcmp(buffer_receive, "Incorrect CLI identification") == 0) 
+            {
+                std::cout << "<";
+                std::cin >> cli_identification;
+
+                send_data(cli_identification);
+
+                continue;
+            }
+            
+        if (strcmp(buffer_receive, "CLI is ready") == 0)
+            return true; 
     }
-    input = std::move(result);
 }
-
-bool cli::format(std::string& outMessage, const std::string& input)
-{
-    static std::regex newUserRx(R"(newUser\s+([A-Za-z0-9_]+)\s+(\d+))");
-    static std::regex newDoorRx(R"(newDoor\s+([A-Za-z0-9_]+)\s+(\d+))");
-    static std::regex rmUserRx(R"(rmUser\s+([A-Za-z0-9_]+))");
-    static std::regex rmDoorRx(R"(rmDoor\s+([A-Za-z0-9_]+))"); 
-
-    std::smatch m;
-
-    //newUser
-    if(std::regex_match(input, m, newUserRx))
-    {
-        std::string name = m[1];
-        to_snake_case(name);
-        outMessage = "newUser:" + name + ":" + m[2];
-        return true;
-    }
-
-    // newDoor
-    if (std::regex_match(input, m, newDoorRx)) {
-        std::string name = m[1];
-        to_snake_case(name);
-        outMessage = "newDoor:" + name + ":" + m[2];
-        return true;
-    }
-
-    // rmUser
-    if (std::regex_match(input, m, rmUserRx)) {
-        std::string name = m[1];
-        to_snake_case(name);
-        outMessage = "rmUser:" + name;
-        return true;
-    }
-
-    // rmDoor
-    if (std::regex_match(input, m, rmDoorRx)) {
-        std::string name = m[1];
-        to_snake_case(name);
-        outMessage = "rmDoor:" + name;
-        return true;
-    }
-
-    // shutdown
-    if (input == "shutdown") {
-        outMessage = "shutdown";
-        return true;
-    }
-
-    return false;
-}
-
+        
 
 void cli::run() 
 {
     printCommands();
-    std::cout << "CLI ready. Type commands:\n";
-    std::cout << " newUser <User name> <accesslevel>\n";
-    std::cout << " newDoor <Door name> <accesslevel>\n";
-    std::cout << " rmUser <User name>\n";
-    std::cout << " rmDoor <Door name>\n";
-    std::cout << " shutdown\n";
-    std::cout << " 'help' to print command overview\n\n";
 
-    while(true)
+    while(connection)
     {
+        admin_identification();
+        std::cout << "Input command. Type 'help' to see overview";
+        
         std::cout << "<";
         std::string input;
-        std::getline(std::cin, input)
+        std::getline(std::cin, input);
 
         if(input.empty())
             continue;
 
-        if(input == "help")
+   
+        if(input.rfind("newDoor", 0) == 0)
+            handle_newDoor(input);
+        
+        else if(input.rfind("newUser", 0) == 0)
+            handle_newUser(input);
+        
+        else if(input.rfind("rmDoor", 0) == 0)
+            handle_rmDoor(input);
+        
+        else if(input.rfind("rmUser", 0) == 0)
+            handle_rmUser(input);
+
+        else if(input == "getLog")
+            handle_getLog(input);
+
+        else if(input == "exit")
+            handle_exit(input);
+        
+        else if(input == "shutdown")
         {
+            handle_shutdown(input);
+        }
+        else if(input == "help")
             printCommands();
-            continue;
-        }
-
-        std::string formatted;
-
-        if(!format(formatted, input))
-        {
-            std::cout << "Invalid syntax. Type 'help' to see correct syntax\n";
-            continue;
-        }
-
-        // Send to server
-        send_data(formatted);
-
-        // Wait for server response
-        if(!recieve_data())
-        {
-            std::cerr << "Server lost.\n";
-            break;
-        }
-
-        std::cout <<"[SERVER] " << buffer_receive << "\n";
-
-        // If server needs confirmation for addUser??
-        
-        
-        if(input == "shutdown")
-        {
-            std::cout << "Shutdown command send.  Closing admin terminal\n";
-            break;
-        }
     }
 
     if(sockfd >= 0) {
-        ~cli();
+        close(sockfd);
         sockfd = -1;
+        return;
     }
 }
 
@@ -249,6 +189,215 @@ void cli::printCommands() const {
         << "  rmDoor <Door name>                  - Delete door\n"
         << "  rmUser <Username>                   - Delete user\n"
         << "  getLog                              - Get log of entries\n"
+        << "  exit                                - ?? \n"    
         << "  shutdown                            - Close server\n"
+        << "  help                                - Print command overview\n"
         << "\n";
+}
+
+bool cli::handle_newDoor(const std::string& cmd)
+{
+    send_data(cmd);
+
+    if(!recieve_data())
+        return false;
+
+    if (strcmp(buffer_receive, "Failed to add new door - Incorrect CLI syntax") == 0)
+    {
+        std::cout << buffer_receive << "\n";
+        return false;
+    }
+
+    if(!recieve_data())
+        return false;
+
+    std::cout << buffer_receive << std::endl; // confirm msg
+
+    std::string confirmation;
+    std::cout << "<approved/denied";
+    std::cin >> confirmation;
+    
+    send_data(confirmation);
+
+    if(!recieve_data())
+        return false;
+
+    std::cout << buffer_receive << std::endl; // 'Door added successfully' or 'Did not add door'
+    return true;
+    
+}
+
+bool cli::handle_newUser(const std::string& cmd)
+{
+    send_data(cmd);
+
+    if(!recieve_data())
+        return false;
+    
+    if (strcmp(buffer_receive, "Failed to add new user - Incorrect CLI syntax") == 0)
+    {
+        std::cout << buffer_receive << "\n";
+        return false;
+    }
+
+    if (strcmp(buffer_receive, "Awaiting card read") == 0)
+    {
+        std::cout << "\n Scan card\n";
+    }
+
+    // Send UID??
+
+    if(!recieve_data())
+        return false;
+
+    std::cout << buffer_receive << std::endl; // confirm msg
+
+    std::string confirmation;
+    std::cout << "<approved/denied";
+    std::cin >> confirmation;
+    
+    send_data(confirmation);
+
+    if(!recieve_data())
+        return false;
+
+    std::cout << buffer_receive << std::endl; // 'User added successfully'
+    return true;
+
+}
+
+bool cli::handle_rmDoor(const std::string& cmd)
+{
+    send_data(cmd);
+
+    if(!recieve_data())
+        return false;
+
+    if (strcmp(buffer_receive, "Failed to remove door - Incorrect CLI syntax") == 0 ||
+    strcmp(buffer_receive, "Door could not be found") == 0)
+    {
+        std::cout << buffer_receive << "\n";
+        return false;
+    }
+
+    if(!recieve_data())
+        return false;
+
+    std::cout << buffer_receive << std::endl; // confirm msg
+
+    std::string confirmation;
+    std::cout << "<approved/denied";
+    std::cin >> confirmation;
+    
+    send_data(confirmation);
+
+    if(!recieve_data())
+        return false;
+
+    if (strcmp(buffer_receive, "Did not add door") == 0 ||
+    strcmp(buffer_receive, "Door not found in memory") == 0)
+    {
+        std::cout << buffer_receive << "\n";
+        return false;
+    } 
+    
+    if(strcmp(buffer_receive, "Door removed successfully")==0) {
+        std::cout << buffer_receive;
+        return true;
+    }
+}
+
+bool cli::handle_rmUser(const std::string& cmd)
+{
+    send_data(cmd);
+
+    if(!recieve_data())
+        return false;
+
+    if (strcmp(buffer_receive, "Failed to remove user - Incorrect CLI syntax") == 0 )
+    {
+        std::cout << buffer_receive << "\n";
+        return false;
+    }
+
+    if(!recieve_data())
+        return false;
+
+    std::cout << buffer_receive << std::endl; // confirm msg
+
+    std::string confirmation;
+    std::cout << "<approved/denied";
+    std::cin >> confirmation;
+    
+    send_data(confirmation);
+
+    if(!recieve_data())
+        return false;
+
+    if (strcmp(buffer_receive, "Did not add user") == 0 ||
+    strcmp(buffer_receive, "User not found in memory") == 0)
+    {
+        std::cout << buffer_receive << "\n";
+        return false;
+    } 
+    
+    if(strcmp(buffer_receive, "User Removed Successfully")==0) {
+        std::cout << buffer_receive;
+        return true;
+    }
+}
+
+bool cli::handle_getLog(const std::string& cmd)
+{
+    send_data(cmd);
+
+    if(!recieve_data())
+        return false;
+
+    if (strcmp(buffer_receive, "Failed to get log") == 0 )
+    {
+        std::cout << buffer_receive << "\n";
+        return false;
+    }
+    
+    std::cout << buffer_receive << "\n";
+
+    return true;
+}
+
+bool cli::handle_exit(const std::string& cmd)
+{
+    send_data(cmd);
+
+    if(!recieve_data())
+        return false;
+
+    if (strcmp(buffer_receive, "Failed to exit") == 0 )
+    {
+        std::cout << buffer_receive << "\n";
+        return false;
+    }
+    
+    std::cout << buffer_receive << "\n";
+
+    return true;
+}
+
+bool cli::handle_shutdown(const std::string& cmd)
+{
+    send_data(cmd);
+
+    if(!recieve_data())
+        return false;
+
+    if (strcmp(buffer_receive, "Failed to shutdown") == 0 )
+    {
+        std::cout << buffer_receive << "\n";
+        return false;
+    }
+    
+    std::cout << buffer_receive << "\n";
+    close(sockfd);
+
+    return true;
 }
