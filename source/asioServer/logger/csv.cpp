@@ -1,4 +1,3 @@
-// #include "../include/csv.hpp"
 #include "csv.hpp"
 #include <fstream> 
 #include <iostream>
@@ -42,7 +41,7 @@ void CsvLogger::addLog(std::string door, std::string name, int userID, std::stri
     std::ofstream foutDate(logPathSystem.string(), std::ios::out | std::ios::app); 
     // if file didn't exist add header to the new csv file
     if (!fileExistsDate) {
-        foutDate << "Dato;Tid;Door;Navn;UserID;Adgang\n";
+        foutDate << "Date;Time;Door;Name;UserID;Access\n";
     }
 
     // insert new data to file
@@ -69,7 +68,7 @@ void CsvLogger::addLog(std::string door, std::string name, int userID, std::stri
     std::ofstream foutUser(logPathUsers.string(), std::ios::out | std::ios::app); 
     // if file didn't exist add header to the new csv file
     if (!fileExistsUser) {
-        foutUser << "Dato;Tid;Door;Navn;UserID;Adgang\n";
+        foutUser << "Date;Time;Door;Name;UserID;Access\n";
     }
 
     // insert new data to file
@@ -96,7 +95,7 @@ void CsvLogger::addLog(std::string door, std::string name, int userID, std::stri
     std::ofstream foutDoor(logPathDoors.string(), std::ios::out | std::ios::app); 
     // if file didn't exist add header to the new csv file
     if (!fileExistsDoor) {
-        foutDoor << "Dato;Tid;Door;Navn;UserID;Adgang\n";
+        foutDoor << "Date;Time;Door;Name;UserID;Access\n";
     }
 
     // insert new data to file
@@ -169,14 +168,18 @@ std::string CsvLogger::getLogByDoor(std::string door) {
     }
 }
 
+/*
 int main() {
     CsvLogger log;
-    log.addLog("Hovedindgang", "JohnDoe", 1234, "denied");
-    log.addLog("Bagindgang", "JohnDoe", 4321, "approved");
+    log.addLog("hovedindgang", "john_doe", 1234, "denied");
+    log.addLog("bagindgang", "john_doe", 4321, "approved");
 
-    std::cout << log.getLogByDate("2025_11_21") << std::endl;
-    std::cout << log.getLogByName("JohnDoe") << std::endl;
-    std::cout << log.getLogByDoor("Hovedindgang") << std::endl;
+    std::cout << log.getLogByDate("2025_11_28") << std::endl;
+    std::cout << log.getLogByName("john_doe") << std::endl;
+    std::cout << log.getLogByDoor("hovedindgang") << std::endl;
+    std::cout << log.getLogByName("doe_john") << std::endl;
 
     return 0;
 }
+*/
+
