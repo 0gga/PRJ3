@@ -245,8 +245,8 @@ bool cli::handle_newUser(const std::string& cmd)
     }
 
     // Send UID??
-    std::string uid;
-    send_data(uid)
+    std::string uid{"User ID"};
+    send_data(uid);
 
     if(!recieve_data())
         return false;
