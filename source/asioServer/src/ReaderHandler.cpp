@@ -485,6 +485,7 @@ void ReaderHandler::rmDoor(CONNECTION_T connection, const std::string& name) {
         std::ofstream out{"config_tmp.json"};
         out << configJson.dump(4);
         std::filesystem::rename("config_tmp.json", "config.json");
+        if (removeFromConfig("doors",name))
         connection->write<std::string>("Door Removed Successfully");
     });
 }
@@ -493,11 +494,11 @@ void ReaderHandler::rmDoor(CONNECTION_T connection, const std::string& name) {
 //
 // void ReaderHandler::mvDoor(CONNECTION_T connection, const std::string&) {}
 
-void ReaderHandler::addToConfig(const std::string& type, const std::string& name, const std::string& accessLevel) {
+bool ReaderHandler::addToConfig(const std::string& type, const std::string& name, const std::string& accessLevel) {
 
 }
 
-void ReaderHandler::removeFromConfig(const std::string& type, const std::string& name) {
+bool ReaderHandler::removeFromConfig(const std::string& type, const std::string& name) {
 
 }
 
