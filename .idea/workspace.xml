@@ -33,12 +33,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="submodule update">
-      <change afterPath="$PROJECT_DIR$/.idea/csv-editor.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" afterDir="false" />
+    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="ReaderHandler patch">
+      <change beforePath="$PROJECT_DIR$/source/asioServer/include/ReaderHandler.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/include/ReaderHandler.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/asioServer/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/src/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -494,7 +491,23 @@
       <option name="project" value="LOCAL" />
       <updated>1764253572958</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="ReaderHandler patch">
+      <option name="closed" value="true" />
+      <created>1764322223423</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1764322223423</updated>
+    </task>
+    <task id="LOCAL-00040" summary="ReaderHandler patch">
+      <option name="closed" value="true" />
+      <created>1764323044670</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1764323044670</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -551,7 +564,8 @@
     <MESSAGE value="ReaderHandler refactor/fixes" />
     <MESSAGE value="fix main" />
     <MESSAGE value="submodule update" />
-    <option name="LAST_COMMIT_MESSAGE" value="submodule update" />
+    <MESSAGE value="ReaderHandler patch" />
+    <option name="LAST_COMMIT_MESSAGE" value="ReaderHandler patch" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

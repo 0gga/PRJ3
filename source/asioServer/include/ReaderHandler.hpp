@@ -2,10 +2,8 @@
 #include "TcpServer.hpp"
 
 #include <unordered_map>
-#include <fstream>
 #include <shared_mutex>
 
-#include "../logger/csv.hpp"
 #include "json.hpp"
 
 enum class ReaderState {
@@ -39,6 +37,8 @@ private: // Member Functions
 	void mvDoor(CONNECTION_T connection, const std::string&);
 	static void to_snake_case(std::string&);
 
+
+
 	ReaderState getState() const;
 
 private: // Member Variables
@@ -47,8 +47,6 @@ private: // Member Variables
 
 	TcpServer clientServer;
 	TcpServer cliServer;
-
-	CsvLogger allLogger;
 
 	std::pair<std::string, CONNECTION_T> cliReader; //brug weak_ptr her perchance
 	std::unordered_map<std::string, int> doors;
