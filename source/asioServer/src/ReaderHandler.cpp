@@ -116,6 +116,11 @@ void ReaderHandler::myIp() {
     std::cout << ip_address << std::endl;
 }
 
+std::pair<std::string, uint8_t> ReaderHandler::checkSyntax(command type) {
+
+    return std::make_pair("-1",0);
+}
+
 /// Handles Client IO.\n
 /// Is automatically called via lambda callback in CTOR whenever a new TCP Connection is established on the clientServer.<br>Recalls itself after each pass.
 /// @param connection ptr to the relative TcpConnection object. This is established and passed in the CTOR callback.
@@ -194,8 +199,11 @@ void ReaderHandler::handleCli(CONNECTION_T connection) {
             return;
         }
         if (pkg.rfind("newDoor", 0) == 0) {
-            if (stoi(checkSyntax(newDoor_).first) != -1)
+            std::pair<std::string, uint8_t> args = checkSyntax(newDoor_);
+            if (stoi(args.first) != -1)
                 newDoor(connection, pkg);
+            else
+                handleCli(connection);
             return;
         }
         if (pkg.rfind("rmUser", 0) == 0) {
@@ -485,8 +493,6 @@ void ReaderHandler::rmDoor(CONNECTION_T connection, const std::string& doorData)
 void ReaderHandler::mvUser(CONNECTION_T connection, const std::string&) {}
 
 void ReaderHandler::mvDoor(CONNECTION_T connection, const std::string&) {}
-
-std::pair<std::string, uint8_t> ReaderHandler::checkSyntax(command pkg) {}
 
 /// Helper function for converting std::string to snake_case.\n
 /// Takes std::string by reference.

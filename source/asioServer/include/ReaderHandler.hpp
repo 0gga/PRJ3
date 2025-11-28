@@ -38,14 +38,14 @@ private: // Member Functions
         mvDoor_
     };
 
+    static std::pair<std::string, uint8_t> checkSyntax(command pkg);
+
     void newUser(CONNECTION_T connection, const std::string&);
     void newDoor(CONNECTION_T connection, const std::string&);
     void rmUser(CONNECTION_T connection, const std::string&);
     void rmDoor(CONNECTION_T connection, const std::string&);
     void mvUser(CONNECTION_T connection, const std::string&);
     void mvDoor(CONNECTION_T connection, const std::string&);
-
-    static std::pair<std::string, uint8_t> checkSyntax(command pkg);
     static void to_snake_case(std::string&);
 
 
