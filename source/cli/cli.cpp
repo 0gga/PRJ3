@@ -131,12 +131,13 @@ bool cli::admin_identification()
 
 void cli::run() 
 {
+    printCommands();
+    
     if(!admin_identification())
         return;
 
     while(connection)
     {
-        admin_identification();
         std::cout << "Input command. Type 'help' to see overview";
         
         std::cout << "<";
