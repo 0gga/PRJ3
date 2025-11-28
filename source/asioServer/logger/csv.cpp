@@ -32,7 +32,10 @@ void CsvLogger::addLog(std::string door, std::string name, int userID, std::stri
 
     // get the path of the logs of system
     std::filesystem::path currentPath = std::filesystem::current_path();
+    // check if folder exists (it should) else create folder
+    std::filesystem::create_directories(currentPath / "logs" / "systemLogs");
     std::filesystem::path logPathSystem = currentPath / "logs" / "systemLogs" / logNameDate;
+    
     // bool to check if file already exists
     bool fileExistsDate = std::filesystem::exists(logPathSystem);
     // file pointer, opens an existing csv file or creates a new file
@@ -55,8 +58,11 @@ void CsvLogger::addLog(std::string door, std::string name, int userID, std::stri
     // create log name
     std::string logNameUser = "Log_" + name + ".csv";
 
+    // check if folder exists (it should) else create folder
+    std::filesystem::create_directories(currentPath / "logs" / "userLogs");
     // get the path of the logs for users
     std::filesystem::path logPathUsers = currentPath / "logs" / "userLogs" / logNameUser;
+
     // bool to check if file already exists
     bool fileExistsUser = std::filesystem::exists(logPathUsers);
     // file pointer, opens an existing csv file or creates a new file
@@ -79,8 +85,11 @@ void CsvLogger::addLog(std::string door, std::string name, int userID, std::stri
     // create log name
     std::string logNameDoor = "Log_" + door + ".csv";
 
+    // check if folder exists (it should) else create folder
+    std::filesystem::create_directories(currentPath / "logs" / "doorLogs");
     // get the path of the logs for users
     std::filesystem::path logPathDoors = currentPath / "logs" / "doorLogs" / logNameDoor;
+
     // bool to check if file already exists
     bool fileExistsDoor = std::filesystem::exists(logPathDoors);
     // file pointer, opens an existing csv file or creates a new file
