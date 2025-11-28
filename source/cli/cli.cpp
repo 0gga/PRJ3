@@ -104,8 +104,8 @@ bool cli::recieve_data()
     return true;
 }
 
-bool admin_identification(){
-
+bool cli::admin_identification()
+{
     std::string cli_identification;
     while(true){
         if(!receive_data())
@@ -131,7 +131,8 @@ bool admin_identification(){
 
 void cli::run() 
 {
-    printCommands();
+    if(!admin_identification())
+        return;
 
     while(connection)
     {
@@ -208,13 +209,10 @@ bool cli::handle_newDoor(const std::string& cmd)
         return false;
     }
 
-    if(!recieve_data())
-        return false;
-
     std::cout << buffer_receive << std::endl; // confirm msg
 
     std::string confirmation;
-    std::cout << "<approved/denied";
+    std::cout << "<approved/denied> ";
     std::cin >> confirmation;
     
     send_data(confirmation);
@@ -240,20 +238,23 @@ bool cli::handle_newUser(const std::string& cmd)
         return false;
     }
 
-    if (strcmp(buffer_receive, "Awaiting card read") == 0)
+    if (strcmp(buffer_receive, "Awaiting card read") != 0)
     {
-        std::cout << "\n Scan card\n";
+        std::cout << buffer_receive << "\n";
+        return false;
     }
 
     // Send UID??
+    std::string uid;
+    send_data(uid)
 
     if(!recieve_data())
         return false;
 
-    std::cout << buffer_receive << std::endl; // confirm msg
+    std::cout << buffer_receive << "\n"; // confirm msg
 
     std::string confirmation;
-    std::cout << "<approved/denied";
+    std::cout << "<approved/denied> ";
     std::cin >> confirmation;
     
     send_data(confirmation);
@@ -261,7 +262,7 @@ bool cli::handle_newUser(const std::string& cmd)
     if(!recieve_data())
         return false;
 
-    std::cout << buffer_receive << std::endl; // 'User added successfully'
+    std::cout << buffer_receive << "\n"; // 'User added successfully'
     return true;
 
 }
@@ -280,13 +281,10 @@ bool cli::handle_rmDoor(const std::string& cmd)
         return false;
     }
 
-    if(!recieve_data())
-        return false;
-
     std::cout << buffer_receive << std::endl; // confirm msg
 
     std::string confirmation;
-    std::cout << "<approved/denied";
+    std::cout << "<approved/denied> ";
     std::cin >> confirmation;
     
     send_data(confirmation);
@@ -320,13 +318,10 @@ bool cli::handle_rmUser(const std::string& cmd)
         return false;
     }
 
-    if(!recieve_data())
-        return false;
-
     std::cout << buffer_receive << std::endl; // confirm msg
 
     std::string confirmation;
-    std::cout << "<approved/denied";
+    std::cout << "<approved/denied> ";
     std::cin >> confirmation;
     
     send_data(confirmation);
@@ -339,9 +334,7 @@ bool cli::handle_rmUser(const std::string& cmd)
     {
         std::cout << buffer_receive << "\n";
         return false;
-    } 
-    
-    if(strcmp(buffer_receive, "User Removed Successfully")==0) {
+    } else if(strcmp(buffer_receive, "User Removed Successfully")==0) {
         std::cout << buffer_receive;
         return true;
     }
@@ -379,7 +372,8 @@ bool cli::handle_exit(const std::string& cmd)
     }
     
     std::cout << buffer_receive << "\n";
-
+    
+    close(sockfd);
     return true;
 }
 
@@ -398,6 +392,8 @@ bool cli::handle_shutdown(const std::string& cmd)
     
     std::cout << buffer_receive << "\n";
     close(sockfd);
+    sockfd = -1;
+    connection = false;
 
     return true;
 }
