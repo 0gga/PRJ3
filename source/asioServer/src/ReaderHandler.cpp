@@ -116,9 +116,45 @@ void ReaderHandler::myIp() {
     std::cout << ip_address << std::endl;
 }
 
-std::pair<std::string, uint8_t> ReaderHandler::checkSyntax(command type) {
+std::pair<std::string, uint8_t> ReaderHandler::checkSyntax(const std::string& data, command type) {
+    std::pair<std::string, uint8_t> error{"-1", 0};
+    std::smatch match;
 
-    return std::make_pair("-1",0);
+    switch (type) {
+        case newUser_:
+            static const std::regex newUserSyntax(R"(^newUser\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
+            if (!std::regex_match(data, match, newUserSyntax))
+                return error;
+            break;
+
+        case newDoor_:
+            static const std::regex newDoorSyntax(R"(^newDoor\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
+            if (!std::regex_match(data, match, newDoorSyntax))
+                return error;
+            break;
+
+        case rmUser_:
+            static const std::regex rmUserSyntax(R"(^rmUser\s+([A-Za-z_]+)$)");
+            if (!std::regex_match(data, match, rmUserSyntax))
+                return error;
+            break;
+
+        case rmDoor_:
+            static const std::regex rmDoorSyntax(R"(^rmDoor\s+([A-Za-z_]+)$)");
+            if (!std::regex_match(data, match, rmDoorSyntax))
+                return error;
+            break;
+
+        default:
+            return error;
+            break;
+    }
+
+    std::string name    = match[1].str();
+    uint8_t accessLevel = std::stoul(match[2].str());
+    to_snake_case(name);
+
+    return std::make_pair(name, accessLevel);
 }
 
 /// Handles Client IO.\n
@@ -194,26 +230,43 @@ void ReaderHandler::handleCli(CONNECTION_T connection) {
 
         // Phase 3: Handle cmdlets
         if (pkg.rfind("newUser", 0) == 0) {
-            if (stoi(checkSyntax(newUser_).first) != -1)
-                newUser(connection, pkg);
+            const auto [name, accessLevel] = checkSyntax(pkg, newUser_);
+            if (stoi(name) != -1)
+                newUser(connection, name, accessLevel);
+            else {
+                connection->write<std::string>("Failed to add new user - Incorrect CLI syntax");
+                handleCli(connection);
+            }
             return;
         }
         if (pkg.rfind("newDoor", 0) == 0) {
-            std::pair<std::string, uint8_t> args = checkSyntax(newDoor_);
-            if (stoi(args.first) != -1)
-                newDoor(connection, pkg);
-            else
+            const auto [name, accessLevel] = checkSyntax(pkg, newDoor_);
+            if (stoi(name) != -1)
+                newDoor(connection, name, accessLevel);
+            else {
+                connection->write<std::string>("Failed to add new door - Incorrect CLI syntax");
                 handleCli(connection);
+            }
             return;
         }
         if (pkg.rfind("rmUser", 0) == 0) {
-            if (stoi(checkSyntax(rmUser_).first) != -1)
-                rmUser(connection, pkg);
+            const std::string name = checkSyntax(pkg, rmUser_).first;
+            if (stoi(name) != -1)
+                rmUser(connection, name);
+            else {
+                connection->write<std::string>("Failed to remove user - Incorrect CLI syntax");
+                handleCli(connection);
+            }
             return;
         }
         if (pkg.rfind("rmDoor", 0) == 0) {
-            if (stoi(checkSyntax(rmDoor_).first) != -1)
-                rmDoor(connection, pkg);
+            const std::string name = checkSyntax(pkg, rmDoor_).first;
+            if (stoi(name) != -1)
+                rmDoor(connection, name);
+            else {
+                connection->write<std::string>("Failed to remove door - Incorrect CLI syntax");
+                handleCli(connection);
+            }
             return;
         }
         if (pkg == "getLog") {
@@ -222,6 +275,7 @@ void ReaderHandler::handleCli(CONNECTION_T connection) {
         }
         if (pkg == "exit") {
             cliReader.second = nullptr;
+            connection->write<std::string>("Closing Connection...");
             connection->close();
             return;
         }
@@ -241,22 +295,7 @@ void ReaderHandler::handleCli(CONNECTION_T connection) {
 /// Add new user function.
 /// @param connection ptr to the relative TcpConnection object.
 /// @param userData String representation of the user to be added i.e. "john_doe 1".
-void ReaderHandler::newUser(CONNECTION_T connection, const std::string& userData) {
-    // Parse CLI command for correct syntax
-    static const std::regex cliSyntax(R"(^newUser\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
-    std::smatch match;
-    if (!std::regex_match(userData, match, cliSyntax)) {
-        connection->write<std::string>("Failed to add new user - Incorrect CLI syntax");
-        handleCli(connection);
-        return;
-    }
-
-    std::string name = match[1].str();
-    to_snake_case(name);
-
-    uint8_t accessLevel = std::stoul(match[2].str());
-    // CLI Parse stop
-
+void ReaderHandler::newUser(CONNECTION_T connection, const std::string& name, const uint8_t accessLevel) {
     connection->write<std::string>("Awaiting card read");
     connection->read<std::string>([this, name, accessLevel, connection](const std::string& uid) {
         const std::string confirmMsg("Are you sure you want to add user:\n"
@@ -304,22 +343,7 @@ void ReaderHandler::newUser(CONNECTION_T connection, const std::string& userData
 /// Add new door function.
 /// /// @param connection ptr to the relative TcpConnection object.
 /// @param doorData String representation of the door to be added i.e. "door1 1".
-void ReaderHandler::newDoor(CONNECTION_T connection, const std::string& doorData) {
-    // Parse CLI command for correct syntax
-    static const std::regex cliSyntax(R"(^newDoor\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
-    std::smatch match;
-    if (!std::regex_match(doorData, match, cliSyntax)) {
-        connection->write<std::string>("Failed to add new door - Incorrect CLI syntax");
-        handleCli(connection);
-        return;
-    }
-
-    std::string name = match[1].str();
-    to_snake_case(name);
-
-    uint8_t accessLevel = std::stoul(match[2].str());
-    // CLI Parse stop
-
+void ReaderHandler::newDoor(CONNECTION_T connection, const std::string& name, const uint8_t accessLevel) {
     const std::string confirmMsg("Are you sure you want to add door:\n"
                                  "Name: " + name + "\n" +
                                  "Access Level: " + std::to_string(accessLevel));
@@ -360,20 +384,7 @@ void ReaderHandler::newDoor(CONNECTION_T connection, const std::string& doorData
 /// Remove user function.
 /// @param connection ptr to the relative TcpConnection object.
 /// @param userData String representation of the user to be removed i.e. "john_doe".
-void ReaderHandler::rmUser(CONNECTION_T connection, const std::string& userData) {
-    // Parse CLI command for correct syntax
-    static const std::regex cliSyntax(R"(^rmUser\s+([A-Za-z_]+)$)");
-    std::smatch match;
-    if (!std::regex_match(userData, match, cliSyntax)) {
-        connection->write<std::string>("Failed to remove user - Incorrect CLI syntax");
-        handleCli(connection);
-        return;
-    }
-
-    std::string name = match[1].str();
-    to_snake_case(name);
-    // CLI Parse stop
-
+void ReaderHandler::rmUser(CONNECTION_T connection, const std::string& name) {
     auto user = usersByName.find(name);
     const std::string confirmMsg("Are you sure you want to remove user:\n"
                                  "UID: " + user->second.first + "\n"
@@ -426,19 +437,7 @@ void ReaderHandler::rmUser(CONNECTION_T connection, const std::string& userData)
 /// Remove door function.
 /// @param connection ptr to the relative TcpConnection object.
 /// @param doorData String representation of the door to be removed i.e. "door1".
-void ReaderHandler::rmDoor(CONNECTION_T connection, const std::string& doorData) {
-    // Parse CLI command for correct syntax
-    static const std::regex cliSyntax(R"(^rmDoor\s+([A-Za-z_]+)$)");
-    std::smatch match;
-    if (!std::regex_match(doorData, match, cliSyntax)) {
-        connection->write<std::string>("Failed to remove door - Incorrect CLI syntax");
-        handleCli(connection);
-        return;
-    }
-
-    std::string name = match[1].str();
-    to_snake_case(name);
-
+void ReaderHandler::rmDoor(CONNECTION_T connection, const std::string& name) {
     if (doors.find(name) != doors.end()) {
         connection->write<std::string>("Door could not be found");
         handleCli(connection);
@@ -490,9 +489,17 @@ void ReaderHandler::rmDoor(CONNECTION_T connection, const std::string& doorData)
     });
 }
 
-void ReaderHandler::mvUser(CONNECTION_T connection, const std::string&) {}
+// void ReaderHandler::mvUser(CONNECTION_T connection, const std::string&) {}
+//
+// void ReaderHandler::mvDoor(CONNECTION_T connection, const std::string&) {}
 
-void ReaderHandler::mvDoor(CONNECTION_T connection, const std::string&) {}
+void ReaderHandler::addToConfig(const std::string& type, const std::string& name, const std::string& accessLevel) {
+
+}
+
+void ReaderHandler::removeFromConfig(const std::string& type, const std::string& name) {
+
+}
 
 /// Helper function for converting std::string to snake_case.\n
 /// Takes std::string by reference.
