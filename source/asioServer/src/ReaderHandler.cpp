@@ -318,7 +318,7 @@ void ReaderHandler::newDoor(CONNECTION_T connection, const std::string& doorData
     connection->write<std::string>(confirmMsg);
     connection->read<std::string>([this, name, accessLevel, connection](const std::string& status) {
         if (status == "denied" || status != "approved") {
-            connection->write<std::string>("Did not add user");
+            connection->write<std::string>("Did not add door");
             handleCli(connection);
             return;
         }
@@ -374,7 +374,7 @@ void ReaderHandler::rmUser(CONNECTION_T connection, const std::string& userData)
     connection->write<std::string>(confirmMsg);
     connection->read<std::string>([this, user, name, connection](const std::string& status) {
         if (status == "denied" || status != "approved") {
-            connection->write<std::string>("Did not add user");
+            connection->write<std::string>("Did not remove user");
             handleCli(connection);
             return;
         }
@@ -443,7 +443,7 @@ void ReaderHandler::rmDoor(CONNECTION_T connection, const std::string& doorData)
     connection->write<std::string>(confirmMsg);
     connection->read<std::string>([this, name, connection](const std::string& status) {
         if (status == "denied" || status != "approved") {
-            connection->write<std::string>("Did not add user");
+            connection->write<std::string>("Did not remove door");
             handleCli(connection);
             return;
         }
