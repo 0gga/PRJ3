@@ -1,6 +1,5 @@
 ﻿#pragma once
 #include "TcpServer.hpp"
-#include "csv.hpp"
 
 #include <unordered_map>
 #include <shared_mutex>
@@ -48,8 +47,6 @@ private: // Member Variables
 
 	TcpServer clientServer;
 	TcpServer cliServer;
-
-	CsvLogger allLogger;
 
 	std::pair<std::string, CONNECTION_T> cliReader; //brug weak_ptr her perchance
 	std::unordered_map<std::string, int> doors;
