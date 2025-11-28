@@ -21,9 +21,11 @@
 >>- Remove an existing user: `rmUser <string>0gga`
 >>- Edit an existing door: `mvDoor <string>door1 <int>accessLevel`
 >>- Edit an existing door: `mvDoor <string>0gga <int>accessLevel`
->>- Shutdown the CLI connection: `shutdown`
->>- Get all logs: `getLog`
+>>- Exit and kill the CLI connection: `exit`
+>>- Shutdown the entire system: `shutdown`
+>>- Get date-specific system logs: `getSystemLog <string>Date`
 >>- Get user-specific logs: `getUserLog <string>0gga`
+>>- Get door-specific logs: `getDoorLog <string>Door1`
 >
 >> ### **Syntax**<br>
 >>
