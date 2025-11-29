@@ -29,7 +29,6 @@ private: // Member Variables
 	TcpServer* owner_;
 	uint32_t id_;
 	bool alive_{true};
-	boost::asio::streambuf readBuffer_;
 };
 
 //clang-format off
@@ -38,34 +37,38 @@ void TcpConnection::read(std::function<void(const Rx&)> handler) {
 	if (!alive_)
 		return;
 
-    boost::asio::async_read_until(socket_, readBuffer_, '\n', boost::asio::bind_executor(strand_,
-         [this, handler = std::move(handler)](const boost::system::error_code& ec, size_t bytesTransferred) {
+	auto buffer = std::make_shared<boost::asio::streambuf>();
+
+    boost::asio::async_read_until(socket_, *buffer, '\n',
+    	boost::asio::bind_executor(
+    		strand_,
+    		[this, buffer, handler = std::move(handler)](const boost::system::error_code& ec, size_t bytes) {
          	if (!alive_)
-				return;
+         		return;
 
          	if (ec == boost::asio::error::eof) {
          		close();
          		return;
          	}
 
-             if (ec) {
+    		if (ec) {
              	std::cerr << "Read Failed: " << ec.message() << std::endl;
              	close();
              	return;
-             }
+    		}
          	try {
-         		std::istream is(&readBuffer_);
+         		std::istream is(buffer.get());
 				std::string data;
 				std::getline(is, data);
 
          		if constexpr (std::is_same_v<Rx, std::string>)
 			 		handler(data);
+
+         		buffer->consume(bytes);
+
          	} catch (const std::exception& e) {
          		std::cerr << "Read Error" << e.what() << std::endl;
          	}
-
-             if (alive_)
-				read<Rx>(handler);
     }));
 }
 

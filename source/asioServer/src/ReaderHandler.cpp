@@ -203,7 +203,6 @@ void ReaderHandler::handleClient(CONNECTION_T connection) {
 /// @param connection ptr to the relative TcpConnection object. This is established and passed in the CTOR callback.
 /// @returns void
 void ReaderHandler::handleCli(CONNECTION_T connection) {
-	state = ReaderState::Active;
 	{
 		// Phase 1: Check if admin is connected and if not facilitate new connection.
 		std::scoped_lock{cli_mtx};
@@ -234,7 +233,7 @@ void ReaderHandler::handleCli(CONNECTION_T connection) {
 		// Phase 3: Handle cmdlets
 		if (pkg.rfind("newUser", 0) == 0) {
 			const auto [name, accessLevel] = checkSyntax(pkg, newUser_);
-			if (stoi(name) != -1)
+			if (name != "-1")
 				newUser(connection, name, accessLevel);
 			else {
 				connection->write<std::string>("Failed to add new user - Incorrect CLI syntax");
@@ -244,7 +243,7 @@ void ReaderHandler::handleCli(CONNECTION_T connection) {
 		}
 		if (pkg.rfind("newDoor", 0) == 0) {
 			const auto [name, accessLevel] = checkSyntax(pkg, newDoor_);
-			if (stoi(name) != -1)
+			if (name != "-1")
 				newDoor(connection, name, accessLevel);
 			else {
 				connection->write<std::string>("Failed to add new door - Incorrect CLI syntax");
@@ -254,7 +253,7 @@ void ReaderHandler::handleCli(CONNECTION_T connection) {
 		}
 		if (pkg.rfind("rmUser", 0) == 0) {
 			const std::string name = checkSyntax(pkg, rmUser_).first;
-			if (stoi(name) != -1)
+			if (name != "-1")
 				rmUser(connection, name);
 			else {
 				connection->write<std::string>("Failed to remove user - Incorrect CLI syntax");
@@ -264,7 +263,7 @@ void ReaderHandler::handleCli(CONNECTION_T connection) {
 		}
 		if (pkg.rfind("rmDoor", 0) == 0) {
 			const std::string name = checkSyntax(pkg, rmDoor_).first;
-			if (stoi(name) != -1)
+			if (name != "-1")
 				rmDoor(connection, name);
 			else {
 				connection->write<std::string>("Failed to remove door - Incorrect CLI syntax");
@@ -292,7 +291,6 @@ void ReaderHandler::handleCli(CONNECTION_T connection) {
 			handleCli(connection);
 		}
 	});
-	state = ReaderState::Idle;
 }
 
 /// Add new user function.
