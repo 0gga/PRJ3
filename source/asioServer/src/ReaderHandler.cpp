@@ -220,12 +220,19 @@ void ReaderHandler::handleCli(CONNECTION_T connection) {
 
 	connection->read<std::string>([this, connection](const std::string& pkg) {
 		// Phase 2: Handle admin duplicates the connection registered as admin
-		if (cliReader.second != connection && pkg.rfind(cliReader.first, 0) == 0) {
-			cliReader.second = connection;
-			handleCli(connection);
-			return;
-		} else if (cliReader.second != connection && pkg.rfind(cliReader.first, 0) != 0) {
-			connection->write<std::string>("Incorrect CLI identification");
+		bool recursionFlag{false};
+		{
+			std::scoped_lock{cli_mtx};
+			if (cliReader.second != connection) {
+				if (pkg.rfind(cliReader.first, 0) == 0) {
+					cliReader.second = connection;
+				} else if (pkg.rfind(cliReader.first, 0) != 0) {
+					connection->write<std::string>("Incorrect CLI identification");
+				}
+				recursionFlag = true;
+			}
+		}
+		if (recursionFlag) {
 			handleCli(connection);
 			return;
 		}
@@ -276,7 +283,11 @@ void ReaderHandler::handleCli(CONNECTION_T connection) {
 			return;
 		}
 		if (pkg == "exit") {
-			cliReader.second = nullptr;
+			{
+				std::scoped_lock{cli_mtx};
+				if (connection == cliReader.second)
+					cliReader.second = nullptr;
+			}
 			connection->write<std::string>("Closing Connection...");
 			connection->close();
 			return;
