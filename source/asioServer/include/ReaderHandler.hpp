@@ -28,7 +28,7 @@ private: // Member Functions
 	void handleClient(CONNECTION_T connection);
 	void handleCli(CONNECTION_T connection);
 
-	enum command {
+	enum class command {
 		newUser_,
 		newDoor_,
 		rmUser_,
