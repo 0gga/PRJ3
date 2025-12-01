@@ -28,6 +28,10 @@ while True:
 s = connect_with_retry(ip, port)
 buffer = ""
 
+def start_reader():
+    t = threading.Thread(target=reader, daemon=True)
+    t.start()
+
 def reader():
     global buffer, s
     while True:
@@ -35,7 +39,8 @@ def reader():
             chunk = s.recv(4096)
             if not chunk:
                 print("Disconnected by server.")
-                return
+                break
+
             buffer += chunk.decode()
 
             # parse all packets
@@ -69,10 +74,16 @@ def reader():
 
         except Exception as e:
             print("Reader error:", e)
-            return
+            break
+
+    # reader died → reconnect and restart
+    print("Reconnecting reader...")
+    s = connect_with_retry(ip, port)
+    buffer = ""
+    start_reader()
 
 # start reader thread
-threading.Thread(target=reader, daemon=True).start()
+start_reader()
 
 # writer loop
 while True:
@@ -81,4 +92,6 @@ while True:
         s.sendall((msg + "\n").encode())
     except Exception as e:
         print("Writer error:", e)
-        break
+        print("Reconnecting writer...")
+        s = connect_with_retry(ip, port)
+        continue
