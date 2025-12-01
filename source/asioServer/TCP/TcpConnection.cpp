@@ -17,6 +17,7 @@ TcpConnection::~TcpConnection() {
 }
 
 void TcpConnection::close() {
+	write<std::string>("Closing Connection...");
 	if (!alive_)
 		return;
 	alive_ = false;
@@ -33,4 +34,8 @@ void TcpConnection::close() {
 			owner->removeConnection(id);
 		});
 	}
+}
+
+bool TcpConnection::isAlive() {
+	return alive_;
 }

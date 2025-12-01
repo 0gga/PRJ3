@@ -48,7 +48,7 @@ private: // Member Functions
 	bool addToConfig(const std::string&, const std::string&, uint8_t, const std::string& = "");
 	bool removeFromConfig(const std::string&, const std::string&);
 	void assertConfig(nlohmann::json&);
-	std::pair<std::string, uint8_t> checkSyntax(const std::string& pkg, command type);
+	std::pair<std::string, uint8_t> parseSyntax(const std::string& pkg, command type);
 	static void to_snake_case(std::string&);
 
 

@@ -14,6 +14,7 @@ public:
 	~TcpConnection();
 
 	void close();
+	bool isAlive();
 
 	template<typename Rx>
 	void read(std::function<void(const Rx&)> handler);

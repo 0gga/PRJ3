@@ -94,7 +94,7 @@ ReaderHandler::~ReaderHandler() {
 /// Also called if cli calls "shutdown".
 /// @returns void
 void ReaderHandler::stop() {
-	state = ReaderState::Idle;
+	running = false;
 	clientServer.stop();
 	cliServer.stop();
 	std::cout << "Servers Shutting Down" << std::endl;
@@ -211,66 +211,40 @@ void ReaderHandler::handleCli(CONNECTION_T connection) {
 			return;
 		}
 
+		// Added lambda for readability
+		auto checkSyntax = [&](const std::string& name) {
+			if (name == "-1") {
+				connection->write<std::string>("Operation failed - Incorrect CLI syntax");
+				handleCli(connection);
+				return false;
+			}
+			return true;
+		};
+
 		// Phase 3: Handle cmdlets
 		if (pkg.rfind("newUser", 0) == 0) {
-			const auto [name, accessLevel] = checkSyntax(pkg, newUser_);
-			if (name != "-1")
-				newUser(connection, name, accessLevel);
-			else {
-				connection->write<std::string>("Failed to add new user - Incorrect CLI syntax");
-				handleCli(connection);
-			}
-			return;
-		}
-		if (pkg.rfind("newDoor", 0) == 0) {
-			const auto [name, accessLevel] = checkSyntax(pkg, newDoor_);
-			if (name != "-1")
-				newDoor(connection, name, accessLevel);
-			else {
-				connection->write<std::string>("Failed to add new door - Incorrect CLI syntax");
-				handleCli(connection);
-			}
-			return;
-		}
-		if (pkg.rfind("rmUser", 0) == 0) {
-			const std::string name = checkSyntax(pkg, rmUser_).first;
-			if (name != "-1")
+			const auto [name, lvl] = parseSyntax(pkg, newUser_);
+			if (checkSyntax(name))
+				newUser(connection, name, lvl);
+		} else if (pkg.rfind("newDoor", 0) == 0) {
+			const auto [name, lvl] = parseSyntax(pkg, newDoor_);
+			if (checkSyntax(name))
+				newDoor(connection, name, lvl);
+		} else if (pkg.rfind("rmUser", 0) == 0) {
+			const auto [name, lvl] = parseSyntax(pkg, rmUser_);
+			if (checkSyntax(name))
 				rmUser(connection, name);
-			else {
-				connection->write<std::string>("Failed to remove user - Incorrect CLI syntax");
-				handleCli(connection);
-			}
-			return;
-		}
-		if (pkg.rfind("rmDoor", 0) == 0) {
-			const std::string name = checkSyntax(pkg, rmDoor_).first;
-			if (name != "-1")
+		} else if (pkg.rfind("rmDoor", 0) == 0) {
+			const auto [name, lvl] = parseSyntax(pkg, rmDoor_);
+			if (checkSyntax(name))
 				rmDoor(connection, name);
-			else {
-				connection->write<std::string>("Failed to remove door - Incorrect CLI syntax");
-				handleCli(connection);
-			}
-			return;
-		}
-		if (pkg == "getLog") {
-			//connection->write<csv>(getLog());
-			return;
-		}
-		if (pkg == "exit") {
-			{
-				std::scoped_lock{cli_mtx};
-				if (connection == cliReader.second)
-					cliReader.second = nullptr;
-			}
-			connection->write<std::string>("Closing Connection...");
+		} else if (pkg == "exit") {
+			if (connection == cliReader.second)
+				cliReader.second = nullptr;
 			connection->close();
-			return;
-		}
-		if (pkg == "shutdown") {
+		} else if (pkg == "shutdown") {
 			connection->write<std::string>("Shutting Down...");
-			running = false;
-			clientServer.stop();
-			cliServer.stop();
+			stop();
 		} else {
 			connection->write<std::string>("Unknown Command");
 			handleCli(connection);
@@ -396,7 +370,7 @@ void ReaderHandler::rmDoor(CONNECTION_T connection, const std::string& name) {
 // void ReaderHandler::mvDoor(CONNECTION_T connection, const std::string&) {}
 
 
-std::pair<std::string, uint8_t> ReaderHandler::checkSyntax(const std::string& data, command type) {
+std::pair<std::string, uint8_t> ReaderHandler::parseSyntax(const std::string& data, command type) {
 	std::pair<std::string, uint8_t> error{"-1", 0};
 	std::smatch match;
 	bool hasAccessLevel{false};

@@ -33,17 +33,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="refactor from enum to enum class">
-      <change afterPath="$PROJECT_DIR$/source/asioServer/serverTester.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/PRJ3.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/PRJ3.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/cmake.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/cmake.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="fat commit">
+      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/TCP/PayloadEncoder.hpp" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/source/asioServer/TCP/TcpConnection.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/TCP/TcpConnection.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/asioServer/TCP/TcpConnection.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/TCP/TcpConnection.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/TCP/TcpServer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/TCP/TcpServer.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/asioServer/include/ReaderHandler.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/include/ReaderHandler.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/asioServer/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/src/main.cpp" afterDir="false" />
@@ -141,7 +135,8 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "CMakeSettings",
+    "settings.editor.selected.configurable": "preferences.sourceCode.C++",
+    "settings.editor.splitter.proportion": "0.23740393",
     "show.migrate.to.gradle.popup": "false",
     "vue.rearranger.settings.migration": "true"
   },
@@ -241,15 +236,7 @@
       <workItem from="1764260864044" duration="101000" />
       <workItem from="1764407727115" duration="5787000" />
       <workItem from="1764536768838" duration="1344000" />
-      <workItem from="1764600819126" duration="11174000" />
-    </task>
-    <task id="LOCAL-00002" summary="Final touches">
-      <option name="closed" value="true" />
-      <created>1760475661234</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1760475661234</updated>
+      <workItem from="1764600819126" duration="15258000" />
     </task>
     <task id="LOCAL-00003" summary="better readme">
       <option name="closed" value="true" />
@@ -635,7 +622,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764542911047</updated>
     </task>
-    <option name="localTasksCounter" value="51" />
+    <task id="LOCAL-00051" summary="fat commit">
+      <option name="closed" value="true" />
+      <created>1764612927395</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1764612927395</updated>
+    </task>
+    <option name="localTasksCounter" value="52" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -699,7 +694,8 @@
     <MESSAGE value="TcpConnection patch" />
     <MESSAGE value="fixing races" />
     <MESSAGE value="refactor from enum to enum class" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor from enum to enum class" />
+    <MESSAGE value="fat commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="fat commit" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
