@@ -2,9 +2,8 @@
 
 #include "TcpServer.hpp"
 
-TcpServer::TcpServer(int port)
-: acceptor(io_context, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port)),
-  work_guard(make_work_guard(io_context)) {}
+TcpServer::TcpServer(int port) : acceptor(io_context, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port)),
+								 work_guard(make_work_guard(io_context)) {}
 
 TcpServer::~TcpServer() {
 	stop();
@@ -23,8 +22,9 @@ void TcpServer::start() {
 		asyncThreads_t.emplace_back([this] {
 			try {
 				io_context.run();
-			} catch (const std::exception& e) {
-				std::cout << "io_context thread exception: " << e.what() << std::endl;
+			}
+			catch (const std::exception& e) {
+				DEBUG_OUT("io_context thread exception: " + std::string(e.what()));
 			}
 		});
 }
@@ -48,6 +48,10 @@ void TcpServer::stop() {
 	acceptor.close(ec);
 }
 
+void TcpServer::onClientDisconnect(std::function<void(CONNECTION_T)> callback) {
+	disconnectHandler = std::move(callback);
+}
+
 void TcpServer::onClientConnect(std::function<void(CONNECTION_T)> callback) {
 	connectHandler = std::move(callback);
 }
@@ -56,11 +60,17 @@ void TcpServer::setThreadCount(const uint8_t count) {
 	if (count <= threadLimit) {
 		threadCount = count;
 	} else
-		std::cout << "Thread count cannot be greater than " << threadLimit << std::endl;
+		DEBUG_OUT("Thread count cannot be greater than " + std::to_string(threadLimit));
 }
 
 void TcpServer::removeConnection(const uint32_t id) {
-	connections.erase(id);
+	const auto it = connections.find(id);
+	if (it != connections.end()) {
+		const CONNECTION_T connection = it->second.get();
+		if (disconnectHandler)
+			disconnectHandler(connection);
+		connections.erase(id);
+	}
 }
 
 void TcpServer::acceptConnection() {
@@ -83,14 +93,14 @@ void TcpServer::acceptConnection() {
 
 			if (connectHandler)
 				connectHandler(raw); //should just be connection
-			std::cout << "Accept succeeded" << std::endl;
+			DEBUG_OUT("Accept succeeded");
 		} else {
-			std::cout << "Accept failed: " << ec.message() << std::endl;
+			DEBUG_OUT("Accept failed: " + std::string(ec.message()));
 		}
 		if (running && acceptor.is_open())
 			acceptConnection();
 		else {
-			std::cout << "Acceptor is closed - Recursion stopped" << std::endl;
+			DEBUG_OUT("Acceptor is closed - Recursion stopped");
 		}
 	});
 }

@@ -6,6 +6,12 @@
 
 #include <boost/asio.hpp>
 
+#ifdef DEBUG
+#define DEBUG_OUT(msg) do { std::cout << (msg) << std::endl;} while(0)
+#else
+#define DEBUG_OUT(msg) do {} while(0)
+#endif
+
 class TcpServer;
 
 class TcpConnection {
@@ -14,7 +20,6 @@ public:
 	~TcpConnection();
 
 	void close();
-	bool isAlive();
 
 	template<typename Rx>
 	void read(std::function<void(const Rx&)> handler);
@@ -78,7 +83,7 @@ void TcpConnection::read(std::function<void(const Rx&)> handler) {
          	}
 
     		if (ec) {
-             	std::cerr << "Read Failed: " << ec.message() << std::endl;
+             	DEBUG_OUT("Read Failed: " + std::string(ec.message()));
              	close();
              	return;
     		}
@@ -92,7 +97,7 @@ void TcpConnection::read(std::function<void(const Rx&)> handler) {
 
          		buffer->consume(bytes);
          	} catch (const std::exception& e) {
-         		std::cerr << "Read Error " << e.what() << std::endl;
+             	DEBUG_OUT("Read Error: " + std::string(e.what()));
          	}
     }));
 }

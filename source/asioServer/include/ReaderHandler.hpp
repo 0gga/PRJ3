@@ -23,6 +23,8 @@ public:
 
 	static void myIp();
 
+	void onDeadConnection(CONNECTION_T dead);
+
 private: // Member Functions
 	/// Do not pass by const reference since pointer copy is trivial.<br>Additional benefit: Avoids any unintended interference with the TcpConnection objects.
 	void handleClient(CONNECTION_T connection);

@@ -13,19 +13,19 @@ ReaderHandler::ReaderHandler(const int& clientPort, const int& cliPort, const st
 	nlohmann::json configJson;
 
 	if (!file.is_open() || file.peek() == std::ifstream::traits_type::eof()) {
-		std::cout << "config.json doesn't exist" << std::endl;
+		DEBUG_OUT("config.json doesn't exist");
 		std::ofstream("config.json") << R"({"users":[],"doors":[]})";
-		std::cout << "Created empty config.json" << std::endl;
+		DEBUG_OUT("Created empty config.json");
 	} else {
 		try {
 			file >> configJson;
 		}
 		catch (const nlohmann::json::parse_error& e) {
-			std::cout << "Invalid JSON in config.json" << e.what() << std::endl;
+			DEBUG_OUT("Invalid JSON in config.json" + std::string(e.what()));
 			configJson = {{"users", nlohmann::json::array()}, {"doors", nlohmann::json::array()}};
 
 			std::ofstream("config.json") << R"({"users":[],"doors":[]})";
-			std::cout << "Reset invalid config.json\n";
+			DEBUG_OUT("Reset invalid config.json\n");
 		}
 	}
 
@@ -35,7 +35,7 @@ ReaderHandler::ReaderHandler(const int& clientPort, const int& cliPort, const st
 				door["name"].is_string() && door["accessLevel"].is_number_integer())
 				doors[door["name"]] = door["accessLevel"];
 			else
-				std::cout << "Invalid door entry in config.json - skipping one.\n";
+				DEBUG_OUT("Invalid door entry in config.json - skipping one.\n");
 		}
 
 	if (configJson.contains("users"))
@@ -49,7 +49,7 @@ ReaderHandler::ReaderHandler(const int& clientPort, const int& cliPort, const st
 				usersByName[name] = {uid, accessLevel};
 				usersByUid[uid]   = {name, accessLevel};
 			} else
-				std::cout << "Invalid user entry in config.json - skipping one.\n";
+				DEBUG_OUT("Invalid user entry in config.json - skipping one.\n");
 		}
 	////////////////////////////// Read config JSON //////////////////////////////
 
@@ -60,17 +60,25 @@ ReaderHandler::ReaderHandler(const int& clientPort, const int& cliPort, const st
 	cliServer.start();
 
 	clientServer.onClientConnect([this](const CONNECTION_T& connection) {
-		std::cout << "Client Connected\n";
+		DEBUG_OUT("Client Connected\n");
 		handleClient(connection);
 	});
 
 	cliServer.onClientConnect([this](const CONNECTION_T& connection) {
-		std::cout << "CLI Connected\n";
+		DEBUG_OUT("CLI Connected\n");
 		handleCli(connection);
 	});
 
+	cliServer.onClientDisconnect([this](const CONNECTION_T& connection) {
+		std::scoped_lock lock(cli_mtx);
+		if (cliReader.second == connection) {
+			cliReader.second = nullptr;
+			DEBUG_OUT("Dead CLI Cleared\n");
+		}
+	});
+
 	running = true;
-	std::cout << "Servers started and awaiting clients" << std::endl;
+	DEBUG_OUT("Servers started and awaiting clients");
 	//////////////////////////////// Init Servers ////////////////////////////////
 #ifdef DEBUG
 	doors["door1"]          = 1;
@@ -97,7 +105,7 @@ void ReaderHandler::stop() {
 	running = false;
 	clientServer.stop();
 	cliServer.stop();
-	std::cout << "Servers Shutting Down" << std::endl;
+	DEBUG_OUT("Servers Shutting Down");
 }
 
 ReaderState ReaderHandler::getState() const {
@@ -125,7 +133,13 @@ void ReaderHandler::myIp() {
 			break;
 		}
 	}
-	std::cout << ip_address << std::endl;
+	DEBUG_OUT(ip_address);
+}
+
+void ReaderHandler::onDeadConnection(CONNECTION_T dead) {
+	std::scoped_lock (cli_mtx);
+	if (cliReader.second == dead)
+		cliReader.second == nullptr;
 }
 
 /// Handles Client IO.\n
@@ -138,7 +152,7 @@ void ReaderHandler::handleClient(CONNECTION_T connection) {
 	connection->read<std::string>([this, connection](const std::string& pkg) {
 		const size_t seperator = pkg.find(':');
 		if (seperator == std::string::npos || seperator == 0 || seperator == pkg.size() - 1) {
-			std::cout << "Invalid Client Package Syntax" << std::endl;
+			DEBUG_OUT("Invalid Client Package Syntax - Connection Closed");
 			connection->write<std::string>("Invalid Client Package Syntax - Connection Closed");
 			connection->close();
 			return;
@@ -151,20 +165,19 @@ void ReaderHandler::handleClient(CONNECTION_T connection) {
 			std::shared_lock rw_lock(rw_mtx);
 			const auto door = doors.find(name);
 			if (door == doors.end()) {
-				std::cout << "Unknown Door" << std::endl;
+				DEBUG_OUT("Unknown Door");
 				handleClient(connection);
 				return;
 			}
 
 			const auto user       = usersByUid.find(uid);
 			const bool authorized = (user != usersByUid.end() && user->second.second <= door->second);
-#ifdef DEBUG
-			if (user == usersByUid.end())
-				std::cout << "Unknown User" << std::endl;
-			else
-				std::cout << (authorized ? "Approved access to " + user->second.first : "Denied access to " + user->second.first) <<
-						" at " << door->first << std::endl;
-#endif
+			DEBUG_OUT(
+					  (user == usersByUid.end())
+					  ? "Unknown User"
+					  : ((authorized ? "Approved access to " + user->second.first
+						  : "Denied access to " + user->second.first) + " at " + door->first)
+					 );
 			connection->write<std::string>(authorized ? "approved" : "denied");
 		}
 		handleClient(connection);
@@ -239,6 +252,7 @@ void ReaderHandler::handleCli(CONNECTION_T connection) {
 			if (checkSyntax(name))
 				rmDoor(connection, name);
 		} else if (pkg == "exit") {
+			connection->write<std::string>("Closing Connection...");
 			if (connection == cliReader.second)
 				cliReader.second = nullptr;
 			connection->close();
@@ -419,7 +433,7 @@ std::pair<std::string, uint8_t> ReaderHandler::parseSyntax(const std::string& da
 bool ReaderHandler::addToConfig(const std::string& type, const std::string& name, uint8_t accessLevel, const std::string& uid) {
 	// Assert type is correct. Cannot use compile-time asserts on string comparisons, maybe use const char* instead in the future.
 	if (type != "doors" && type != "users") {
-		std::cout << "Type must be either 'doors' or 'users'" << std::endl;
+		DEBUG_OUT("Type must be either 'doors' or 'users'");
 		return false;
 	}
 
@@ -466,7 +480,7 @@ bool ReaderHandler::addToConfig(const std::string& type, const std::string& name
 bool ReaderHandler::removeFromConfig(const std::string& type, const std::string& name) {
 	// Assert type is correct. Cannot use compile-time asserts on string comparisons, maybe use const char* instead in the future.
 	if (type != "doors" && type != "users") {
-		std::cout << "Type must be either 'doors' or 'users'" << std::endl;
+		DEBUG_OUT("Type must be either 'doors' or 'users'");
 		return false;
 	}
 
@@ -517,7 +531,7 @@ void ReaderHandler::assertConfig(nlohmann::json& configJson) {
 			configJson = {{"users", nlohmann::json::array()}, {"doors", nlohmann::json::array()}};
 	}
 	catch (const nlohmann::json::parse_error& e) {
-		std::cout << "Invalid JSON @ config.json, attempting clean overwrite - " << e.what() << std::endl;
+		DEBUG_OUT("Invalid JSON @ config.json, attempting clean overwrite - " + std::string(e.what()));
 		configJson = {{"users", nlohmann::json::array()}, {"doors", nlohmann::json::array()}};
 	}
 }
