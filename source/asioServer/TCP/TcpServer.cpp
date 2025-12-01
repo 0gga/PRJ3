@@ -83,6 +83,7 @@ void TcpServer::acceptConnection() {
 
 			if (connectHandler)
 				connectHandler(raw); //should just be connection
+			std::cout << "Accept succeeded" << std::endl;
 		} else {
 			std::cout << "Accept failed: " << ec.message() << std::endl;
 		}

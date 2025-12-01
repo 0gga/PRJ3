@@ -3,13 +3,10 @@
 #include "TcpConnection.hpp"
 #include "TcpServer.hpp"
 
-TcpConnection::TcpConnection(boost::asio::ip::tcp::socket socket, const uint32_t id, TcpServer* owner)
-: socket_(std::move(socket)),
-  strand_(socket_.get_executor()),
-  owner_(owner),
-  id_(id) {
-	readBuffer_.prepare(4096);
-}
+TcpConnection::TcpConnection(boost::asio::ip::tcp::socket socket, const uint32_t id, TcpServer* owner) : socket_(std::move(socket)),
+																										 strand_(socket_.get_executor()),
+																										 owner_(owner),
+																										 id_(id) {}
 
 TcpConnection::~TcpConnection() {
 	alive_ = false;

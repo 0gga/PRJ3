@@ -54,7 +54,7 @@ ReaderHandler::ReaderHandler(const int& clientPort, const int& cliPort, const st
 	////////////////////////////// Read config JSON //////////////////////////////
 
 	//////////////////////////////// Init Servers ////////////////////////////////
-	TcpServer::setThreadCount(4);
+	TcpServer::setThreadCount(1);
 
 	clientServer.start();
 	cliServer.start();
@@ -72,6 +72,15 @@ ReaderHandler::ReaderHandler(const int& clientPort, const int& cliPort, const st
 	running = true;
 	std::cout << "Servers started and awaiting clients" << std::endl;
 	//////////////////////////////// Init Servers ////////////////////////////////
+#ifdef DEBUG
+	doors["door1"]          = 1;
+	doors["door2"]          = 2;
+	doors["door3"]          = 3;
+	usersByName["john_doe"] = {"2", 2};
+	usersByUid["2"]         = {"john_doe", 2};
+	usersByName["jane_doe"] = {"3", 3};
+	usersByUid["3"]         = {"jane_doe", 3};
+#endif
 }
 
 /// Destructor\n
@@ -119,47 +128,6 @@ void ReaderHandler::myIp() {
 	std::cout << ip_address << std::endl;
 }
 
-std::pair<std::string, uint8_t> ReaderHandler::checkSyntax(const std::string& data, command type) {
-	std::pair<std::string, uint8_t> error{"-1", 0};
-	std::smatch match;
-
-	switch (type) {
-		case newUser_:
-			static const std::regex newUserSyntax(R"(^newUser\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
-			if (!std::regex_match(data, match, newUserSyntax))
-				return error;
-			break;
-
-		case newDoor_:
-			static const std::regex newDoorSyntax(R"(^newDoor\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
-			if (!std::regex_match(data, match, newDoorSyntax))
-				return error;
-			break;
-
-		case rmUser_:
-			static const std::regex rmUserSyntax(R"(^rmUser\s+([A-Za-z_]+)$)");
-			if (!std::regex_match(data, match, rmUserSyntax))
-				return error;
-			break;
-
-		case rmDoor_:
-			static const std::regex rmDoorSyntax(R"(^rmDoor\s+([A-Za-z_]+)$)");
-			if (!std::regex_match(data, match, rmDoorSyntax))
-				return error;
-			break;
-
-		default:
-			return error;
-			break;
-	}
-
-	std::string name    = match[1].str();
-	uint8_t accessLevel = std::stoul(match[2].str());
-	to_snake_case(name);
-
-	return std::make_pair(name, accessLevel);
-}
-
 /// Handles Client IO.\n
 /// Is automatically called via lambda callback in CTOR whenever a new TCP Connection is established on the clientServer.<br>Recalls itself after each pass.
 /// @param connection ptr to the relative TcpConnection object. This is established and passed in the CTOR callback.
@@ -183,16 +151,22 @@ void ReaderHandler::handleClient(CONNECTION_T connection) {
 			std::shared_lock rw_lock(rw_mtx);
 			const auto door = doors.find(name);
 			if (door == doors.end()) {
-				connection->write<std::string>("Unknown Door");
+				std::cout << "Unknown Door" << std::endl;
 				handleClient(connection);
 				return;
 			}
 
 			const auto user       = usersByUid.find(uid);
-			const bool authorized = (user != usersByUid.end() && user->second.second >= door->second);
-			connection->write<std::string>(authorized ? "Approved" : "Denied");
+			const bool authorized = (user != usersByUid.end() && user->second.second <= door->second);
+#ifdef DEBUG
+			if (user == usersByUid.end())
+				std::cout << "Unknown User" << std::endl;
+			else
+				std::cout << (authorized ? "Approved access to " + user->second.first : "Denied access to " + user->second.first) <<
+						" at " << door->first << std::endl;
+#endif
+			connection->write<std::string>(authorized ? "approved" : "denied");
 		}
-
 		handleClient(connection);
 	});
 	state = ReaderState::Idle;
@@ -220,7 +194,7 @@ void ReaderHandler::handleCli(CONNECTION_T connection) {
 
 	connection->read<std::string>([this, connection](const std::string& pkg) {
 		// Phase 2: Handle admin duplicates the connection registered as admin
-		bool recursionFlag{false};
+		bool recursionFlag = false;
 		{
 			std::scoped_lock{cli_mtx};
 			if (cliReader.second != connection) {
@@ -421,6 +395,53 @@ void ReaderHandler::rmDoor(CONNECTION_T connection, const std::string& name) {
 //
 // void ReaderHandler::mvDoor(CONNECTION_T connection, const std::string&) {}
 
+
+std::pair<std::string, uint8_t> ReaderHandler::checkSyntax(const std::string& data, command type) {
+	std::pair<std::string, uint8_t> error{"-1", 0};
+	std::smatch match;
+	bool hasAccessLevel{false};
+
+	switch (type) {
+		case newUser_:
+			static const std::regex newUserSyntax(R"(^newUser\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
+			if (!std::regex_match(data, match, newUserSyntax))
+				return error;
+			hasAccessLevel = true;
+			break;
+
+		case newDoor_:
+			static const std::regex newDoorSyntax(R"(^newDoor\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
+			if (!std::regex_match(data, match, newDoorSyntax))
+				return error;
+			hasAccessLevel = true;
+			break;
+
+		case rmUser_:
+			static const std::regex rmUserSyntax(R"(^rmUser\s+([A-Za-z0-9_]+)$)");
+			if (!std::regex_match(data, match, rmUserSyntax))
+				return error;
+			break;
+
+		case rmDoor_:
+			static const std::regex rmDoorSyntax(R"(^rmDoor\s+([A-Za-z_]+)$)");
+			if (!std::regex_match(data, match, rmDoorSyntax))
+				return error;
+			break;
+
+		default:
+			return error;
+			break;
+	}
+
+	std::string name    = match[1].str();
+	uint8_t accessLevel = 0;
+	if (hasAccessLevel)
+		accessLevel = std::stoul(match[2].str());
+	to_snake_case(name);
+
+	return std::make_pair(name, accessLevel);
+}
+
 bool ReaderHandler::addToConfig(const std::string& type, const std::string& name, uint8_t accessLevel, const std::string& uid) {
 	// Assert type is correct. Cannot use compile-time asserts on string comparisons, maybe use const char* instead in the future.
 	if (type != "doors" && type != "users") {
@@ -458,8 +479,11 @@ bool ReaderHandler::addToConfig(const std::string& type, const std::string& name
 
 	configJson[type].push_back(addition);
 
-	std::ofstream out{"config_tmp.json"};
-	out << configJson.dump(4);
+	// Save changes to config.json. Using temporary file and rename for safer patch appliance.
+	{
+		std::ofstream out{"config_tmp.json"};
+		out << configJson.dump(4);
+	}
 	std::filesystem::rename("config_tmp.json", "config.json");
 
 	return true;
@@ -501,8 +525,10 @@ bool ReaderHandler::removeFromConfig(const std::string& type, const std::string&
 	}
 
 	// Save changes to config.json. Using temporary file and rename for safer patch appliance.
-	std::ofstream out{"config_tmp.json"};
-	out << configJson.dump(4);
+	{
+		std::ofstream out{"config_tmp.json"};
+		out << configJson.dump(4);
+	}
 	std::filesystem::rename("config_tmp.json", "config.json");
 
 	return true;

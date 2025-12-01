@@ -53,11 +53,16 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE BOOST_ERROR_CODE_HEADER_ONLY)
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 23)
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD_REQUIRED ON)
 
-option(ARGS "Enable development-only tests" OFF)
+option(ARGS "Enable Args" OFF)
 
 if (ARGS)
-	message(STATUS "Building with OGGA_DEV enabled")
+	message(STATUS "Building with ARGS enabled")
 	target_compile_definitions(${PROJECT_NAME} PRIVATE ARGS=1)
-else ()
-	set_target_properties(${PROJECT_NAME} PROPERTIES EXCLUDE_FROM_ALL TRUE)
+endif ()
+
+option(DEBUG "Enable debug-only tests" OFF)
+
+if (DEBUG)
+	message(STATUS "Building with DEBUG enabled")
+	target_compile_definitions(${PROJECT_NAME} PRIVATE DEBUG=1)
 endif ()

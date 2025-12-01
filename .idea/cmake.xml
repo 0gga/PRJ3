@@ -4,7 +4,7 @@
     <configurations>
       <configuration PROFILE_NAME="Windows-Release" ENABLED="false" CONFIG_NAME="Release" TOOLCHAIN_NAME="MinGW" />
       <configuration PROFILE_NAME="Linux-Release" ENABLED="false" CONFIG_NAME="Release" TOOLCHAIN_NAME="WSL" />
-      <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" GENERATION_OPTIONS="-DARGS=0" />
+      <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" GENERATION_OPTIONS="-DARGS=0 -DDEBUG=1" />
     </configurations>
   </component>
 </project>
