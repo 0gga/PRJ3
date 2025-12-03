@@ -93,9 +93,9 @@ void TcpServer::acceptConnection() {
 
 			if (connectHandler)
 				connectHandler(raw); //should just be connection
-			DEBUG_OUT("Accept succeeded");
+			DEBUG_OUT("Accept Succeeded");
 		} else {
-			DEBUG_OUT("Accept failed: " + std::string(ec.message()));
+			DEBUG_OUT("Accept Failed: " + std::string(ec.message()));
 		}
 		if (running && acceptor.is_open())
 			acceptConnection();

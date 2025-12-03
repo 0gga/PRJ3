@@ -231,26 +231,36 @@ void ReaderHandler::handleCli(CONNECTION_T connection) {
 				handleCli(connection);
 				return false;
 			}
+			DEBUG_OUT("Admin Verified");
 			return true;
 		};
 
 		// Phase 3: Handle cmdlets
 		if (pkg.rfind("newUser", 0) == 0) {
-			const auto [name, lvl] = parseSyntax(pkg, newUser_);
+			const auto [name, _, lvl] = parseSyntax(pkg, newUser_);
 			if (checkSyntax(name))
 				newUser(connection, name, lvl);
 		} else if (pkg.rfind("newDoor", 0) == 0) {
-			const auto [name, lvl] = parseSyntax(pkg, newDoor_);
+			const auto [name, _, lvl] = parseSyntax(pkg, newDoor_);
 			if (checkSyntax(name))
 				newDoor(connection, name, lvl);
 		} else if (pkg.rfind("rmUser", 0) == 0) {
-			const auto [name, lvl] = parseSyntax(pkg, rmUser_);
+			const auto [name, _, lvl] = parseSyntax(pkg, rmUser_);
 			if (checkSyntax(name))
 				rmUser(connection, name);
 		} else if (pkg.rfind("rmDoor", 0) == 0) {
-			const auto [name, lvl] = parseSyntax(pkg, rmDoor_);
+			const auto [name, _, lvl] = parseSyntax(pkg, rmDoor_);
 			if (checkSyntax(name))
 				rmDoor(connection, name);
+		} else if (pkg.rfind("mvUser", 0) == 0) {
+			const auto [oldName, newName, lvl] = parseSyntax(pkg, mvUser_);
+			if (checkSyntax(oldName))
+				mvUser(connection, oldName, newName, lvl);
+		} else if (pkg.rfind("mvDoor", 0) == 0) {
+			const auto [oldName, newName , lvl] = parseSyntax(pkg, mvDoor_);
+			if (checkSyntax(oldName))
+				DEBUG_OUT("mvDoor");
+			//mvDoor(connection, oldName, newName, lvl);
 		} else if (pkg == "exit") {
 			connection->write<std::string>("Closing Connection...");
 			if (connection == cliReader.second)
@@ -334,7 +344,7 @@ void ReaderHandler::rmUser(CONNECTION_T connection, const std::string& name) {
 								 "Name: " + name + "\n"
 								 "Access Level: " + std::to_string(user->second.second));
 	connection->write<std::string>(confirmMsg);
-	connection->read<std::string>([this, user, name, connection](const std::string& status) {
+	connection->read<std::string>([this, name, connection](const std::string& status) {
 		if (status == "denied" || status != "approved") {
 			connection->write<std::string>("Cancelled remove operation");
 			handleCli(connection);
@@ -379,29 +389,61 @@ void ReaderHandler::rmDoor(CONNECTION_T connection, const std::string& name) {
 }
 
 // Add later
-// void ReaderHandler::mvUser(CONNECTION_T connection, const std::string&) {}
+void ReaderHandler::mvUser(CONNECTION_T connection, const std::string& oldName, const std::string& newName, uint8_t accessLevel) {
+	auto user = usersByName.find(oldName);
+	if (user == usersByName.end()) {
+		connection->write<std::string>("User could not be found");
+		handleCli(connection);
+		return;
+	}
+	const std::string confirmMsg("Are you sure you want to edit user:\n"
+								 "UID: " + user->second.first + "\n"
+								 "Name: " + oldName + "\n"
+								 "Access Level: " + std::to_string(user->second.second) + "\n\n"
+								 "To: \n"
+								 "UID: " + user->second.first + "\n"
+								 "Name: " + newName + "\n"
+								 "Access Level: " + std::to_string(accessLevel)
+								);
+	std::string uid = user->second.first;
+	connection->write<std::string>(confirmMsg);
+	connection->read<std::string>([this, uid, oldName, newName, accessLevel, connection](const std::string& status) {
+		if (status == "denied" || status != "approved") {
+			connection->write<std::string>("Cancelled edit operation");
+			handleCli(connection);
+			return;
+		}
+
+		if (removeFromConfig("users", oldName) && addToConfig("users", newName, accessLevel, uid))
+			connection->write<std::string>("User edited successfully");
+		else
+			connection->write<std::string>("Failed to edit user, data may be corrupted");
+		handleCli(connection);
+	});
+}
+
 //
-// void ReaderHandler::mvDoor(CONNECTION_T connection, const std::string&) {}
+// void ReaderHandler::mvDoor(CONNECTION_T connection, const std::string&, const std::string&, uint8_t) {}
 
 
-std::pair<std::string, uint8_t> ReaderHandler::parseSyntax(const std::string& data, command type) {
-	std::pair<std::string, uint8_t> error{"-1", 0};
+ReaderHandler::cmdArgs ReaderHandler::parseSyntax(const std::string& data, command type) {
 	std::smatch match;
-	bool hasAccessLevel{false};
+	cmdArgs error;
+	uint8_t accessLevel{};
 
 	switch (type) {
 		case newUser_:
 			static const std::regex newUserSyntax(R"(^newUser\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
 			if (!std::regex_match(data, match, newUserSyntax))
 				return error;
-			hasAccessLevel = true;
+			accessLevel = std::stoul(match[2].str());
 			break;
 
 		case newDoor_:
 			static const std::regex newDoorSyntax(R"(^newDoor\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
 			if (!std::regex_match(data, match, newDoorSyntax))
 				return error;
-			hasAccessLevel = true;
+			accessLevel = std::stoul(match[2].str());
 			break;
 
 		case rmUser_:
@@ -411,23 +453,43 @@ std::pair<std::string, uint8_t> ReaderHandler::parseSyntax(const std::string& da
 			break;
 
 		case rmDoor_:
-			static const std::regex rmDoorSyntax(R"(^rmDoor\s+([A-Za-z_]+)$)");
+			static const std::regex rmDoorSyntax(R"(^rmDoor\s+([A-Za-z0-9_]+)$)");
 			if (!std::regex_match(data, match, rmDoorSyntax))
+				return error;
+			break;
+
+		case mvUser_:
+			static const std::regex mvUserSyntax1(R"(^mvUser\s+([A-Za-z0-9_]+)\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
+			static const std::regex mvUserSyntax2(R"(^mvUser\s+([A-Za-z0-9_]+)\s+([A-Za-z0-9_]+)$)");
+			if (std::regex_match(data, match, mvUserSyntax1))
+				accessLevel = std::stoul(match[3].str());
+			else if (!std::regex_match(data, match, mvUserSyntax2))
+				return error;
+			break;
+
+		case mvDoor_:
+			static const std::regex mvDoorSyntax1(R"(^mvUser\s+([A-Za-z0-9_]+)\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
+			static const std::regex mvDoorSyntax2(R"(^mvUser\s+([A-Za-z0-9_]+)\s+([A-Za-z0-9_]+)$)");
+			if (std::regex_match(data, match, mvDoorSyntax1))
+				accessLevel = std::stoul(match[3].str());
+			else if (!std::regex_match(data, match, mvDoorSyntax2))
 				return error;
 			break;
 
 		default:
 			return error;
-			break;
 	}
 
-	std::string name    = match[1].str();
-	uint8_t accessLevel = 0;
-	if (hasAccessLevel)
-		accessLevel = std::stoul(match[2].str());
-	to_snake_case(name);
+	uint8_t count       = match.size() - 1;
+	std::string oldName = count >= 1 ? match[1].str() : "-1";
+	std::string newName = count >= 2 ? match[2].str() : "-1";
 
-	return std::make_pair(name, accessLevel);
+	if (match.size() > 2)
+		to_snake_case(oldName, newName);
+	else
+		to_snake_case(oldName);
+
+	return cmdArgs{oldName, newName, accessLevel};
 }
 
 bool ReaderHandler::addToConfig(const std::string& type, const std::string& name, uint8_t accessLevel, const std::string& uid) {
@@ -538,25 +600,30 @@ void ReaderHandler::assertConfig(nlohmann::json& configJson) {
 
 /// Helper function for converting std::string to snake_case.\n
 /// Takes std::string by reference.
-/// @param input std::string input
+/// @param args undefined parameter pack. Will assert type is std::string&
 /// @returns void
-void ReaderHandler::to_snake_case(std::string& input) {
-	std::string result;
-	result.reserve(input.size());
-	/// Albeit reserving only input.size(), more usually get's allocated.
-	   /// If larger than input.size() it will just reallocate which is negligible regardless, considering the string sizes we'll be handling.
+template<typename... Args>
+void ReaderHandler::to_snake_case(Args&... args) {
+	static_assert((std::is_same_v<Args, std::string> && ...), "Arguments must be of type std::string&");
+	auto convertOne = [](std::string& input) {
+		std::string result;
+		result.reserve(input.size());
+		/// Albeit reserving only input.size(), more usually get's allocated.
+		/// If larger than input.size() it will just reallocate which is negligible regardless, considering the string sizes we'll be handling.
 
-	bool prevLower{false};
-	for (const unsigned char c : input) {
-		if (std::isupper(c)) {
-			if (prevLower)
-				result += '_';
-			result += static_cast<char>(std::tolower(c));
-			prevLower = false;
-		} else {
-			result += static_cast<char>(c);
-			prevLower = true;
+		bool prevLower{false};
+		for (const unsigned char c : input) {
+			if (std::isupper(c)) {
+				if (prevLower)
+					result += '_';
+				result += static_cast<char>(std::tolower(c));
+				prevLower = false;
+			} else {
+				result += static_cast<char>(c);
+				prevLower = true;
+			}
 		}
-	}
-	input = std::move(result);
+		input = std::move(result);
+	};
+	(convertOne(args), ...);
 }

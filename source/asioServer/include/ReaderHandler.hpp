@@ -39,19 +39,27 @@ private: // Member Functions
 		mvDoor_
 	};
 
+	struct cmdArgs {
+		std::string oldName_{"-1"};
+		std::string newName_{"-1"};
+		uint8_t accessLevel_{};
+	};
+
 
 	void newUser(CONNECTION_T connection, const std::string&, uint8_t);
 	void newDoor(CONNECTION_T connection, const std::string&, uint8_t);
 	void rmUser(CONNECTION_T connection, const std::string&);
 	void rmDoor(CONNECTION_T connection, const std::string&);
-	void mvUser(CONNECTION_T connection, const std::string&);
-	void mvDoor(CONNECTION_T connection, const std::string&);
+	void mvUser(CONNECTION_T connection, const std::string&, const std::string&, uint8_t);
+	void mvDoor(CONNECTION_T connection, const std::string&, const std::string&, uint8_t);
 
 	bool addToConfig(const std::string&, const std::string&, uint8_t, const std::string& = "");
 	bool removeFromConfig(const std::string&, const std::string&);
 	void assertConfig(nlohmann::json&);
-	std::pair<std::string, uint8_t> parseSyntax(const std::string& pkg, command type);
-	static void to_snake_case(std::string&);
+	cmdArgs parseSyntax(const std::string& pkg, command type);
+
+	template<typename... Args>
+	void to_snake_case(Args&... args);
 
 
 	ReaderState getState() const;

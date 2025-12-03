@@ -33,16 +33,13 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="updated testing script">
-      <change afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="added dockerfile">
       <change beforePath="$PROJECT_DIR$/.idea/cmake.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/cmake.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/asio" beforeDir="false" afterPath="$PROJECT_DIR$/extern/asio" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/json" beforeDir="false" afterPath="$PROJECT_DIR$/extern/json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/move" beforeDir="false" afterPath="$PROJECT_DIR$/extern/move" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/ogga" beforeDir="false" afterPath="$PROJECT_DIR$/extern/ogga" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/system" beforeDir="false" afterPath="$PROJECT_DIR$/extern/system" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/asioServer/TCP/TcpServer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/TCP/TcpServer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/asioServer/include/ReaderHandler.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/include/ReaderHandler.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -140,7 +137,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "CMakeSettings",
+    "settings.editor.selected.configurable": "preferences.sourceCode.C++",
     "settings.editor.splitter.proportion": "0.23740393",
     "show.migrate.to.gradle.popup": "false",
     "vue.rearranger.settings.migration": "true"
@@ -165,12 +162,7 @@
       <recent name="C:\Users\oscar\source\.repos\SW3PRJ3\.source" />
     </key>
   </component>
-  <component name="RunManager" selected="Docker.Dockerfile">
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="CMake Application.asioServer">
     <configuration name="asioServer" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="PRJ3" TARGET_NAME="asioServer" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="PRJ3" RUN_TARGET_NAME="asioServer">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -256,15 +248,10 @@
       <workItem from="1764632680862" duration="2000" />
       <workItem from="1764633591477" duration="252000" />
       <workItem from="1764633853977" duration="31000" />
-      <workItem from="1764633901174" duration="2444000" />
-    </task>
-    <task id="LOCAL-00006" summary="added door handling and refactored users.json to config.json">
-      <option name="closed" value="true" />
-      <created>1760528273693</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1760528273693</updated>
+      <workItem from="1764633901174" duration="2460000" />
+      <workItem from="1764706646415" duration="976000" />
+      <workItem from="1764711781818" duration="628000" />
+      <workItem from="1764792964240" duration="6450000" />
     </task>
     <task id="LOCAL-00007" summary="Improvements - refactored most params to const&amp;">
       <option name="closed" value="true" />
@@ -650,7 +637,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764623562558</updated>
     </task>
-    <option name="localTasksCounter" value="55" />
+    <task id="LOCAL-00055" summary="added dockerfile">
+      <option name="closed" value="true" />
+      <created>1764636375431</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1764636375431</updated>
+    </task>
+    <option name="localTasksCounter" value="56" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -690,7 +685,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Improvements - refactored most params to const&amp;" />
     <MESSAGE value="changes to readme" />
     <MESSAGE value="const&amp; fixes" />
     <MESSAGE value="Changes - Black Sabbath" />
@@ -715,7 +709,8 @@
     <MESSAGE value="readability patch on handleCli and removed unnecessary lock at &quot;exit&quot;" />
     <MESSAGE value="Dead CLI connection detection implemented" />
     <MESSAGE value="updated testing script" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated testing script" />
+    <MESSAGE value="added dockerfile" />
+    <option name="LAST_COMMIT_MESSAGE" value="added dockerfile" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
