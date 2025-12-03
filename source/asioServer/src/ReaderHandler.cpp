@@ -31,23 +31,23 @@ ReaderHandler::ReaderHandler(const int& clientPort, const int& cliPort, const st
 
 	if (configJson.contains("doors"))
 		for (const auto& door : configJson["doors"]) {
-			if (door.contains("name") && door.contains("accessLevel") &&
-				door["name"].is_string() && door["accessLevel"].is_number_integer())
-				doors[door["name"]] = door["accessLevel"];
+			if (door.contains("name") && door.contains("lvl") &&
+				door["name"].is_string() && door["lvl"].is_number_integer())
+				doors[door["name"]] = door["lvl"];
 			else
 				DEBUG_OUT("Invalid door entry in config.json - skipping one.\n");
 		}
 
 	if (configJson.contains("users"))
 		for (const auto& user : configJson["users"]) {
-			if (user.contains("name") && user.contains("uid") && user.contains("accessLevel") &&
-				user["name"].is_string() && user["uid"].is_string() && user["accessLevel"].is_number_integer()) {
+			if (user.contains("name") && user.contains("uid") && user.contains("lvl") &&
+				user["name"].is_string() && user["uid"].is_string() && user["lvl"].is_number_integer()) {
 				const std::string name = user["name"];
 				const std::string uid  = user["uid"];
-				const int accessLevel  = user["accessLevel"];
+				const int lvl          = user["lvl"];
 
-				usersByName[name] = {uid, accessLevel};
-				usersByUid[uid]   = {name, accessLevel};
+				usersByName[name] = {uid, lvl};
+				usersByUid[uid]   = {name, lvl};
 			} else
 				DEBUG_OUT("Invalid user entry in config.json - skipping one.\n");
 		}
@@ -213,6 +213,7 @@ void ReaderHandler::handleCli(CONNECTION_T connection) {
 			if (cliReader.second != connection) {
 				if (pkg.rfind(cliReader.first, 0) == 0) {
 					cliReader.second = connection;
+					DEBUG_OUT("Admin Verified");
 				} else if (pkg.rfind(cliReader.first, 0) != 0) {
 					connection->write<std::string>("Incorrect CLI identification");
 				}
@@ -231,7 +232,6 @@ void ReaderHandler::handleCli(CONNECTION_T connection) {
 				handleCli(connection);
 				return false;
 			}
-			DEBUG_OUT("Admin Verified");
 			return true;
 		};
 
@@ -259,8 +259,7 @@ void ReaderHandler::handleCli(CONNECTION_T connection) {
 		} else if (pkg.rfind("mvDoor", 0) == 0) {
 			const auto [oldName, newName , lvl] = parseSyntax(pkg, mvDoor_);
 			if (checkSyntax(oldName))
-				DEBUG_OUT("mvDoor");
-			//mvDoor(connection, oldName, newName, lvl);
+				mvDoor(connection, oldName, newName, lvl);
 		} else if (pkg == "exit") {
 			connection->write<std::string>("Closing Connection...");
 			if (connection == cliReader.second)
@@ -279,24 +278,24 @@ void ReaderHandler::handleCli(CONNECTION_T connection) {
 /// Add new user function.
 /// @param connection ptr to the relative TcpConnection object.
 /// @param name string representation of the user to be added i.e. "john_doe".
-/// @param accessLevel uint8_t representation of the access level for the user to be added i.e. "1".
-void ReaderHandler::newUser(CONNECTION_T connection, const std::string& name, const uint8_t accessLevel) {
+/// @param lvl uint8_t representation of the access level for the user to be added i.e. "1".
+void ReaderHandler::newUser(CONNECTION_T connection, const std::string& name, const uint8_t lvl) {
 	connection->write<std::string>("Awaiting card read");
-	connection->read<std::string>([this, name, accessLevel, connection](const std::string& uid) {
+	connection->read<std::string>([this, name, lvl, connection](const std::string& uid) {
 		const std::string confirmMsg("Are you sure you want to add user:\n"
 									 "UID: " + uid + "\n" +
 									 "Name: " + name + "\n" +
-									 "Access Level: " + std::to_string(accessLevel));
+									 "Access Level: " + std::to_string(lvl));
 		connection->write<std::string>(confirmMsg);
 
-		connection->read<std::string>([this, name, accessLevel, uid, connection](const std::string& status) {
+		connection->read<std::string>([this, name, lvl, uid, connection](const std::string& status) {
 			if (status == "denied" || status != "approved") {
 				connection->write<std::string>("Did not add user");
 				handleCli(connection);
 				return;
 			}
 
-			if (addToConfig("users", name, accessLevel, uid))
+			if (addToConfig("users", name, lvl, uid))
 				connection->write<std::string>("User added successfully");
 			else
 				connection->write<std::string>("Failed to add user");
@@ -308,20 +307,20 @@ void ReaderHandler::newUser(CONNECTION_T connection, const std::string& name, co
 /// Add new door function.
 /// /// @param connection ptr to the relative TcpConnection object.
 /// @param name string representation of the door to be added i.e. "front_entrance".
-/// @param accessLevel uint8_t representation of the access level for the door to be added i.e. "1".
-void ReaderHandler::newDoor(CONNECTION_T connection, const std::string& name, const uint8_t accessLevel) {
+/// @param lvl uint8_t representation of the access level for the door to be added i.e. "1".
+void ReaderHandler::newDoor(CONNECTION_T connection, const std::string& name, const uint8_t lvl) {
 	const std::string confirmMsg("Are you sure you want to add door:\n"
 								 "Name: " + name + "\n" +
-								 "Access Level: " + std::to_string(accessLevel));
+								 "Access Level: " + std::to_string(lvl));
 	connection->write<std::string>(confirmMsg);
-	connection->read<std::string>([this, name, accessLevel, connection](const std::string& status) {
+	connection->read<std::string>([this, name, lvl, connection](const std::string& status) {
 		if (status == "denied" || status != "approved") {
 			connection->write<std::string>("Did not add door");
 			handleCli(connection);
 			return;
 		}
 
-		if (addToConfig("doors", name, accessLevel))
+		if (addToConfig("doors", name, lvl))
 			connection->write<std::string>("Door added successfully");
 		else
 			connection->write<std::string>("Failed to add door");
@@ -389,7 +388,7 @@ void ReaderHandler::rmDoor(CONNECTION_T connection, const std::string& name) {
 }
 
 // Add later
-void ReaderHandler::mvUser(CONNECTION_T connection, const std::string& oldName, const std::string& newName, uint8_t accessLevel) {
+void ReaderHandler::mvUser(CONNECTION_T connection, const std::string& oldName, const std::string& newName, uint8_t lvl) {
 	auto user = usersByName.find(oldName);
 	if (user == usersByName.end()) {
 		connection->write<std::string>("User could not be found");
@@ -398,23 +397,19 @@ void ReaderHandler::mvUser(CONNECTION_T connection, const std::string& oldName, 
 	}
 	const std::string confirmMsg("Are you sure you want to edit user:\n"
 								 "UID: " + user->second.first + "\n"
-								 "Name: " + oldName + "\n"
-								 "Access Level: " + std::to_string(user->second.second) + "\n\n"
-								 "To: \n"
-								 "UID: " + user->second.first + "\n"
-								 "Name: " + newName + "\n"
-								 "Access Level: " + std::to_string(accessLevel)
+								 "Name: " + oldName + " -> " + newName + "\n"
+								 "Access Level: " + std::to_string(user->second.second) + " -> " + std::to_string(lvl) + "\n"
 								);
 	std::string uid = user->second.first;
 	connection->write<std::string>(confirmMsg);
-	connection->read<std::string>([this, uid, oldName, newName, accessLevel, connection](const std::string& status) {
+	connection->read<std::string>([this, uid, oldName, newName, lvl, connection](const std::string& status) {
 		if (status == "denied" || status != "approved") {
 			connection->write<std::string>("Cancelled edit operation");
 			handleCli(connection);
 			return;
 		}
 
-		if (removeFromConfig("users", oldName) && addToConfig("users", newName, accessLevel, uid))
+		if (removeFromConfig("users", oldName) && addToConfig("users", newName, lvl, uid))
 			connection->write<std::string>("User edited successfully");
 		else
 			connection->write<std::string>("Failed to edit user, data may be corrupted");
@@ -422,28 +417,53 @@ void ReaderHandler::mvUser(CONNECTION_T connection, const std::string& oldName, 
 	});
 }
 
-//
-// void ReaderHandler::mvDoor(CONNECTION_T connection, const std::string&, const std::string&, uint8_t) {}
+
+void ReaderHandler::mvDoor(CONNECTION_T connection, const std::string& oldName, const std::string& newName, uint8_t lvl) {
+	const auto door = doors.find(oldName);
+	if (door == doors.end()) {
+		connection->write<std::string>("Door could not be found");
+		handleCli(connection);
+		return;
+	}
+	const std::string confirmMsg("Are you sure you want to edit door:\n"
+								 "Name: " + oldName + " -> " + newName + "\n"
+								 "Access Level: " + std::to_string(door->second) + " -> " + std::to_string(lvl) + "\n"
+								);
+	connection->write<std::string>(confirmMsg);
+	connection->read<std::string>([this, oldName, newName, lvl, connection](const std::string& status) {
+		if (status == "denied" || status != "approved") {
+			connection->write<std::string>("Cancelled edit operation");
+			handleCli(connection);
+			return;
+		}
+
+		if (removeFromConfig("users", oldName) && addToConfig("users", newName, lvl))
+			connection->write<std::string>("Door edited successfully");
+		else
+			connection->write<std::string>("Failed to edit door, data may be corrupted");
+		handleCli(connection);
+	});
+}
 
 
 ReaderHandler::cmdArgs ReaderHandler::parseSyntax(const std::string& data, command type) {
 	std::smatch match;
 	cmdArgs error;
-	uint8_t accessLevel{};
+	uint8_t lvl{};
 
 	switch (type) {
 		case newUser_:
 			static const std::regex newUserSyntax(R"(^newUser\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
 			if (!std::regex_match(data, match, newUserSyntax))
 				return error;
-			accessLevel = std::stoul(match[2].str());
+			lvl = std::stoul(match[2].str());
 			break;
 
 		case newDoor_:
 			static const std::regex newDoorSyntax(R"(^newDoor\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
 			if (!std::regex_match(data, match, newDoorSyntax))
 				return error;
-			accessLevel = std::stoul(match[2].str());
+			lvl = std::stoul(match[2].str());
 			break;
 
 		case rmUser_:
@@ -462,7 +482,7 @@ ReaderHandler::cmdArgs ReaderHandler::parseSyntax(const std::string& data, comma
 			static const std::regex mvUserSyntax1(R"(^mvUser\s+([A-Za-z0-9_]+)\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
 			static const std::regex mvUserSyntax2(R"(^mvUser\s+([A-Za-z0-9_]+)\s+([A-Za-z0-9_]+)$)");
 			if (std::regex_match(data, match, mvUserSyntax1))
-				accessLevel = std::stoul(match[3].str());
+				lvl = std::stoul(match[3].str());
 			else if (!std::regex_match(data, match, mvUserSyntax2))
 				return error;
 			break;
@@ -471,7 +491,7 @@ ReaderHandler::cmdArgs ReaderHandler::parseSyntax(const std::string& data, comma
 			static const std::regex mvDoorSyntax1(R"(^mvUser\s+([A-Za-z0-9_]+)\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
 			static const std::regex mvDoorSyntax2(R"(^mvUser\s+([A-Za-z0-9_]+)\s+([A-Za-z0-9_]+)$)");
 			if (std::regex_match(data, match, mvDoorSyntax1))
-				accessLevel = std::stoul(match[3].str());
+				lvl = std::stoul(match[3].str());
 			else if (!std::regex_match(data, match, mvDoorSyntax2))
 				return error;
 			break;
@@ -489,10 +509,10 @@ ReaderHandler::cmdArgs ReaderHandler::parseSyntax(const std::string& data, comma
 	else
 		to_snake_case(oldName);
 
-	return cmdArgs{oldName, newName, accessLevel};
+	return cmdArgs{oldName, newName, lvl};
 }
 
-bool ReaderHandler::addToConfig(const std::string& type, const std::string& name, uint8_t accessLevel, const std::string& uid) {
+bool ReaderHandler::addToConfig(const std::string& type, const std::string& name, uint8_t lvl, const std::string& uid) {
 	// Assert type is correct. Cannot use compile-time asserts on string comparisons, maybe use const char* instead in the future.
 	if (type != "doors" && type != "users") {
 		DEBUG_OUT("Type must be either 'doors' or 'users'");
@@ -512,18 +532,18 @@ bool ReaderHandler::addToConfig(const std::string& type, const std::string& name
 	nlohmann::json addition;
 
 	if (type == "users") {
-		usersByName[name] = {uid, accessLevel};
-		usersByUid[uid]   = {name, accessLevel};
+		usersByName[name] = {uid, lvl};
+		usersByUid[uid]   = {name, lvl};
 		addition          = {
 			{"name", name},
 			{"uid", uid},
-			{"accessLevel", accessLevel}
+			{"lvl", lvl}
 		};
 	} else {
-		doors[name] = accessLevel;
+		doors[name] = lvl;
 		addition    = {
 			{"name", name},
-			{"accessLevel", accessLevel}
+			{"lvl", lvl}
 		};
 	}
 

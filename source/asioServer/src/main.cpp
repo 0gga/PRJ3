@@ -1,7 +1,6 @@
 ﻿#include "ReaderHandler.hpp"
 #include <ogga/print.hpp>
 #include <ogga/scopetimer.hpp>
-#include <ogga/csvlog.hpp>
 
 /// <b>CMake options:</b>\n
 /// -DDEBUG\n
