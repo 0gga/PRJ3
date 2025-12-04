@@ -195,9 +195,13 @@ void cli::printCommands() const {
         << "  newUser <Username> <accessLevel>    - Add user (includes NFC-scan)\n"
         << "  rmDoor <Door name>                  - Delete door\n"
         << "  rmUser <Username>                   - Delete user\n"
-        << "  getLog                              - Get log of entries\n"
-        << "  exit                                - ?? \n"    
-        << "  shutdown                            - Close server\n"
+        << "  mvDoor <Door name> <accessLevel>    - Edit existing door\n"
+        << "  mvUser <Username> <accessLevel>     - Edit existing user\n"
+        << "  exit                                - Exit and kill CLI connection \n"    
+        << "  shutdown                            - Shutdown the entire system\n"
+        << "  getSystemLog <'date'>               - Get date-specific system log\n"
+        << "  getUserLog <Username>               - Get user-specific log\n"
+        << "  getDoorLog <Door name>              - Get door-specific log\n"
         << "  help                                - Print command overview\n"
         << "\n";
 }
