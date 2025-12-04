@@ -33,11 +33,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="temporarily commented out cli in CMakeLists.txt">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/source/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/CMakeLists.txt" afterDir="false" />
+    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="cmake downgrade">
+      <change beforePath="$PROJECT_DIR$/source/client/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/source/client/CMakeLists.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -256,14 +253,6 @@
       <workItem from="1764711781818" duration="628000" />
       <workItem from="1764792964240" duration="6552000" />
       <workItem from="1764799854862" duration="623000" />
-    </task>
-    <task id="LOCAL-00009" summary="changes to readme">
-      <option name="closed" value="true" />
-      <created>1760530768694</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1760530768694</updated>
     </task>
     <task id="LOCAL-00010" summary="const&amp; fixes">
       <option name="closed" value="true" />
@@ -649,7 +638,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764799553225</updated>
     </task>
-    <option name="localTasksCounter" value="58" />
+    <task id="LOCAL-00058" summary="cmake downgrade">
+      <option name="closed" value="true" />
+      <created>1764842799733</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1764842799735</updated>
+    </task>
+    <option name="localTasksCounter" value="59" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -689,7 +686,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Changes - Black Sabbath" />
     <MESSAGE value="added mutex for read/write &amp; updated readme.&#10;Also added TcpConnection::close for invalid client syntax." />
     <MESSAGE value="Added comments in ReaderHandler implementation." />
     <MESSAGE value="Refactor formatting." />
@@ -714,7 +710,8 @@
     <MESSAGE value="added dockerfile" />
     <MESSAGE value="mv cmdlets implemented" />
     <MESSAGE value="temporarily commented out cli in CMakeLists.txt" />
-    <option name="LAST_COMMIT_MESSAGE" value="temporarily commented out cli in CMakeLists.txt" />
+    <MESSAGE value="cmake downgrade" />
+    <option name="LAST_COMMIT_MESSAGE" value="cmake downgrade" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
