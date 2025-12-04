@@ -8,7 +8,7 @@ ReaderHandler::ReaderHandler(const int& clientPort, const int& cliPort, const st
 : clientServer(clientPort),
   cliServer(cliPort),
   cliReader{cliName, nullptr} {
-#ifdef DEBUG
+#ifdef DEBUG && _WIN32
     myIp();
 #endif
     ////////////////////////////// Read config JSON //////////////////////////////

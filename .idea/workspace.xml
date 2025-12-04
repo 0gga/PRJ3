@@ -34,8 +34,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="ReaderHandler.cpp/mvUser &amp; mvDoor bugfix">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/include/ReaderHandler.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/include/ReaderHandler.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -255,14 +253,6 @@
       <workItem from="1764711781818" duration="628000" />
       <workItem from="1764792964240" duration="6552000" />
       <workItem from="1764799854862" duration="623000" />
-    </task>
-    <task id="LOCAL-00012" summary="Changes - Black Sabbath">
-      <option name="closed" value="true" />
-      <created>1760627369307</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1760627369307</updated>
     </task>
     <task id="LOCAL-00013" summary="added mutex for read/write &amp; updated readme.&#10;Also added TcpConnection::close for invalid client syntax.">
       <option name="closed" value="true" />
@@ -648,7 +638,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764847501698</updated>
     </task>
-    <option name="localTasksCounter" value="61" />
+    <task id="LOCAL-00061" summary="ReaderHandler.cpp/mvUser &amp; mvDoor bugfix">
+      <option name="closed" value="true" />
+      <created>1764850741414</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1764850741414</updated>
+    </task>
+    <option name="localTasksCounter" value="62" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
