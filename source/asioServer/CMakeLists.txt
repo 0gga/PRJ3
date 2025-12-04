@@ -1,5 +1,4 @@
-﻿cmake_minimum_required(VERSION 3.27)
-get_filename_component(PROJ_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
+﻿get_filename_component(PROJ_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 project(${PROJ_NAME} LANGUAGES C CXX)
 
 # Collect all .c, .cpp, .h, .tpp files from src/ & include/

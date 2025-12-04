@@ -35,13 +35,9 @@
   <component name="ChangeListManager">
     <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="temporarily commented out cli in CMakeLists.txt">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/asio" beforeDir="false" afterPath="$PROJECT_DIR$/extern/asio" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/json" beforeDir="false" afterPath="$PROJECT_DIR$/extern/json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/move" beforeDir="false" afterPath="$PROJECT_DIR$/extern/move" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/ogga" beforeDir="false" afterPath="$PROJECT_DIR$/extern/ogga" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/system" beforeDir="false" afterPath="$PROJECT_DIR$/extern/system" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/src/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/source/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/asioServer/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/CMakeLists.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -165,6 +161,11 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.asioServer">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="asioServer" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="PRJ3" TARGET_NAME="asioServer" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="PRJ3" RUN_TARGET_NAME="asioServer">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
