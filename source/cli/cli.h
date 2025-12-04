@@ -18,7 +18,7 @@ private:
     const char *server_ip;
     bool connection = false;
 
-    char buffer_receive[256]; // Evt større?
+    char buffer_receive[4096];
 
     int connect_to_server();
     void send_data(const std::string& msg);
