@@ -5,15 +5,16 @@ project(${PROJ_NAME} LANGUAGES C CXX)
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS src/*.cpp src/*.c src/*.tpp)
 file(GLOB_RECURSE HEADERS CONFIGURE_DEPENDS include/*.cpp include/*.c include/*.tpp include/*.hpp include/*.h)
 file(GLOB_RECURSE SERVER CONFIGURE_DEPENDS TCP/*.cpp TCP/*.c TCP/*.hpp TCP/*.h TCP/*.tpp)
+file(GLOB_RECURSE LOGGER CONFIGURE_DEPENDS logger/*.cpp logger/*.c logger/*.hpp logger/*.h logger/*.tpp)
 
 # Define executable path
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
 # Create the executable
-add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS} ${SERVER})
+add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS} ${SERVER} ${LOGGER})
 
 # Include headers from include/
-target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/include PRIVATE ${PROJECT_SOURCE_DIR}/TCP)
+target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/include PRIVATE ${PROJECT_SOURCE_DIR}/TCP PRIVATE ${PROJECT_SOURCE_DIR}/logger)
 
 # Include nlohmann::json
 include_directories(${CMAKE_SOURCE_DIR}/extern/json/single_include/nlohmann)

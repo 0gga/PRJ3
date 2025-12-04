@@ -6,6 +6,8 @@
 
 #include "json.hpp"
 
+#include "csv.hpp"
+
 enum class ReaderState {
 	Idle, Active
 };
@@ -36,7 +38,10 @@ private: // Member Functions
 		rmUser_,
 		rmDoor_,
 		mvUser_,
-		mvDoor_
+		mvDoor_,
+		systemLog_,
+		userLog_,
+		doorLog_
 	};
 
 	struct cmdArgs {
@@ -53,7 +58,9 @@ private: // Member Functions
 	void mvUser(CONNECTION_T connection, const std::string&, const std::string&, uint8_t);
 	void mvDoor(CONNECTION_T connection, const std::string&, const std::string&, uint8_t);
 
-	//std::string getLog();
+	std::string getSystemLog(const std::string& date);
+	std::string getUserLog(const std::string& name);
+	std::string getDoorLog(const std::string& name);
 
 	bool addToConfig(const std::string&, const std::string&, uint8_t, const std::string& = "");
 	bool removeFromConfig(const std::string&, const std::string&);
@@ -73,6 +80,7 @@ private: // Member Variables
 	TcpServer clientServer;
 	TcpServer cliServer;
 
+	CsvLogger log;
 	std::pair<std::string, CONNECTION_T> cliReader; //brug weak_ptr her perchance
 	std::unordered_map<std::string, int> doors;
 	std::unordered_map<std::string, std::pair<std::string, int>> usersByName;
