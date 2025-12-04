@@ -53,6 +53,8 @@ private: // Member Functions
 	void mvUser(CONNECTION_T connection, const std::string&, const std::string&, uint8_t);
 	void mvDoor(CONNECTION_T connection, const std::string&, const std::string&, uint8_t);
 
+	//std::string getLog();
+
 	bool addToConfig(const std::string&, const std::string&, uint8_t, const std::string& = "");
 	bool removeFromConfig(const std::string&, const std::string&);
 	void assertConfig(nlohmann::json&);
