@@ -22,6 +22,7 @@
     <generated>
       <config projectName="PRJ3" targetName="client" />
       <config projectName="PRJ3" targetName="asioServer" />
+      <config projectName="PRJ3" targetName="cli" />
     </generated>
   </component>
   <component name="CMakeSettings" AUTO_RELOAD="true">
@@ -34,7 +35,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="ReaderHandler.cpp/mvUser &amp; mvDoor bugfix">
-      <change beforePath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/source/cli/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/source/CMakeLists.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -114,6 +117,7 @@
     "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
     "CMake Application.asioServer.executor": "Run",
     "CMake Application.build_unix.executor": "Run",
+    "CMake Application.cli.executor": "Run",
     "Docker.Dockerfile.executor": "Run",
     "Python.serverTester.executor": "Run",
     "RunOnceActivity.RadMigrateCodeStyle": "true",
@@ -126,7 +130,7 @@
     "cidr.known.project.marker": "true",
     "dart.analysis.tool.window.visible": "false",
     "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/oscar/source/.repos/SW3PRJ3/.source/asioServer",
+    "last_opened_file_path": "C:/Users/Ogga/Documents/Repos/sw3prj3/source/cli",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -146,6 +150,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Ogga\Documents\Repos\sw3prj3\source\cli" />
       <recent name="C:\Users\oscar\source\.repos\SW3PRJ3\.source\asioServer" />
       <recent name="C:\Users\oscar\source\.repos\SW3PRJ3\.source\client" />
       <recent name="C:\Users\oscar\source\.repos\SW3PRJ3\.source\asioServer\TCP" />
@@ -157,13 +162,18 @@
       <recent name="C:\Users\oscar\source\.repos\SW3PRJ3\.source" />
     </key>
   </component>
-  <component name="RunManager" selected="CMake Application.asioServer">
+  <component name="RunManager" selected="CMake Application.cli">
     <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="CLION.EXTERNAL.BUILD" enabled="true" />
       </method>
     </configuration>
     <configuration name="asioServer" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="PRJ3" TARGET_NAME="asioServer" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="PRJ3" RUN_TARGET_NAME="asioServer">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="cli" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="PRJ3" TARGET_NAME="cli" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="PRJ3" RUN_TARGET_NAME="cli">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -205,6 +215,7 @@
     </configuration>
     <list>
       <item itemvalue="CMake Application.asioServer" />
+      <item itemvalue="CMake Application.cli" />
       <item itemvalue="CMake Application.client" />
       <item itemvalue="Docker.Dockerfile" />
       <item itemvalue="Python.serverTester" />
@@ -253,14 +264,6 @@
       <workItem from="1764711781818" duration="628000" />
       <workItem from="1764792964240" duration="6552000" />
       <workItem from="1764799854862" duration="623000" />
-    </task>
-    <task id="LOCAL-00013" summary="added mutex for read/write &amp; updated readme.&#10;Also added TcpConnection::close for invalid client syntax.">
-      <option name="closed" value="true" />
-      <created>1760697545130</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1760697545130</updated>
     </task>
     <task id="LOCAL-00014" summary="added mutex for read/write &amp; updated readme.&#10;Also added TcpConnection::close for invalid client syntax.">
       <option name="closed" value="true" />
@@ -646,7 +649,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764850741414</updated>
     </task>
-    <option name="localTasksCounter" value="62" />
+    <task id="LOCAL-00062" summary="ReaderHandler.cpp/mvUser &amp; mvDoor bugfix">
+      <option name="closed" value="true" />
+      <created>1764850963708</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1764850963708</updated>
+    </task>
+    <option name="localTasksCounter" value="63" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
