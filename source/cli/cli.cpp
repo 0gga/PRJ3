@@ -81,18 +81,21 @@ bool cli::recieve_data()
     // læser indtil \n eller \r, og kan blive stuck her hvis, det ikke er en del af beskeden
     // overvej eventuelt, bare at læse indtil EOF via read
 
-    while (total < sizeof(buffer_receive) - 1)
+     while (total < sizeof(buffer_receive) - 1)
     {
-        n = read(sockfd, buffer_receive + total, 1); // send 1 byte at a time
-        if (n <= 0)
+        // Læs så meget som muligt ad gangen
+        n = read(sockfd,
+                 buffer_receive + total,
+                 sizeof(buffer_receive) - 1 - total);
+
+        if (n < 0)
         {
             perror("ERROR reading from socket");
             return false;
         }
 
-        // end of line check
-        if (buffer_receive[total] == '\n' || 
-            buffer_receive[total] == '\r')
+        // EOF — modparten lukkede forbindelsen
+        if (n == 0)
         {
             break;
         }
@@ -100,7 +103,9 @@ bool cli::recieve_data()
         total += n;
     }
 
-    buffer_receive[total] = '\0'; // null termination
+    // Null-terminate
+    buffer_receive[total] = '\0';
+
     return true;
 }
 
@@ -108,7 +113,7 @@ bool cli::admin_identification()
 {
     std::string cli_identification;
     while(true){
-        if(!receive_data())
+        if(!recieve_data())
             return false;
 
         
@@ -204,7 +209,7 @@ bool cli::handle_newDoor(const std::string& cmd)
     if(!recieve_data())
         return false;
 
-    if (strcmp(buffer_receive, "Failed to add new door - Incorrect CLI syntax") == 0)
+    if (strcmp(buffer_receive, "Operation failed - Incorrect CLI syntax") == 0)
     {
         std::cout << buffer_receive << "\n";
         return false;
@@ -233,7 +238,7 @@ bool cli::handle_newUser(const std::string& cmd)
     if(!recieve_data())
         return false;
     
-    if (strcmp(buffer_receive, "Failed to add new user - Incorrect CLI syntax") == 0)
+    if (strcmp(buffer_receive, "Operation failed - Incorrect CLI syntax") == 0)
     {
         std::cout << buffer_receive << "\n";
         return false;
@@ -275,7 +280,7 @@ bool cli::handle_rmDoor(const std::string& cmd)
     if(!recieve_data())
         return false;
 
-    if (strcmp(buffer_receive, "Failed to remove door - Incorrect CLI syntax") == 0 ||
+    if (strcmp(buffer_receive, "Operation failed - Incorrect CLI syntax") == 0 ||
     strcmp(buffer_receive, "Door could not be found") == 0)
     {
         std::cout << buffer_receive << "\n";
@@ -313,7 +318,7 @@ bool cli::handle_rmUser(const std::string& cmd)
     if(!recieve_data())
         return false;
 
-    if (strcmp(buffer_receive, "Failed to remove user - Incorrect CLI syntax") == 0 )
+    if (strcmp(buffer_receive, "Operation failed - Incorrect CLI syntax") == 0 )
     {
         std::cout << buffer_receive << "\n";
         return false;
