@@ -57,7 +57,8 @@ std::shared_ptr<std::string> encodePayload(const T& data) {
 
 	buffer->append(typeName<T>::type);
 	buffer->append("%%%");
-	buffer->append(data + '\n');
+	buffer->append(data);
+	buffer->push_back('\n');
 
 	return buffer;
 }

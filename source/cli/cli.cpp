@@ -89,10 +89,12 @@ bool cli::recieve_data() {
 			buffer_receive[total - 1] = '\0';
 			break;
 		}
-		std::cout << "buffer_receive1" << std::endl;
 	}
-	std::cout << "buffer_receive2" << std::endl;
+	memmove(buffer_receive,
+			buffer_receive + 14,
+			total - 14 + 1);
 	buffer_receive[total] = '\0';
+
 	std::cout << buffer_receive << std::endl;
 
 	return true;
@@ -104,8 +106,8 @@ bool cli::admin_identification() {
 		if (!recieve_data())
 			return false;
 
-		if (strcmp(buffer_receive, "Input CLI identification") == 0
-			|| strcmp(buffer_receive, "Incorrect CLI identification") == 0) {
+		if (strcmp(buffer_receive, "Input CLI Identification") == 0
+			|| strcmp(buffer_receive, "Incorrect CLI Identification") == 0) {
 			std::cout << "<";
 			std::cin >> cli_identification;
 
@@ -129,7 +131,7 @@ void cli::run() {
 	while (connection) {
 		std::cout << "Input command. Type 'help' to see overview";
 
-		std::cout << "<";
+		std::cout << "> ";
 		std::string input;
 		std::getline(std::cin, input);
 

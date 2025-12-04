@@ -217,7 +217,7 @@ void ReaderHandler::handleCli(CONNECTION_T connection) {
                     cliReader.second = connection;
                     DEBUG_OUT("Admin Verified");
                 } else if (pkg.rfind(cliReader.first, 0) != 0) {
-                    connection->write<std::string>("Incorrect CLI identification");
+                    connection->write<std::string>("Incorrect CLI Identification");
                 }
                 recursionFlag = true;
             }
