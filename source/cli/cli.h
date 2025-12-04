@@ -32,6 +32,9 @@ private:
    bool handle_getLog(const std::string&);
    bool handle_exit(const std::string&);
    bool handle_shutdown(const std::string&);
+   bool handle_mvUser(const std::string&);
+   bool handle_mvDoor(const std::string&);
+
 
     void printCommands() const;
 

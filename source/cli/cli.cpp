@@ -81,7 +81,7 @@ bool cli::recieve_data()
     // læser indtil \n eller \r, og kan blive stuck her hvis, det ikke er en del af beskeden
     // overvej eventuelt, bare at læse indtil EOF via read
 
-     while (total < sizeof(buffer_receive) - 1)
+    while (total < sizeof(buffer_receive) - 1)
     {
         // Læs så meget som muligt ad gangen
         n = read(sockfd,
@@ -226,8 +226,22 @@ bool cli::handle_newDoor(const std::string& cmd)
     if(!recieve_data())
         return false;
 
-    std::cout << buffer_receive << std::endl; // 'Door added successfully' or 'Did not add door'
-    return true;
+    if (strcmp(buffer_receive, "Did not add door")==0)
+    {
+        std::cout << buffer_receive << "\n";
+        return false;
+    } 
+
+    if (strcmp(buffer_receive, "Failed to add door") == 0)
+    {
+        std::cout << buffer_receive << "\n";
+        return false;
+    } 
+    
+    if(strcmp(buffer_receive, "Door added successfully")==0) {
+        std::cout << buffer_receive;
+        return true;
+    }
     
 }
 
@@ -268,8 +282,16 @@ bool cli::handle_newUser(const std::string& cmd)
     if(!recieve_data())
         return false;
 
-    std::cout << buffer_receive << "\n"; // 'User added successfully'
-    return true;
+    if (strcmp(buffer_receive, "Failed to add user") == 0)
+    {
+        std::cout << buffer_receive << "\n";
+        return false;
+    } 
+    
+    if(strcmp(buffer_receive, "User added successfully")==0) {
+        std::cout << buffer_receive;
+        return true;
+    }
 
 }
 
@@ -298,8 +320,13 @@ bool cli::handle_rmDoor(const std::string& cmd)
     if(!recieve_data())
         return false;
 
-    if (strcmp(buffer_receive, "Did not add door") == 0 ||
-    strcmp(buffer_receive, "Door not found in memory") == 0)
+    if (strcmp(buffer_receive, "Cancelled remove operation") == 0)
+    {
+        std::cout << buffer_receive << "\n";
+        return false;
+    } 
+
+    if (strcmp(buffer_receive, "Failed to remove door") == 0)
     {
         std::cout << buffer_receive << "\n";
         return false;
@@ -318,7 +345,8 @@ bool cli::handle_rmUser(const std::string& cmd)
     if(!recieve_data())
         return false;
 
-    if (strcmp(buffer_receive, "Operation failed - Incorrect CLI syntax") == 0 )
+    if (strcmp(buffer_receive, "Operation failed - Incorrect CLI syntax") == 0 ||
+    strcmp(buffer_receive, "User could not be found") == 0)
     {
         std::cout << buffer_receive << "\n";
         return false;
@@ -335,12 +363,19 @@ bool cli::handle_rmUser(const std::string& cmd)
     if(!recieve_data())
         return false;
 
-    if (strcmp(buffer_receive, "Did not add user") == 0 ||
-    strcmp(buffer_receive, "User not found in memory") == 0)
+    if (strcmp(buffer_receive, "Cancelled remove operation") == 0)
     {
         std::cout << buffer_receive << "\n";
         return false;
-    } else if(strcmp(buffer_receive, "User Removed Successfully")==0) {
+    } 
+
+    if (strcmp(buffer_receive, "Failed to remove user") == 0)
+    {
+        std::cout << buffer_receive << "\n";
+        return false;
+    } 
+    
+    if(strcmp(buffer_receive, "User removed successfully")==0) {
         std::cout << buffer_receive;
         return true;
     }
@@ -402,4 +437,90 @@ bool cli::handle_shutdown(const std::string& cmd)
     connection = false;
 
     return true;
+}
+
+bool cli::handle_mvUser(const std::string& cmd)
+{
+    send_data(cmd);
+
+    if(!recieve_data())
+        return false;
+
+    if (strcmp(buffer_receive, "Operation failed - Incorrect CLI syntax") == 0 ||
+    strcmp(buffer_receive, "User could not be found") == 0)
+    {
+        std::cout << buffer_receive << "\n";
+        return false;
+    }
+
+    std::cout << buffer_receive << std::endl; // confirm msg
+
+    std::string confirmation;
+    std::cout << "<approved/denied> ";
+    std::cin >> confirmation;
+    
+    send_data(confirmation);
+
+    if(!recieve_data())
+        return false;
+
+    if (strcmp(buffer_receive, "Cancelled edit operation") == 0)
+    {
+        std::cout << buffer_receive << "\n";
+        return false;
+    } 
+
+    if (strcmp(buffer_receive, "Failed to edit user, data may be corrupted") == 0)
+    {
+        std::cout << buffer_receive << "\n";
+        return false;
+    } 
+    
+    if(strcmp(buffer_receive, "User edited successfully")==0) {
+        std::cout << buffer_receive;
+        return true;
+    }
+}
+
+bool cli::handle_mvDoor(const std::string& cmd)
+{
+    send_data(cmd);
+
+    if(!recieve_data())
+        return false;
+
+    if (strcmp(buffer_receive, "Operation failed - Incorrect CLI syntax") == 0 ||
+    strcmp(buffer_receive, "Door could not be found") == 0)
+    {
+        std::cout << buffer_receive << "\n";
+        return false;
+    }
+
+    std::cout << buffer_receive << std::endl; // confirm msg
+
+    std::string confirmation;
+    std::cout << "<approved/denied> ";
+    std::cin >> confirmation;
+    
+    send_data(confirmation);
+
+    if(!recieve_data())
+        return false;
+
+    if (strcmp(buffer_receive, "Cancelled edit operation") == 0)
+    {
+        std::cout << buffer_receive << "\n";
+        return false;
+    } 
+
+    if (strcmp(buffer_receive, "Failed to edit door, data may be corrupted") == 0)
+    {
+        std::cout << buffer_receive << "\n";
+        return false;
+    } 
+    
+    if(strcmp(buffer_receive, "Door edited successfully")==0) {
+        std::cout << buffer_receive;
+        return true;
+    }
 }
