@@ -34,11 +34,12 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="patches to ReaderHandler.cpp and updated dependencies">
+    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="\n">
       <change beforePath="$PROJECT_DIR$/.idea/cmake.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/cmake.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/asioServer/TCP/TcpConnection.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/TCP/TcpConnection.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/cli/cli.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/cli/cli.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/cli/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/cli/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -137,7 +138,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;CPPToolchains&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;CMakeSettings&quot;,
     &quot;settings.editor.splitter.proportion&quot;: &quot;0.23740393&quot;,
     &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
@@ -151,16 +152,31 @@
 }</component>
   <component name="RdControllerToolWindowsLayoutState" isNewUi="true">
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.25" />
+      <window_info id="Bookmarks" side_tool="true" />
+      <window_info id="Merge Requests" />
+      <window_info id="Backup and Sync History" />
+      <window_info id="Commit_Guest" show_stripe_button="false" />
+      <window_info id="Pull Requests" />
+      <window_info id="Learn" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.3301983" />
       <window_info id="Commit" order="1" weight="0.25" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Database Changes" />
+      <window_info anchor="bottom" id="TypeScript" />
+      <window_info anchor="bottom" id="Python Packages" />
+      <window_info anchor="bottom" id="TODO" />
+      <window_info anchor="bottom" id="File Transfer" />
+      <window_info anchor="bottom" id="Vcpkg" />
+      <window_info anchor="bottom" id="clangd" />
       <window_info anchor="bottom" id="Version Control" order="0" />
       <window_info anchor="bottom" id="Problems" order="1" />
       <window_info anchor="bottom" id="Problems View" order="2" />
       <window_info anchor="bottom" id="Terminal" order="3" />
-      <window_info anchor="bottom" id="Services" order="4" />
-      <window_info anchor="bottom" id="CMake" order="5" />
+      <window_info anchor="bottom" id="Services" order="4" weight="0.33011582" />
+      <window_info active="true" anchor="bottom" id="CMake" order="5" visible="true" weight="0.33011582" />
+      <window_info anchor="right" id="make" side_tool="true" />
+      <window_info anchor="right" id="Python Console" />
+      <window_info anchor="right" id="Coverage" side_tool="true" />
       <window_info anchor="right" content_ui="combo" id="Notifications" order="0" weight="0.25" />
       <window_info anchor="right" id="AIAssistant" order="1" weight="0.25" />
       <window_info anchor="right" id="Database" order="2" weight="0.25" />
@@ -184,6 +200,11 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.cli">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="asioServer" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="PRJ3" TARGET_NAME="asioServer" CONFIG_NAME="Linux-Release" RUN_TARGET_PROJECT_NAME="PRJ3" RUN_TARGET_NAME="asioServer">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -238,8 +259,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Docker.Dockerfile" />
         <item itemvalue="Python.serverTester" />
+        <item itemvalue="Docker.Dockerfile" />
       </list>
     </recent_temporary>
   </component>
@@ -281,23 +302,13 @@
       <workItem from="1764792964240" duration="6552000" />
       <workItem from="1764799854862" duration="623000" />
       <workItem from="1764879658417" duration="252000" />
-      <workItem from="1764879915853" duration="31000" />
-    </task>
-    <task id="LOCAL-00014" summary="added mutex for read/write &amp; updated readme.&#10;Also added TcpConnection::close for invalid client syntax.">
-      <option name="closed" value="true" />
-      <created>1760697753932</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1760697753932</updated>
-    </task>
-    <task id="LOCAL-00015" summary="added mutex for read/write &amp; updated readme.&#10;Also added TcpConnection::close for invalid client syntax.">
-      <option name="closed" value="true" />
-      <created>1760697860404</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1760697860404</updated>
+      <workItem from="1764879915853" duration="71000" />
+      <workItem from="1764880018551" duration="13000" />
+      <workItem from="1764880098833" duration="657000" />
+      <workItem from="1764880980642" duration="400000" />
+      <workItem from="1764881761303" duration="92000" />
+      <workItem from="1764881864134" duration="366000" />
+      <workItem from="1764882243726" duration="165000" />
     </task>
     <task id="LOCAL-00016" summary="Added comments in ReaderHandler implementation.">
       <option name="closed" value="true" />
@@ -675,7 +686,23 @@
       <option name="project" value="LOCAL" />
       <updated>1764850963708</updated>
     </task>
-    <option name="localTasksCounter" value="63" />
+    <task id="LOCAL-00063" summary="\n">
+      <option name="closed" value="true" />
+      <created>1764879964437</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1764879964437</updated>
+    </task>
+    <task id="LOCAL-00064" summary="\n">
+      <option name="closed" value="true" />
+      <created>1764880238237</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1764880238237</updated>
+    </task>
+    <option name="localTasksCounter" value="65" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -715,7 +742,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Added comments in ReaderHandler implementation." />
     <MESSAGE value="Refactor formatting." />
     <MESSAGE value="Redoing CLI logic." />
     <MESSAGE value="Show IP Address on boot" />
@@ -740,7 +766,8 @@
     <MESSAGE value="temporarily commented out cli in CMakeLists.txt" />
     <MESSAGE value="cmake downgrade" />
     <MESSAGE value="ReaderHandler.cpp/mvUser &amp; mvDoor bugfix" />
-    <option name="LAST_COMMIT_MESSAGE" value="ReaderHandler.cpp/mvUser &amp; mvDoor bugfix" />
+    <MESSAGE value="\n" />
+    <option name="LAST_COMMIT_MESSAGE" value="\n" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

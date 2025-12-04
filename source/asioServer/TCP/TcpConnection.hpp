@@ -109,7 +109,6 @@ void TcpConnection::write(const Tx& data) {
 		return;
 
 	auto bytes = encodePayload(data);
-	DEBUG_OUT(bytes);
 
 	boost::asio::async_write(socket_, boost::asio::buffer(*bytes),
 							 boost::asio::bind_executor(strand_, [this, bytes](const boost::system::error_code& ec, std::size_t) {
