@@ -3,8 +3,8 @@
   <component name="CMakeSharedSettings">
     <configurations>
       <configuration PROFILE_NAME="Windows-Release" ENABLED="false" CONFIG_NAME="Release" TOOLCHAIN_NAME="MinGW" />
-      <configuration PROFILE_NAME="Linux-Release" ENABLED="true" CONFIG_NAME="Debug" TOOLCHAIN_NAME="WSL" GENERATION_OPTIONS="-DDEBUG=1" />
-      <configuration PROFILE_NAME="Debug" ENABLED="false" CONFIG_NAME="Debug" GENERATION_OPTIONS="-G Ninja -DARGS:BOOL=0 -DDEBUG:BOOL=1" />
+      <configuration PROFILE_NAME="Linux-Release" ENABLED="false" CONFIG_NAME="Debug" TOOLCHAIN_NAME="WSL" GENERATION_OPTIONS="-DDEBUG=1" />
+      <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" GENERATION_OPTIONS="-G Ninja -DARGS:BOOL=0 -DDEBUG:BOOL=1" />
       <configuration PROFILE_NAME="Docker Debug" ENABLED="false" CONFIG_NAME="Debug" TOOLCHAIN_NAME="Docker" GENERATION_OPTIONS="-G Ninja -DARGS:BOOL=0 -DDEBUG:BOOL=1" />
     </configurations>
   </component>

@@ -8,9 +8,7 @@ ReaderHandler::ReaderHandler(const int &clientPort, const int &cliPort,
                              const std::string &cliName) : clientServer(clientPort),
                                                            cliServer(cliPort),
                                                            cliReader{cliName, nullptr} {
-#ifdef DEBUG && _WIN32
     myIp();
-#endif
     ////////////////////////////// Read config JSON //////////////////////////////
     std::ifstream file("config.json");
     nlohmann::json configJson;
@@ -121,21 +119,87 @@ void ReaderHandler::runLoop() {
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }
 
+#ifdef _WIN32
+#define _WINSOCK_DEPRECATED_NO_WARNINGS
+#include <winsock2.h>
+#include <Ws2tcpip.h>
+#pragma comment(lib, "Ws2_32.lib")
+#else
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netdb.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+#endif
+
 /// Outputs server IPV4.
-/// @returns void
+/// /// @returns void
 void ReaderHandler::myIp() {
-    boost::asio::io_context io;
-    boost::asio::ip::tcp::resolver resolver(io);
-    auto results = resolver.resolve(boost::asio::ip::host_name(), "");
-    std::string ip_address;
-    for (const auto &e: results) {
-        auto addr = e.endpoint().address();
-        if (addr.is_v4() && !addr.is_loopback()) {
-            ip_address = addr.to_string();
-            break;
+#ifdef _WIN32
+    static bool wsa_initialized = false;
+    if (!wsa_initialized) {
+        WSADATA wsa{};
+        if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) {
+            throw std::runtime_error("WSAStartup failed");
         }
+        wsa_initialized = true;
     }
-    DEBUG_OUT(ip_address);
+#endif
+
+    // 1) Create UDP socket
+    int sock = ::socket(AF_INET, SOCK_DGRAM, 0);
+    if (sock < 0) {
+        throw std::runtime_error("socket() failed");
+    }
+
+    // 2) "Connect" to some external IPv4 (no packets need to be sent)
+    sockaddr_in remote{};
+    remote.sin_family = AF_INET;
+    remote.sin_port   = htons(53);          // arbitrary (DNS)
+    if (inet_pton(AF_INET, "8.8.8.8", &remote.sin_addr) != 1) {
+#ifdef _WIN32
+        closesocket(sock);
+#else
+        close(sock);
+#endif
+        throw std::runtime_error("inet_pton failed");
+    }
+
+    if (connect(sock, reinterpret_cast<sockaddr*>(&remote), sizeof(remote)) < 0) {
+#ifdef _WIN32
+        closesocket(sock);
+#else
+        close(sock);
+#endif
+        throw std::runtime_error("connect() failed");
+    }
+
+    // 3) Ask the OS which local address was used
+    sockaddr_in local{};
+    socklen_t len = sizeof(local);
+    if (getsockname(sock, reinterpret_cast<sockaddr*>(&local), &len) < 0) {
+#ifdef _WIN32
+        closesocket(sock);
+#else
+        close(sock);
+#endif
+        throw std::runtime_error("getsockname() failed");
+    }
+
+#ifdef _WIN32
+    closesocket(sock);
+#else
+    close(sock);
+#endif
+
+    // 4) Convert to string
+    char buf[INET_ADDRSTRLEN]{};
+    if (!inet_ntop(AF_INET, &local.sin_addr, buf, sizeof(buf))) {
+        throw std::runtime_error("inet_ntop failed");
+    }
+
+    std::string ip = buf;
+    DEBUG_OUT(ip);
 }
 
 void ReaderHandler::onDeadConnection(CONNECTION_T dead) {
@@ -175,11 +239,11 @@ void ReaderHandler::handleClient(CONNECTION_T connection) {
             const auto user = usersByUid.find(uid);
             const bool authorized = (user != usersByUid.end() && user->second.second <= door->second);
             DEBUG_OUT(
-                    (user == usersByUid.end())
-                    ? "Unknown User"
-                    : ((authorized ? "Approved access to " + user->second.first
-                        : "Denied access to " + user->second.first) + " at " + door->first)
-                    );
+                (user == usersByUid.end())
+                ? "Unknown User"
+                : ((authorized ? "Approved access to " + user->second.first
+                    : "Denied access to " + user->second.first) + " at " + door->first)
+            );
             connection->write<std::string>(authorized ? "approved" : "denied");
             //log.addLog(door->first, user->second.first, stoi(user->first), authorized ? "approved" : "denied");
         }
@@ -424,7 +488,7 @@ void ReaderHandler::mvUser(CONNECTION_T connection, const std::string &oldName, 
                                  "Name: " + oldName + " -> " + newName + "\n"
                                  "Access Level: " + std::to_string(user->second.second) + " -> " + std::to_string(lvl) +
                                  "\n"
-            );
+    );
     std::string uid = user->second.first;
     connection->write<std::string>(confirmMsg);
     connection->read<std::string>([this, uid, oldName, newName, lvl, connection](const std::string &status) {
@@ -458,7 +522,7 @@ void ReaderHandler::mvDoor(CONNECTION_T connection, const std::string &oldName, 
     const std::string confirmMsg("Are you sure you want to edit door:\n"
                                  "Name: " + oldName + " -> " + newName + "\n"
                                  "Access Level: " + std::to_string(door->second) + " -> " + std::to_string(lvl) + "\n"
-            );
+    );
     connection->write<std::string>(confirmMsg);
     connection->read<std::string>([this, oldName, newName, lvl, connection](const std::string &status) {
         if (status == "denied" || status != "approved") {

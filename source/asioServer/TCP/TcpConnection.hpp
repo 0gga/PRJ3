@@ -82,8 +82,6 @@ void TcpConnection::read(std::function<void(const Rx&)> handler) {
     }));
 }
 
-#include "PayloadEncoder.hpp"
-
 //clang-format on
 template<typename Tx>
 void TcpConnection::write(const Tx &data) {
@@ -91,7 +89,13 @@ void TcpConnection::write(const Tx &data) {
         return;
     DEBUG_OUT("Writing...");
 
-    auto bytes = encodePayload(data);
+    auto bytes = std::make_shared<std::string>();
+    bytes->reserve(64 + sizeof(Tx));
+
+    bytes->append("type:string");
+    bytes->append("%%%");
+    bytes->append(data);
+    bytes->push_back('\n');
 
     boost::asio::async_write(socket_, boost::asio::buffer(*bytes),
                              boost::asio::bind_executor(
