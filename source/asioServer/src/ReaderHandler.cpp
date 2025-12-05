@@ -4,97 +4,103 @@
 #include <regex>
 
 ///
-ReaderHandler::ReaderHandler(const int &clientPort, const int &cliPort,
-                             const std::string &cliName) : clientServer_(clientPort),
-                                                           cliServer_(cliPort),
-                                                           cliReader_{cliName, nullptr} {
-    myIp();
-    ////////////////////////////// Read config JSON //////////////////////////////
-    std::ifstream file("config.json");
-    nlohmann::json configJson;
+ReaderHandler::ReaderHandler(const int& clientPort, const int& cliPort,
+							 const std::string& cliName) : clientServer_(clientPort),
+														   cliServer_(cliPort),
+														   cliReader_{cliName, nullptr} {
+	myIp();
+	////////////////////////////// Read config JSON //////////////////////////////
+	std::ifstream file("config.json");
+	nlohmann::json configJson;
 
-    if (!file.is_open() || file.peek() == std::ifstream::traits_type::eof()) {
-        DEBUG_OUT("config.json doesn't exist");
-        std::ofstream("config.json") << R"({"users":[],"doors_":[]})";
-        DEBUG_OUT("Created empty config.json");
-    } else {
-        try {
-            file >> configJson;
-        } catch (const nlohmann::json::parse_error &e) {
-            DEBUG_OUT("Invalid JSON in config.json" + std::string(e.what()));
-            configJson = {{"users", nlohmann::json::array()}, {"doors_", nlohmann::json::array()}};
+	if (!file.is_open() || file.peek() == std::ifstream::traits_type::eof()) {
+		DEBUG_OUT("config.json doesn't exist");
+		std::ofstream("config.json") << R"({"users":[],"doors":[]})";
+		DEBUG_OUT("Created empty config.json");
+	} else {
+		try {
+			file >> configJson;
+		}
+		catch (const nlohmann::json::parse_error& e) {
+			DEBUG_OUT("Invalid JSON in config.json" + std::string(e.what()));
+			configJson = {{"users", nlohmann::json::array()}, {"doors", nlohmann::json::array()}};
 
-            std::ofstream("config.json") << R"({"users":[],"doors_":[]})";
-            DEBUG_OUT("Reset invalid config.json\n");
-        }
-    }
+			std::ofstream("config.json") << R"({"users":[],"doors":[]})";
+			DEBUG_OUT("Reset invalid config.json\n");
+		}
+	}
 
-    if (configJson.contains("doors_"))
-        for (const auto &door: configJson["doors_"]) {
-            if (door.contains("name") && door.contains("lvl") &&
-                door["name"].is_string() && door["lvl"].is_number_integer())
-                doors_[door["name"]] = door["lvl"];
-            else
-                DEBUG_OUT("Invalid door entry in config.json - skipping one.\n");
-        }
+	if (configJson.contains("doors"))
+		for (const auto& door : configJson["doors"]) {
+			if (door.contains("name") && door.contains("lvl") &&
+				door["name"].is_string() && door["lvl"].is_number_integer())
+				doors_[door["name"]] = door["lvl"];
+			else
+				DEBUG_OUT("Invalid door entry in config.json - skipping one.\n");
+		}
 
-    if (configJson.contains("users"))
-        for (const auto &user: configJson["users"]) {
-            if (user.contains("name") && user.contains("uid") && user.contains("lvl") &&
-                user["name"].is_string() && user["uid"].is_string() && user["lvl"].is_number_integer()) {
-                const std::string name = user["name"];
-                const std::string uid = user["uid"];
-                const int lvl = user["lvl"];
+	if (configJson.contains("users"))
+		for (const auto& user : configJson["users"]) {
+			if (user.contains("name") && user.contains("uid") && user.contains("lvl") &&
+				user["name"].is_string() && user["uid"].is_string() && user["lvl"].is_number_integer()) {
+				const std::string name = user["name"];
+				const std::string uid  = user["uid"];
+				const int lvl          = user["lvl"];
 
-                usersByName_[name] = {uid, lvl};
-                usersByUid_[uid] = {name, lvl};
-            } else
-                DEBUG_OUT("Invalid user entry in config.json - skipping one.\n");
-        }
-    ////////////////////////////// Read config JSON //////////////////////////////
+				usersByName_[name] = {uid, lvl};
+				usersByUid_[uid]   = {name, lvl};
+			} else
+				DEBUG_OUT("Invalid user entry in config.json - skipping one.\n");
+		}
+	file.close();
+	////////////////////////////// Read config JSON //////////////////////////////
 
-    //////////////////////////////// Init Servers ////////////////////////////////
-    TcpServer::setThreadCount(1);
+	//////////////////////////////// Init Servers ////////////////////////////////
+	TcpServer::setThreadCount(1);
 
-    clientServer_.start();
-    cliServer_.start();
+	clientServer_.start();
+	cliServer_.start();
 
-    clientServer_.onClientConnect([this](const CONNECTION_T &connection) {
-        DEBUG_OUT("Client Connected\n");
-        handleClient(connection);
-    });
+	clientServer_.onClientConnect([this](const CONNECTION_T& connection) {
+		DEBUG_OUT("Client Connected\n");
+		handleClient(connection);
+	});
 
-    cliServer_.onClientConnect([this](const CONNECTION_T &connection) {
-        DEBUG_OUT("CLI Connected\n");
-        handleCli(connection);
-    });
+	cliServer_.onClientConnect([this](const CONNECTION_T& connection) {
+		DEBUG_OUT("CLI Connected\n");
+		handleCli(connection);
+	});
 
-    cliServer_.onClientDisconnect([this](const CONNECTION_T &connection) {
-        std::scoped_lock lock(cli_mtx_);
-        if (cliReader_.second == connection) {
-            cliReader_.second = nullptr;
-            DEBUG_OUT("Dead CLI Cleared\n");
-        }
-    });
+	cliServer_.onClientDisconnect([this](const CONNECTION_T& connection) {
+		std::scoped_lock lock(cli_mtx_);
+		if (cliReader_.second == connection) {
+			cliReader_.second = nullptr;
+			DEBUG_OUT("Dead CLI Cleared\n");
+		}
+	});
 
-    running_ = true;
-    DEBUG_OUT("Servers started and awaiting clients");
-    //////////////////////////////// Init Servers ////////////////////////////////
+	running_ = true;
+	DEBUG_OUT("Servers started and awaiting clients");
+	//////////////////////////////// Init Servers ////////////////////////////////
 #ifdef DEBUG
-    doors_["maindoor"] = 1;
-    doors_["door2"] = 2;
-    doors_["door3"] = 3;
-    usersByName_["john_doe"] = {"2", 2};
-    usersByUid_["2"] = {"john_doe", 2};
-    usersByName_["jane_doe"] = {"3", 3};
-    usersByUid_["3"] = {"jane_doe", 3};
+	addToConfig("doors", "door1", 1);
+	addToConfig("doors", "door2", 2);
+	addToConfig("doors", "door3", 3);
+	addToConfig("doors", "door4", 4);
+	addToConfig("doors", "door5", 5);
+
+	addToConfig("users", "a", 1, "1a");
+	addToConfig("users", "b", 2, "2b");
+	addToConfig("users", "c", 3, "3c");
+	addToConfig("users", "d", 4, "4d");
+	addToConfig("users", "e", 5, "5e");
 #endif
 }
 
 /// Destructor\n
 /// Calls stop()
 ReaderHandler::~ReaderHandler() {
-    stop();
+	stop();
 }
 
 /// Stop all servers.\n
@@ -102,21 +108,21 @@ ReaderHandler::~ReaderHandler() {
 /// Also called if cli calls "shutdown".
 /// @returns void
 void ReaderHandler::stop() {
-    running_ = false;
-    clientServer_.stop();
-    cliServer_.stop();
-    DEBUG_OUT("Servers Shutting Down");
+	running_ = false;
+	clientServer_.stop();
+	cliServer_.stop();
+	DEBUG_OUT("Servers Shutting Down");
 }
 
 ReaderState ReaderHandler::getState() const {
-    return state_;
+	return state_;
 }
 
 /// Runtime loop.\n Necessary to avoid termination while callbacks await.
 /// @returns void
 void ReaderHandler::runLoop() {
-    while (running_)
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+	while (running_)
+		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }
 
 #ifdef _WIN32
@@ -155,7 +161,7 @@ void ReaderHandler::myIp() {
 	// 2) "Connect" to some external IPv4 (no packets need to be sent)
 	sockaddr_in remote{};
 	remote.sin_family = AF_INET;
-	remote.sin_port   = htons(53);          // arbitrary (DNS)
+	remote.sin_port   = htons(53); // arbitrary (DNS)
 	if (inet_pton(AF_INET, "8.8.8.8", &remote.sin_addr) != 1) {
 #ifdef _WIN32
 		closesocket(sock);
@@ -213,7 +219,7 @@ void ReaderHandler::onDeadConnection(CONNECTION_T dead) {
 void ReaderHandler::handleClient(CONNECTION_T connection) {
 	state_ = ReaderState::active_;
 
-	connection->read<std::string>([this, connection](const std::string &pkg) {
+	connection->read<std::string>([this, connection](const std::string& pkg) {
 		const size_t seperator = pkg.find(':');
 		if (seperator == std::string::npos || seperator == 0 || seperator == pkg.size() - 1) {
 			DEBUG_OUT("Invalid Client Package Syntax - Connection Closed");
@@ -243,7 +249,7 @@ void ReaderHandler::handleClient(CONNECTION_T connection) {
 						  : "Denied access to " + user->second.first) + " at " + door->first)
 					 );
 			connection->write<std::string>(authorized ? "approved" : "denied");
-			log_.addLog(door->first, user->second.first, stoi(user->first), authorized ? "approved" : "denied");
+			log_.addLog(door->first, user->second.first, user->first, authorized ? "approved" : "denied");
 		}
 		handleClient(connection);
 	});
@@ -269,7 +275,7 @@ void ReaderHandler::handleCli(CONNECTION_T connection) {
 		}
 	}
 
-	connection->read<std::string>([this, connection](const std::string &pkg) {
+	connection->read<std::string>([this, connection](const std::string& pkg) {
 		// Phase 2: Handle admin duplicates the connection registered as admin
 		bool recursionFlag = false;
 		{
@@ -290,7 +296,7 @@ void ReaderHandler::handleCli(CONNECTION_T connection) {
 		}
 
 		// Added lambda for readability
-		auto checkSyntax = [&](const std::string &name) {
+		auto checkSyntax = [&](const std::string& name) {
 			if (name == "-1") {
 				connection->write<std::string>("Operation failed - Incorrect CLI syntax");
 				handleCli(connection);
@@ -361,16 +367,16 @@ void ReaderHandler::handleCli(CONNECTION_T connection) {
 /// @param connection ptr to the relative TcpConnection object.
 /// @param name string representation of the user to be added i.e. "john_doe".
 /// @param lvl uint8_t representation of the access level for the user to be added i.e. "1".
-void ReaderHandler::newUser(CONNECTION_T connection, const std::string &name, const uint8_t lvl) {
+void ReaderHandler::newUser(CONNECTION_T connection, const std::string& name, const uint8_t lvl) {
 	connection->write<std::string>("Awaiting card read");
-	connection->read<std::string>([this, name, lvl, connection](const std::string &uid) {
+	connection->read<std::string>([this, name, lvl, connection](const std::string& uid) {
 		const std::string confirmMsg("Are you sure you want to add user:\n"
 									 "UID: " + uid + "\n" +
 									 "Name: " + name + "\n" +
 									 "Access Level: " + std::to_string(lvl));
 		connection->write<std::string>(confirmMsg);
 
-		connection->read<std::string>([this, name, lvl, uid, connection](const std::string &status) {
+		connection->read<std::string>([this, name, lvl, uid, connection](const std::string& status) {
 			if (status == "denied" || status != "approved") {
 				connection->write<std::string>("Did not add user");
 				handleCli(connection);
@@ -390,19 +396,19 @@ void ReaderHandler::newUser(CONNECTION_T connection, const std::string &name, co
 /// /// @param connection ptr to the relative TcpConnection object.
 /// @param name string representation of the door to be added i.e. "front_entrance".
 /// @param lvl uint8_t representation of the access level for the door to be added i.e. "1".
-void ReaderHandler::newDoor(CONNECTION_T connection, const std::string &name, const uint8_t lvl) {
+void ReaderHandler::newDoor(CONNECTION_T connection, const std::string& name, const uint8_t lvl) {
 	const std::string confirmMsg("Are you sure you want to add door:\n"
 								 "Name: " + name + "\n" +
 								 "Access Level: " + std::to_string(lvl));
 	connection->write<std::string>(confirmMsg);
-	connection->read<std::string>([this, name, lvl, connection](const std::string &status) {
+	connection->read<std::string>([this, name, lvl, connection](const std::string& status) {
 		if (status == "denied" || status != "approved") {
 			connection->write<std::string>("Did not add door");
 			handleCli(connection);
 			return;
 		}
 
-		if (addToConfig("doors_", name, lvl))
+		if (addToConfig("doors", name, lvl))
 			connection->write<std::string>("Door added successfully");
 		else
 			connection->write<std::string>("Failed to add door");
@@ -413,7 +419,7 @@ void ReaderHandler::newDoor(CONNECTION_T connection, const std::string &name, co
 /// Remove user function.
 /// @param connection ptr to the relative TcpConnection object.
 /// @param name string representation of the user to be removed i.e. "john_doe".
-void ReaderHandler::rmUser(CONNECTION_T connection, const std::string &name) {
+void ReaderHandler::rmUser(CONNECTION_T connection, const std::string& name) {
 	auto user = usersByName_.find(name);
 	if (user == usersByName_.end()) {
 		connection->write<std::string>("User could not be found");
@@ -425,7 +431,7 @@ void ReaderHandler::rmUser(CONNECTION_T connection, const std::string &name) {
 								 "Name: " + name + "\n"
 								 "Access Level: " + std::to_string(user->second.second));
 	connection->write<std::string>(confirmMsg);
-	connection->read<std::string>([this, name, connection](const std::string &status) {
+	connection->read<std::string>([this, name, connection](const std::string& status) {
 		if (status == "denied" || status != "approved") {
 			connection->write<std::string>("Cancelled remove operation");
 			handleCli(connection);
@@ -443,7 +449,7 @@ void ReaderHandler::rmUser(CONNECTION_T connection, const std::string &name) {
 /// Remove door function.
 /// @param connection ptr to the relative TcpConnection object.
 /// @param name string representation of the door to be removed i.e. "front_entrance".
-void ReaderHandler::rmDoor(CONNECTION_T connection, const std::string &name) {
+void ReaderHandler::rmDoor(CONNECTION_T connection, const std::string& name) {
 	const auto door = doors_.find(name);
 	if (door == doors_.end()) {
 		connection->write<std::string>("Door could not be found");
@@ -454,14 +460,14 @@ void ReaderHandler::rmDoor(CONNECTION_T connection, const std::string &name) {
 								 "Name: " + name + "\n" +
 								 "Access Level: " + std::to_string(door->second));
 	connection->write<std::string>(confirmMsg);
-	connection->read<std::string>([this, name, connection](const std::string &status) {
+	connection->read<std::string>([this, name, connection](const std::string& status) {
 		if (status == "denied" || status != "approved") {
 			connection->write<std::string>("Cancelled remove operation");
 			handleCli(connection);
 			return;
 		}
 
-		if (removeFromConfig("doors_", name))
+		if (removeFromConfig("doors", name))
 			connection->write<std::string>("Door removed successfully");
 		else
 			connection->write<std::string>("Failed to remove door");
@@ -469,7 +475,7 @@ void ReaderHandler::rmDoor(CONNECTION_T connection, const std::string &name) {
 	});
 }
 
-void ReaderHandler::mvUser(CONNECTION_T connection, const std::string &oldName, const std::string &newName,
+void ReaderHandler::mvUser(CONNECTION_T connection, const std::string& oldName, const std::string& newName,
 						   uint8_t lvl) {
 	auto user = usersByName_.find(oldName);
 	if (user == usersByName_.end()) {
@@ -488,7 +494,7 @@ void ReaderHandler::mvUser(CONNECTION_T connection, const std::string &oldName, 
 								);
 	std::string uid = user->second.first;
 	connection->write<std::string>(confirmMsg);
-	connection->read<std::string>([this, uid, oldName, newName, lvl, connection](const std::string &status) {
+	connection->read<std::string>([this, uid, oldName, newName, lvl, connection](const std::string& status) {
 		if (status == "denied" || status != "approved") {
 			connection->write<std::string>("Cancelled edit operation");
 			handleCli(connection);
@@ -504,7 +510,7 @@ void ReaderHandler::mvUser(CONNECTION_T connection, const std::string &oldName, 
 }
 
 
-void ReaderHandler::mvDoor(CONNECTION_T connection, const std::string &oldName, const std::string &newName,
+void ReaderHandler::mvDoor(CONNECTION_T connection, const std::string& oldName, const std::string& newName,
 						   uint8_t lvl) {
 	const auto door = doors_.find(oldName);
 	if (door == doors_.end()) {
@@ -521,14 +527,14 @@ void ReaderHandler::mvDoor(CONNECTION_T connection, const std::string &oldName, 
 								 "Access Level: " + std::to_string(door->second) + " -> " + std::to_string(lvl) + "\n"
 								);
 	connection->write<std::string>(confirmMsg);
-	connection->read<std::string>([this, oldName, newName, lvl, connection](const std::string &status) {
+	connection->read<std::string>([this, oldName, newName, lvl, connection](const std::string& status) {
 		if (status == "denied" || status != "approved") {
 			connection->write<std::string>("Cancelled edit operation");
 			handleCli(connection);
 			return;
 		}
 
-		if (removeFromConfig("doors_", oldName) && addToConfig("doors_", newName, lvl))
+		if (removeFromConfig("doors", oldName) && addToConfig("doors", newName, lvl))
 			connection->write<std::string>("Door edited successfully");
 		else
 			connection->write<std::string>("Failed to edit door, data may be corrupted");
@@ -536,25 +542,29 @@ void ReaderHandler::mvDoor(CONNECTION_T connection, const std::string &oldName, 
 	});
 }
 
-std::string ReaderHandler::getSystemLog(const std::string &date) {
+std::string ReaderHandler::getSystemLog(const std::string& date) {
 	return log_.getLogByDate(date);
 }
 
-std::string ReaderHandler::getUserLog(const std::string &name) {
+std::string ReaderHandler::getUserLog(const std::string& name) {
 	return log_.getLogByName(name);
 }
 
-std::string ReaderHandler::getDoorLog(const std::string &name) {
+std::string ReaderHandler::getDoorLog(const std::string& name) {
 	return log_.getLogByDoor(name);
 }
 
 
-bool ReaderHandler::addToConfig(const std::string &type, const std::string &name, uint8_t lvl, const std::string &uid) {
+bool ReaderHandler::addToConfig(const std::string& type, const std::string& name, uint8_t lvl, const std::string& uid) {
 	// Assert type is correct. Cannot use compile-time asserts on string comparisons, maybe use const char* instead in the future.
-	if (type != "doors_" && type != "users") {
-		DEBUG_OUT("Type must be either 'doors_' or 'users'");
+	if (type != "doors" && type != "users") {
+		DEBUG_OUT("Type must be either 'doors' or 'users'");
 		return false;
 	}
+	if (type == "users" && usersByUid_.contains(uid))
+		return false;
+	if (type == "doors" && doors_.contains(name)) // First condition is purely for readability
+		return false;
 
 	// Lock before editing any runtime memory/config.json
 	std::scoped_lock{rw_mtx_};
@@ -596,10 +606,10 @@ bool ReaderHandler::addToConfig(const std::string &type, const std::string &name
 	return true;
 }
 
-bool ReaderHandler::removeFromConfig(const std::string &type, const std::string &name) {
+bool ReaderHandler::removeFromConfig(const std::string& type, const std::string& name) {
 	// Assert type is correct. Cannot use compile-time asserts on string comparisons, maybe use const char* instead in the future.
-	if (type != "doors_" && type != "users") {
-		DEBUG_OUT("Type must be either 'doors_' or 'users'");
+	if (type != "doors" && type != "users") {
+		DEBUG_OUT("Type must be either 'doors' or 'users'");
 		return false;
 	}
 
@@ -608,11 +618,11 @@ bool ReaderHandler::removeFromConfig(const std::string &type, const std::string 
 
 	// Remove from memory
 	if (type == "users") {
-		const auto &user = usersByName_.find(name);
+		const auto& user = usersByName_.find(name);
 		usersByUid_.erase(user->second.first); // remove by uid
 		usersByName_.erase(user);
-	} else if (type == "doors_") {
-		const auto &door = doors_.find(name);
+	} else if (type == "doors") {
+		const auto& door = doors_.find(name);
 		doors_.erase(door);
 	}
 
@@ -622,7 +632,7 @@ bool ReaderHandler::removeFromConfig(const std::string &type, const std::string 
 
 	// Rewrite related config.json segment
 	if (configJson.contains(type)) {
-		auto &revisedJson = configJson[type];
+		auto& revisedJson = configJson[type];
 		for (auto it = revisedJson.begin(); it != revisedJson.end(); ++it) {
 			if (it->contains("name") && (*it)["name"] == name) {
 				revisedJson.erase(it);
@@ -641,20 +651,21 @@ bool ReaderHandler::removeFromConfig(const std::string &type, const std::string 
 	return true;
 }
 
-void ReaderHandler::assertConfig(nlohmann::json &configJson) {
+void ReaderHandler::assertConfig(nlohmann::json& configJson) {
 	try {
 		std::ifstream in("config.json");
 		if (in && in.peek() != std::ifstream::traits_type::eof())
 			in >> configJson;
 		else
-			configJson = {{"users", nlohmann::json::array()}, {"doors_", nlohmann::json::array()}};
-	} catch (const nlohmann::json::parse_error &e) {
+			configJson = {{"users", nlohmann::json::array()}, {"doors", nlohmann::json::array()}};
+	}
+	catch (const nlohmann::json::parse_error& e) {
 		DEBUG_OUT("Invalid JSON @ config.json, attempting clean overwrite - " + std::string(e.what()));
-		configJson = {{"users", nlohmann::json::array()}, {"doors_", nlohmann::json::array()}};
+		configJson = {{"users", nlohmann::json::array()}, {"doors", nlohmann::json::array()}};
 	}
 }
 
-ReaderHandler::CmdArgs ReaderHandler::parseSyntax(const std::string &data, Command type) {
+ReaderHandler::CmdArgs ReaderHandler::parseSyntax(const std::string& data, Command type) {
 	std::smatch match;
 	CmdArgs error;
 	uint8_t lvl{};
@@ -740,16 +751,16 @@ ReaderHandler::CmdArgs ReaderHandler::parseSyntax(const std::string &data, Comma
 /// @param args undefined parameter pack. Will assert type is std::string&
 /// @returns void
 template<typename... Args>
-void ReaderHandler::to_snake_case(Args &... args) {
+void ReaderHandler::to_snake_case(Args&... args) {
 	static_assert((std::is_same_v<Args, std::string> && ...), "Arguments must be of type std::string&");
-	auto convertOne = [](std::string &input) {
+	auto convertOne = [](std::string& input) {
 		std::string result;
 		result.reserve(input.size());
 		/// Albeit reserving only input.size(), more usually get's allocated.
         /// If larger than input.size() it will just reallocate which is negligible regardless, considering the string sizes we'll be handling.
 
 		bool prevLower{false};
-		for (const unsigned char c: input) {
+		for (const unsigned char c : input) {
 			if (std::isupper(c)) {
 				if (prevLower)
 					result += '_';

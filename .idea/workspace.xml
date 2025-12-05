@@ -37,9 +37,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="whatever">
-      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/PRJ3.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/PRJ3.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/csv-editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/include/ReaderHandler.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/include/ReaderHandler.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/asioServer/logger/csv.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/logger/csv.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/asioServer/logger/csv.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/logger/csv.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -80,6 +82,8 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/source/asioServer/TCP/TcpConnection.hpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/source/asioServer/include/ReaderHandler.hpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/source/asioServer/logger/csv.hpp" root0="FORCE_HIGHLIGHTING" />
@@ -336,15 +340,7 @@
       <workItem from="1764959460895" duration="81000" />
       <workItem from="1764959797739" duration="1352000" />
       <workItem from="1764961519102" duration="368000" />
-      <workItem from="1764964665031" duration="2220000" />
-    </task>
-    <task id="LOCAL-00026" summary="Readme fixes">
-      <option name="closed" value="true" />
-      <created>1763114722453</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1763114722453</updated>
+      <workItem from="1764964665031" duration="3785000" />
     </task>
     <task id="LOCAL-00027" summary="Readme fixes">
       <option name="closed" value="true" />
@@ -730,7 +726,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764962398206</updated>
     </task>
-    <option name="localTasksCounter" value="75" />
+    <task id="LOCAL-00075" summary="whatever">
+      <option name="closed" value="true" />
+      <created>1764967106237</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1764967106237</updated>
+    </task>
+    <option name="localTasksCounter" value="76" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

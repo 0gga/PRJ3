@@ -5,7 +5,7 @@
 #include <filesystem>
 
 
-void CsvLogger::addLog(std::string door, std::string name, int userID, std::string access)
+void CsvLogger::addLog(std::string door, std::string name, std::string userID, std::string access)
 {
     /// get date from RPi
     time_t timestamp = std::time(NULL);
