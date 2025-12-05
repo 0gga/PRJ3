@@ -87,7 +87,7 @@ template<typename Tx>
 void TcpConnection::write(const Tx &data) {
     if (!alive_)
         return;
-    DEBUG_OUT("Writing...");
+    DEBUG_OUT("Writing...\n");
 
     auto bytes = std::make_shared<std::string>();
     bytes->reserve(64 + sizeof(Tx));

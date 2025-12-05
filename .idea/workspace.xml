@@ -36,12 +36,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="whatever">
-      <change beforePath="$PROJECT_DIR$/.idea/PRJ3.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/PRJ3.iml" afterDir="false" />
+    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="fixes and stuff">
       <change beforePath="$PROJECT_DIR$/.idea/csv-editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/asioServer/TCP/TcpConnection.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/TCP/TcpConnection.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/asioServer/logger/csv.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/logger/csv.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/logger/csv.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/logger/csv.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -340,15 +339,7 @@
       <workItem from="1764959460895" duration="81000" />
       <workItem from="1764959797739" duration="1352000" />
       <workItem from="1764961519102" duration="368000" />
-      <workItem from="1764964665031" duration="3785000" />
-    </task>
-    <task id="LOCAL-00027" summary="Readme fixes">
-      <option name="closed" value="true" />
-      <created>1763115355131</created>
-      <option name="number" value="00027" />
-      <option name="presentableId" value="LOCAL-00027" />
-      <option name="project" value="LOCAL" />
-      <updated>1763115355131</updated>
+      <workItem from="1764964665031" duration="5124000" />
     </task>
     <task id="LOCAL-00028" summary="Readme fixes">
       <option name="closed" value="true" />
@@ -734,7 +725,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764967106237</updated>
     </task>
-    <option name="localTasksCounter" value="76" />
+    <task id="LOCAL-00076" summary="fixes and stuff">
+      <option name="closed" value="true" />
+      <created>1764968665555</created>
+      <option name="number" value="00076" />
+      <option name="presentableId" value="LOCAL-00076" />
+      <option name="project" value="LOCAL" />
+      <updated>1764968665555</updated>
+    </task>
+    <option name="localTasksCounter" value="77" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -774,7 +773,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Show IP Address on boot" />
     <MESSAGE value="Cleanup" />
     <MESSAGE value="Readme fixes" />
     <MESSAGE value="ReaderHandler refactor/fixes" />
@@ -799,7 +797,8 @@
     <MESSAGE value="\n" />
     <MESSAGE value="fixes" />
     <MESSAGE value="whatever" />
-    <option name="LAST_COMMIT_MESSAGE" value="whatever" />
+    <MESSAGE value="fixes and stuff" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixes and stuff" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

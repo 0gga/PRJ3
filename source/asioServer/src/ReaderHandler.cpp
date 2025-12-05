@@ -244,12 +244,20 @@ void ReaderHandler::handleClient(CONNECTION_T connection) {
 			const bool authorized = (user != usersByUid_.end() && user->second.second <= door->second);
 			DEBUG_OUT(
 					  (user == usersByUid_.end())
-					  ? "Unknown User"
+					  ? "Unknown UID"
 					  : ((authorized ? "Approved access to " + user->second.first
 						  : "Denied access to " + user->second.first) + " at " + door->first)
 					 );
 			connection->write<std::string>(authorized ? "approved" : "denied");
-			log_.addLog(door->first, user->second.first, user->first, authorized ? "approved" : "denied");
+			try {
+				if (user != usersByUid_.end())
+					log_.addLog(door->first, user->second.first, user->first, authorized ? "approved" : "denied");
+				else
+					log_.addLog(door->first, "unknown", "unknown", authorized ? "approved" : "denied");
+			}
+			catch (std::exception& e) {
+				DEBUG_OUT(e.what());
+			}
 		}
 		handleClient(connection);
 	});
@@ -561,10 +569,14 @@ bool ReaderHandler::addToConfig(const std::string& type, const std::string& name
 		DEBUG_OUT("Type must be either 'doors' or 'users'");
 		return false;
 	}
-	if (type == "users" && usersByUid_.contains(uid))
+	if (type == "users" && usersByUid_.contains(uid)) {
+		DEBUG_OUT("UID already exists");
 		return false;
-	if (type == "doors" && doors_.contains(name)) // First condition is purely for readability
+	}
+	if (type == "doors" && doors_.contains(name)) { // First condition is purely for readability
+		DEBUG_OUT("Door already exists");
 		return false;
+	}
 
 	// Lock before editing any runtime memory/config.json
 	std::scoped_lock{rw_mtx_};
