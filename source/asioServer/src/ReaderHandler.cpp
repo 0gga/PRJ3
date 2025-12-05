@@ -72,7 +72,7 @@ ReaderHandler::ReaderHandler(const int& clientPort, const int& cliPort,
 	});
 
 	cliServer_.onClientDisconnect([this](const CONNECTION_T& connection) {
-		std::scoped_lock lock(cli_mtx_);
+		std::scoped_lock{cli_mtx};
 		if (cliReader_.second == connection) {
 			cliReader_.second = nullptr;
 			DEBUG_OUT("Dead CLI Cleared\n");
@@ -112,10 +112,6 @@ void ReaderHandler::stop() {
 	clientServer_.stop();
 	cliServer_.stop();
 	DEBUG_OUT("Servers Shutting Down");
-}
-
-ReaderState ReaderHandler::getState() const {
-	return state_;
 }
 
 /// Runtime loop.\n Necessary to avoid termination while callbacks await.
@@ -207,7 +203,7 @@ void ReaderHandler::myIp() {
 }
 
 void ReaderHandler::onDeadConnection(CONNECTION_T dead) {
-	std::scoped_lock (cli_mtx);
+	std::scoped_lock{cli_mtx};
 	if (cliReader_.second == dead)
 		cliReader_.second = nullptr;
 }
@@ -216,9 +212,7 @@ void ReaderHandler::onDeadConnection(CONNECTION_T dead) {
 /// Is automatically called via lambda callback in CTOR whenever a new TCP Connection is established on the clientServer_.<br>Recalls itself after each pass.
 /// @param connection ptr to the relative TcpConnection object. This is established and passed in the CTOR callback.
 /// @returns void
-void ReaderHandler::handleClient(CONNECTION_T connection) {
-	state_ = ReaderState::active_;
-
+void ReaderHandler::handleClient(CONNECTION_T connection) const {
 	connection->read<std::string>([this, connection](const std::string& pkg) {
 		const size_t seperator = pkg.find(':');
 		if (seperator == std::string::npos || seperator == 0 || seperator == pkg.size() - 1) {
@@ -232,7 +226,7 @@ void ReaderHandler::handleClient(CONNECTION_T connection) {
 			const std::string name = pkg.substr(0, seperator);
 			const std::string uid  = pkg.substr(seperator + 1);
 
-			std::shared_lock rw_lock(rw_mtx_);
+			std::shared_lock rw_lock(rw_mtx); // Shared lock since it exclusively reads
 			const auto door = doors_.find(name);
 			if (door == doors_.end()) {
 				DEBUG_OUT("Unknown Door");
@@ -246,7 +240,8 @@ void ReaderHandler::handleClient(CONNECTION_T connection) {
 					  (user == usersByUid_.end())
 					  ? "Unknown UID"
 					  : ((authorized ? "Approved access to " + user->second.first
-						  : "Denied access to " + user->second.first) + " at " + door->first)
+							  : "Denied access to " + user->second.first) + '(' + std::to_string(user->second.second) + ')'
+						  + " at " + door->first + '(' + std::to_string(door->second) + ')')
 					 );
 			connection->write<std::string>(authorized ? "approved" : "denied");
 			try {
@@ -261,7 +256,6 @@ void ReaderHandler::handleClient(CONNECTION_T connection) {
 		}
 		handleClient(connection);
 	});
-	state_ = ReaderState::idle_;
 }
 
 /// Handles CLI IO.\n
@@ -271,7 +265,7 @@ void ReaderHandler::handleClient(CONNECTION_T connection) {
 void ReaderHandler::handleCli(CONNECTION_T connection) {
 	{
 		// Phase 1: Check if admin is connected and if not facilitate new connection.
-		std::scoped_lock{cli_mtx_};
+		std::scoped_lock{cli_mtx};
 		if (cliReader_.second == connection) {
 			connection->write<std::string>("CLI is ready");
 		} else if (!cliReader_.second) {
@@ -287,7 +281,7 @@ void ReaderHandler::handleCli(CONNECTION_T connection) {
 		// Phase 2: Handle admin duplicates the connection registered as admin
 		bool recursionFlag = false;
 		{
-			std::scoped_lock{cli_mtx_};
+			std::scoped_lock{cli_mtx};
 			if (cliReader_.second != connection) {
 				if (pkg.rfind(cliReader_.first, 0) == 0) {
 					cliReader_.second = connection;
@@ -579,7 +573,7 @@ bool ReaderHandler::addToConfig(const std::string& type, const std::string& name
 	}
 
 	// Lock before editing any runtime memory/config.json
-	std::scoped_lock{rw_mtx_};
+	std::scoped_lock{rw_mtx};
 
 	// config.json error syntax checks
 	nlohmann::json configJson;
@@ -626,8 +620,7 @@ bool ReaderHandler::removeFromConfig(const std::string& type, const std::string&
 	}
 
 	// Lock before editing any runtime memory/config.json
-	std::scoped_lock{rw_mtx_};
-
+	std::scoped_lock{rw_mtx};
 	// Remove from memory
 	if (type == "users") {
 		const auto& user = usersByName_.find(name);

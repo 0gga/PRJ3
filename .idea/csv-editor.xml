@@ -24,6 +24,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\Log_door2.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value=";" />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\Log_ogga.csv">
           <value>
             <Attribute>
@@ -32,6 +39,13 @@
           </value>
         </entry>
         <entry key="\source\asioServer\bin\logs\doorLogs\Log_door1.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value=";" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\source\asioServer\bin\logs\doorLogs\Log_door2.csv">
           <value>
             <Attribute>
               <option name="separator" value=";" />

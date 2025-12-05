@@ -8,10 +8,6 @@
 
 #include "csv.hpp"
 
-enum class ReaderState {
-	idle_, active_
-};
-
 class ReaderHandler {
 public:
 	explicit ReaderHandler(const int& clientPort, const int& cliPort, const std::string& cliName);
@@ -21,16 +17,39 @@ public:
 
 	static void runLoop();
 
+private: // Member Functions
+	/// Do not pass by const reference since pointer copy is trivial.<br>Additional benefit: Avoids any unintended interference with the TcpConnection objects.
+	void handleClient(CONNECTION_T connection) const;
+	void handleCli(CONNECTION_T connection);
+
 	static void myIp();
 
 	void onDeadConnection(CONNECTION_T dead);
 
-private: // Member Functions
-	/// Do not pass by const reference since pointer copy is trivial.<br>Additional benefit: Avoids any unintended interference with the TcpConnection objects.
-	void handleClient(CONNECTION_T connection);
-	void handleCli(CONNECTION_T connection);
+	void newUser(CONNECTION_T connection, const std::string&, uint8_t);
+	void newDoor(CONNECTION_T connection, const std::string&, uint8_t);
+	void rmUser(CONNECTION_T connection, const std::string&);
+	void rmDoor(CONNECTION_T connection, const std::string&);
+	void mvUser(CONNECTION_T connection, const std::string&, const std::string&, uint8_t);
+	void mvDoor(CONNECTION_T connection, const std::string&, const std::string&, uint8_t);
 
-	enum Command {
+	std::string getSystemLog(const std::string& date);
+	std::string getUserLog(const std::string& name);
+	std::string getDoorLog(const std::string& name);
+
+	static void assertConfig(nlohmann::json&);
+	bool addToConfig(const std::string&, const std::string&, uint8_t, const std::string& = "");
+	bool removeFromConfig(const std::string&, const std::string&);
+
+	struct CmdArgs;
+	enum Command : int; // Standard enum type. Necessary for forward declaration
+	CmdArgs parseSyntax(const std::string& pkg, Command type);
+
+	template<typename... Args>
+	void to_snake_case(Args&... args);
+
+private: // Member Variables
+	enum Command : int {
 		newUser_,
 		newDoor_,
 		rmUser_,
@@ -48,42 +67,17 @@ private: // Member Functions
 		uint8_t accessLevel_{};
 	};
 
-
-	void newUser(CONNECTION_T connection, const std::string&, uint8_t);
-	void newDoor(CONNECTION_T connection, const std::string&, uint8_t);
-	void rmUser(CONNECTION_T connection, const std::string&);
-	void rmDoor(CONNECTION_T connection, const std::string&);
-	void mvUser(CONNECTION_T connection, const std::string&, const std::string&, uint8_t);
-	void mvDoor(CONNECTION_T connection, const std::string&, const std::string&, uint8_t);
-
-	std::string getSystemLog(const std::string& date);
-	std::string getUserLog(const std::string& name);
-	std::string getDoorLog(const std::string& name);
-
-	bool addToConfig(const std::string&, const std::string&, uint8_t, const std::string& = "");
-	bool removeFromConfig(const std::string&, const std::string&);
-	void assertConfig(nlohmann::json&);
-	CmdArgs parseSyntax(const std::string& pkg, Command type);
-
-	template<typename... Args>
-	void to_snake_case(Args&... args);
-
-
-	ReaderState getState() const;
-
-private: // Member Variables
-	ReaderState state_          = ReaderState::idle_;
 	static inline bool running_ = true;
 
 	TcpServer clientServer_;
 	TcpServer cliServer_;
 
 	CsvLogger log_;
-	std::pair<std::string, CONNECTION_T> cliReader_; //brug weak_ptr her perchance
+	std::pair<std::string, CONNECTION_T> cliReader_;
 	std::unordered_map<std::string, int> doors_;
 	std::unordered_map<std::string, std::pair<std::string, int>> usersByName_;
 	std::unordered_map<std::string, std::pair<std::string, int>> usersByUid_;
 
-	std::mutex cli_mtx_;       // for cli admin control
-	std::shared_mutex rw_mtx_; // Use shared_lock for json reads and unique_lock for json writes.
+	std::mutex cli_mtx;
+	std::shared_mutex rw_mtx; // Use shared_lock for json reads and unique_lock for json writes.
 };

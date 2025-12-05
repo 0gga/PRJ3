@@ -36,11 +36,15 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="fixes and stuff">
+    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="handleClient fixes">
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/csv-editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-editor.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/asioServer/TCP/TcpConnection.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/TCP/TcpConnection.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/logger/csv.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/logger/csv.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/asioServer/TCP/TcpServer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/TCP/TcpServer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/asioServer/TCP/TcpServer.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/TCP/TcpServer.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/asioServer/include/ReaderHandler.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/include/ReaderHandler.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -339,15 +343,7 @@
       <workItem from="1764959460895" duration="81000" />
       <workItem from="1764959797739" duration="1352000" />
       <workItem from="1764961519102" duration="368000" />
-      <workItem from="1764964665031" duration="5124000" />
-    </task>
-    <task id="LOCAL-00028" summary="Readme fixes">
-      <option name="closed" value="true" />
-      <created>1763115447770</created>
-      <option name="number" value="00028" />
-      <option name="presentableId" value="LOCAL-00028" />
-      <option name="project" value="LOCAL" />
-      <updated>1763115447770</updated>
+      <workItem from="1764964665031" duration="8288000" />
     </task>
     <task id="LOCAL-00029" summary="Readme fixes">
       <option name="closed" value="true" />
@@ -733,7 +729,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764968665555</updated>
     </task>
-    <option name="localTasksCounter" value="77" />
+    <task id="LOCAL-00077" summary="handleClient fixes">
+      <option name="closed" value="true" />
+      <created>1764969985783</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1764969985783</updated>
+    </task>
+    <option name="localTasksCounter" value="78" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -773,7 +777,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Cleanup" />
     <MESSAGE value="Readme fixes" />
     <MESSAGE value="ReaderHandler refactor/fixes" />
     <MESSAGE value="fix main" />
@@ -798,7 +801,8 @@
     <MESSAGE value="fixes" />
     <MESSAGE value="whatever" />
     <MESSAGE value="fixes and stuff" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixes and stuff" />
+    <MESSAGE value="handleClient fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="handleClient fixes" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

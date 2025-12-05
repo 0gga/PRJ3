@@ -28,17 +28,17 @@ private: /// Member Functions
 	void acceptConnection();
 
 private: /// Member Variables
-	boost::asio::io_context io_context;
-	boost::asio::ip::tcp::acceptor acceptor;
-	boost::asio::executor_work_guard<boost::asio::io_context::executor_type> work_guard;
+	boost::asio::io_context io_context_;
+	boost::asio::ip::tcp::acceptor acceptor_;
+	boost::asio::executor_work_guard<boost::asio::io_context::executor_type> work_guard_;
 
-	std::unordered_map<uint32_t, std::unique_ptr<TcpConnection>> connections; //this should also be changed then to shared_ptr
-	std::function<void(CONNECTION_T)> disconnectHandler;
-	std::function<void(CONNECTION_T)> connectHandler;
+	std::unordered_map<uint32_t, std::unique_ptr<TcpConnection>> connections_; //this should also be changed then to shared_ptr
+	std::function<void(CONNECTION_T)> disconnectHandler_;
+	std::function<void(CONNECTION_T)> connectHandler_;
 
-	bool running = false;
-	uint32_t nextId{};
-	std::vector<std::thread> asyncThreads_t; /// Using strands for ACID compliance in read/write.
-	static inline uint8_t threadCount{1};
-	static inline uint8_t threadLimit{4};
+	bool running_ = false;
+	uint32_t nextId_{}; // Can hold up to 4.294.967.296 connections. Should be plenty.
+	std::vector<std::thread> asyncThreadsT_; /// Using strands for ACID compliance in read/write.
+	static inline uint8_t threadCount_{1};
+	static inline uint8_t threadLimit_{4};
 };
