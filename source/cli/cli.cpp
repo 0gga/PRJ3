@@ -70,44 +70,43 @@ void cli::send_data(const std::string &msg)
 	}
 }
 
-bool cli::recieve_data()
-{
-	size_t total = 0; // antallet af bytes modtaget
-	ssize_t n = 0;	  // antallet af bytes læst
-
-	// læser indtil \n eller \r, og kan blive stuck her hvis, det ikke er en del af beskeden
-	// overvej eventuelt, bare at læse indtil EOF via read
+bool cli::recieve_data() {
 	memset(buffer_receive, 0, sizeof(buffer_receive));
-	while (total < sizeof(buffer_receive) - 1)
-	{
-		n = read(sockfd, buffer_receive + total, sizeof(buffer_receive) - 1 - total);
-		if (n < 0)
-		{
+
+	size_t pos = 0;
+	char c;
+
+	// Read until newline
+	while (pos < sizeof(buffer_receive) - 1) {
+		ssize_t n = read(sockfd, &c, 1);
+
+		if (n < 0) {
 			perror("ERROR reading from socket");
 			return false;
 		}
 
-		if (n == 0) // end of file check.
-		{
-			std::cerr << "Server closed connection" << std::endl;
+		if (n == 0) {
+			std::cerr << "Server closed connection\n";
 			return false;
 		}
 
-		total += n;
-		// end of line characters check.
-		if (buffer_receive[total - 1] == '\n')
-		{
-			buffer_receive[total - 1] = '\0';
+		buffer_receive[pos++] = c;
+
+		if (c == '\n') {
+			buffer_receive[pos - 1] = '\0'; // remove newline
 			break;
 		}
 	}
-	memmove(buffer_receive,
-			buffer_receive + 14,
-			total - 14 + 1);
-	buffer_receive[total] = '\0';
+
+	// Remove first 14 junk bytes IF AND ONLY IF pos > 14
+	if (pos > 14) {
+		memmove(buffer_receive, buffer_receive + 14, pos - 14);
+		buffer_receive[pos - 14] = '\0';
+	} else {
+		buffer_receive[0] = '\0';
+	}
 
 	std::cout << buffer_receive << std::endl;
-
 	return true;
 }
 
