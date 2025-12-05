@@ -106,19 +106,29 @@ bool cli::admin_identification() {
 		if (!recieve_data())
 			return false;
 
-		if (strcmp(buffer_receive, "Input CLI Identification") == 0
-			|| strcmp(buffer_receive, "Incorrect CLI Identification") == 0) {
-			std::cout << "<";
-			std::cin >> cli_identification;
+		 if (strcmp(buffer_receive, "Another Admin is connected") == 0) {
+            std::cout << buffer_receive << std::endl;
+            return false;
+        }
 
-			send_data(cli_identification);
+		if (strcmp(buffer_receive, "Input CLI Identification") == 0 ||
+            strcmp(buffer_receive, "Incorrect CLI Identification") == 0) {
 
-			continue;
-		}
+            std::cout << "<";
+            std::cin >> cli_identification;
 
-		if (strcmp(buffer_receive, "CLI is ready") == 0)
-			return true;
+            send_data(cli_identification);
+
+            // Vent på næste besked
+            continue;
+        }
+
+		if (strcmp(buffer_receive, "CLI is ready") == 0) {
+            std::cout << "Admin identification accepted." << std::endl;
+            return true;
+        }
 	}
+	
 }
 
 
