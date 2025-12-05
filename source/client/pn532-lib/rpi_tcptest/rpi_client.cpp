@@ -34,15 +34,14 @@ client::client(int portno, const char *server_ip, std::string doorname)
         std::cerr << "Failed to initialize PN532" << std::endl;
     }
 
+    initLeds();
+
     // Third connect to server (continuous calls, until connected)
     while ((sockfd = connect_to_server()) < 0)
     {
         std::cerr << "trying to connect.. 2 seconds wait.." << std::endl;
         std::this_thread::sleep_for(std::chrono::milliseconds(2000));
     }
-
-    // little test, that everything works, when powering on.
-    initLeds();
 }
 
 client::~client()
@@ -96,7 +95,7 @@ void client::send_data(const std::string &uidstring)
         perror("ERROR writing to socket");
         return;
     }
-    // std::cerr << "Sent " << n << " bytes" << std::endl;
+    std::cerr << "Sent " << n << " bytes" << std::endl;
 }
 
 bool client::recieve_data()
@@ -129,11 +128,20 @@ bool client::recieve_data()
         total += n;
     }
 
-    memmove(buffer_receive,
-            buffer_receive + 14,
-            total - 14 + 1);
-
     buffer_receive[total] = '\0';
+
+    // Find the "%%%" delimiter
+    char *delimiter = strstr(buffer_receive, "%%%");
+    if (delimiter != nullptr)
+    {
+        // Skip past "%%%" (3 characters)
+        char *payload = delimiter + 3;
+
+        // Move payload to start of buffer
+        size_t payload_len = strlen(payload);
+        memmove(buffer_receive, payload, payload_len + 1); // +1 for null terminator
+    }
+    // If no delimiter found, keep the buffer as-is (might be error message)
 
     return true;
 }
@@ -150,8 +158,11 @@ void client::io_feedback()
         Led_Yellow->off();
         Led_Green->on();
 
+        bool initial_state = RS->isOpen();
+        std::cerr << "Reed Switch initial state: " << (initial_state ? "OPEN" : "CLOSED") << std::endl;
+
         auto start_door_closed = std::chrono::high_resolution_clock::now();
-        while (!RS->isOpen()) // first check if they dont open door in 10 seconds, lock again.
+        while (RS->isOpen() == true) // first check if they dont open door in 10 seconds, lock again.
         {
             auto now_door_closed = std::chrono::high_resolution_clock::now();
             auto duration_door_closed = std::chrono::duration_cast<std::chrono::seconds>(now_door_closed - start_door_closed).count();
@@ -169,7 +180,9 @@ void client::io_feedback()
 
         std::cout << "Door open" << std::endl;
 
-        while (RS->isOpen()) // second check if they have openend door, that they close it in 2 minutes time, if not play alarm.
+        std::cerr << "Reed Switch state: " << (RS->isOpen() ? "MAGNET PRESENT (closed)" : "NO MAGNET (open)") << std::endl;
+
+        while (RS->isOpen() == false) // second check if they have openend door, that they close it in 2 minutes time, if not play alarm.
         {
             std::cerr << "Door still open, waiting..." << std::endl;
             auto now_door_open = std::chrono::high_resolution_clock::now();
@@ -185,7 +198,9 @@ void client::io_feedback()
         }
         // Door closed, turn off green. turn on yellow.
         Led_Green->off();
+        Led_Red->off();
         Led_Yellow->on();
+        std::cout << "Door closed!" << std::endl;
     }
     else if (strcmp(buffer_receive, "denied") == 0)
     {
