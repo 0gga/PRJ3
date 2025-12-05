@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
 
     std::string doorname = (argc > 1) ? argv[1] : "maindoor";
     int portno = (argc > 2) ? atoi(argv[2]) : 9000;
-    const char *server_ip = (argc > 3) ? argv[3] : "172.16.15.3";
+    const char *server_ip = (argc > 3) ? argv[3] : "172.20.10.9";
 
     try
     {
@@ -26,4 +26,3 @@ int main(int argc, char *argv[])
 
     return 0;
 }
-
