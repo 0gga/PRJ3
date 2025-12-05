@@ -71,44 +71,19 @@ void cli::send_data(const std::string &msg)
 }
 
 bool cli::recieve_data() {
-	memset(buffer_receive, 0, sizeof(buffer_receive));
+    memset(buffer_receive, 0, sizeof(buffer_receive));
 
-	size_t pos = 0;
-	char c;
+    ssize_t n = read(sockfd, buffer_receive, sizeof(buffer_receive) - 1);
 
-	// Read until newline
-	while (pos < sizeof(buffer_receive) - 1) {
-		ssize_t n = read(sockfd, &c, 1);
+    if (n <= 0) {
+        perror("ERROR reading from socket");
+        return false;
+    }
 
-		if (n < 0) {
-			perror("ERROR reading from socket");
-			return false;
-		}
-
-		if (n == 0) {
-			std::cerr << "Server closed connection\n";
-			return false;
-		}
-
-		buffer_receive[pos++] = c;
-
-		if (c == '\n') {
-			buffer_receive[pos - 1] = '\0'; // remove newline
-			break;
-		}
-	}
-
-	// Remove first 14 junk bytes IF AND ONLY IF pos > 14
-	if (pos > 14) {
-		memmove(buffer_receive, buffer_receive + 14, pos - 14);
-		buffer_receive[pos - 14] = '\0';
-	} else {
-		buffer_receive[0] = '\0';
-	}
-
-	std::cout << buffer_receive << std::endl;
-	return true;
+    buffer_receive[n] = '\0';
+    return true;
 }
+
 
 bool cli::admin_identification()
 {
@@ -129,7 +104,7 @@ bool cli::admin_identification()
 		{
 
 			std::cout << buffer_receive << std::endl;
-			std::cout << "<";
+			std::cout << "> ";
 			std::cin >> cli_identification;
 
 			send_data(cli_identification);
@@ -155,9 +130,8 @@ void cli::run()
 
 	while (connection)
 	{
-		std::cout << "Input command. Type 'help' to see overview";
-
-		std::cout << "> ";
+		std::cout << "Input command. Type 'help' to see overview\n";
+		std::cout << "\n> ";
 		std::string input;
 		std::getline(std::cin, input);
 
@@ -185,9 +159,8 @@ void cli::run()
 			handle_exit(input);
 
 		else if (input == "shutdown")
-		{
 			handle_shutdown(input);
-		}
+
 		else if (input == "help")
 			printCommands();
 	}
