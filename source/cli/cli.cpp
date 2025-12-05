@@ -150,8 +150,10 @@ void cli::run() {
 		else if (input.rfind("rmUser", 0) == 0)
 			handle_rmUser(input);
 
-		else if (input == "getLog")
-			handle_getLog(input);
+		else if (input == "getSystemLog" || 
+			input == "getUserLog"  || 
+			input == "getDoorLog")
+			send_data(input);
 
 		else if (input == "exit")
 			handle_exit(input);
@@ -350,32 +352,11 @@ bool cli::handle_rmUser(const std::string& cmd) {
 	}
 }
 
-bool cli::handle_getLog(const std::string& cmd) {
-	send_data(cmd);
-
-	if (!recieve_data())
-		return false;
-
-	if (strcmp(buffer_receive, "Failed to get log") == 0) {
-		std::cout << buffer_receive << "\n";
-		return false;
-	}
-
-	std::cout << buffer_receive << "\n";
-
-	return true;
-}
-
 bool cli::handle_exit(const std::string& cmd) {
 	send_data(cmd);
 
 	if (!recieve_data())
 		return false;
-
-	if (strcmp(buffer_receive, "Failed to exit") == 0) {
-		std::cout << buffer_receive << "\n";
-		return false;
-	}
 
 	std::cout << buffer_receive << "\n";
 
@@ -388,11 +369,6 @@ bool cli::handle_shutdown(const std::string& cmd) {
 
 	if (!recieve_data())
 		return false;
-
-	if (strcmp(buffer_receive, "Failed to shutdown") == 0) {
-		std::cout << buffer_receive << "\n";
-		return false;
-	}
 
 	std::cout << buffer_receive << "\n";
 	close(sockfd);

@@ -29,7 +29,6 @@ private:
    bool handle_newUser(const std::string&);
    bool handle_rmDoor(const std::string&);
    bool handle_rmUser(const std::string&);
-   bool handle_getLog(const std::string&);
    bool handle_exit(const std::string&);
    bool handle_shutdown(const std::string&);
    bool handle_mvUser(const std::string&);
