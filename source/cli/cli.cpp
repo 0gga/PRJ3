@@ -70,17 +70,51 @@ void cli::send_data(const std::string &msg)
 	}
 }
 
-bool cli::recieve_data() {
+bool cli::recieve_data()
+{
+    size_t total = 0;
+    ssize_t n = 0;
+
     memset(buffer_receive, 0, sizeof(buffer_receive));
+    while (total < sizeof(buffer_receive) - 1)
+    {
+        n = read(sockfd, buffer_receive + total, 1);
+        if (n < 0)
+        {
+            perror("ERROR reading from socket");
+            return false;
+        }
 
-    ssize_t n = read(sockfd, buffer_receive, sizeof(buffer_receive) - 1);
+        if (n == 0) // end of file check.
+        {
+            std::cerr << "Server closed connection" << std::endl;
+            return false;
+        }
 
-    if (n <= 0) {
-        perror("ERROR reading from socket");
-        return false;
+        // end of line characters check.
+        if (buffer_receive[total] == '\n' || buffer_receive[total] == '\r')
+        {
+            break;
+        }
+
+        total += n;
     }
 
-    buffer_receive[n] = '\0';
+    buffer_receive[total] = '\0';
+
+    // Find the "%%%" delimiter
+    char *delimiter = strstr(buffer_receive, "%%%");
+    if (delimiter != nullptr)
+    {
+        // Skip past "%%%" (3 characters)
+        char *payload = delimiter + 3;
+
+        // Move payload to start of buffer
+        size_t payload_len = strlen(payload);
+        memmove(buffer_receive, payload, payload_len + 1); // +1 for null terminator
+    }
+    // If no delimiter found, keep the buffer as-is (might be error message)
+
     return true;
 }
 

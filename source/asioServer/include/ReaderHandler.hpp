@@ -76,7 +76,6 @@ private: // Member Functions
 private: // Member Variables
 	ReaderState state          = ReaderState::Idle;
 	static inline bool running = true;
-	int loops{};
 
 	TcpServer clientServer;
 	TcpServer cliServer;

@@ -260,7 +260,6 @@ void ReaderHandler::handleCli(CONNECTION_T connection) {
     {
         // Phase 1: Check if admin is connected and if not facilitate new connection.
         std::scoped_lock{cli_mtx};
-        DEBUG_OUT(std::to_string(++loops));
         if (cliReader.second == connection) {
             connection->write<std::string>("CLI is ready");
         } else if (!cliReader.second) {
