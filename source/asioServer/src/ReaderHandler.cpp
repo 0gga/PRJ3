@@ -7,22 +7,29 @@
 ReaderHandler::ReaderHandler(const int &clientPort, const int &cliPort,
                              const std::string &cliName) : clientServer(clientPort),
                                                            cliServer(cliPort),
-                                                           cliReader{cliName, nullptr} {
-#ifdef DEBUG && _WIN32
+                                                           cliReader{cliName, nullptr}
+{
+#ifdef DEBUG &&_WIN32
     myIp();
 #endif
     ////////////////////////////// Read config JSON //////////////////////////////
     std::ifstream file("config.json");
     nlohmann::json configJson;
 
-    if (!file.is_open() || file.peek() == std::ifstream::traits_type::eof()) {
+    if (!file.is_open() || file.peek() == std::ifstream::traits_type::eof())
+    {
         DEBUG_OUT("config.json doesn't exist");
         std::ofstream("config.json") << R"({"users":[],"doors":[]})";
         DEBUG_OUT("Created empty config.json");
-    } else {
-        try {
+    }
+    else
+    {
+        try
+        {
             file >> configJson;
-        } catch (const nlohmann::json::parse_error &e) {
+        }
+        catch (const nlohmann::json::parse_error &e)
+        {
             DEBUG_OUT("Invalid JSON in config.json" + std::string(e.what()));
             configJson = {{"users", nlohmann::json::array()}, {"doors", nlohmann::json::array()}};
 
@@ -32,7 +39,8 @@ ReaderHandler::ReaderHandler(const int &clientPort, const int &cliPort,
     }
 
     if (configJson.contains("doors"))
-        for (const auto &door: configJson["doors"]) {
+        for (const auto &door : configJson["doors"])
+        {
             if (door.contains("name") && door.contains("lvl") &&
                 door["name"].is_string() && door["lvl"].is_number_integer())
                 doors[door["name"]] = door["lvl"];
@@ -41,16 +49,19 @@ ReaderHandler::ReaderHandler(const int &clientPort, const int &cliPort,
         }
 
     if (configJson.contains("users"))
-        for (const auto &user: configJson["users"]) {
+        for (const auto &user : configJson["users"])
+        {
             if (user.contains("name") && user.contains("uid") && user.contains("lvl") &&
-                user["name"].is_string() && user["uid"].is_string() && user["lvl"].is_number_integer()) {
+                user["name"].is_string() && user["uid"].is_string() && user["lvl"].is_number_integer())
+            {
                 const std::string name = user["name"];
                 const std::string uid = user["uid"];
                 const int lvl = user["lvl"];
 
                 usersByName[name] = {uid, lvl};
                 usersByUid[uid] = {name, lvl};
-            } else
+            }
+            else
                 DEBUG_OUT("Invalid user entry in config.json - skipping one.\n");
         }
     ////////////////////////////// Read config JSON //////////////////////////////
@@ -61,23 +72,23 @@ ReaderHandler::ReaderHandler(const int &clientPort, const int &cliPort,
     clientServer.start();
     cliServer.start();
 
-    clientServer.onClientConnect([this](const CONNECTION_T &connection) {
+    clientServer.onClientConnect([this](const CONNECTION_T &connection)
+                                 {
         DEBUG_OUT("Client Connected\n");
-        handleClient(connection);
-    });
+        handleClient(connection); });
 
-    cliServer.onClientConnect([this](const CONNECTION_T &connection) {
+    cliServer.onClientConnect([this](const CONNECTION_T &connection)
+                              {
         DEBUG_OUT("CLI Connected\n");
-        handleCli(connection);
-    });
+        handleCli(connection); });
 
-    cliServer.onClientDisconnect([this](const CONNECTION_T &connection) {
+    cliServer.onClientDisconnect([this](const CONNECTION_T &connection)
+                                 {
         std::scoped_lock lock(cli_mtx);
         if (cliReader.second == connection) {
             cliReader.second = nullptr;
             DEBUG_OUT("Dead CLI Cleared\n");
-        }
-    });
+        } });
 
     running = true;
     DEBUG_OUT("Servers started and awaiting clients");
@@ -95,7 +106,8 @@ ReaderHandler::ReaderHandler(const int &clientPort, const int &cliPort,
 
 /// Destructor\n
 /// Calls stop()
-ReaderHandler::~ReaderHandler() {
+ReaderHandler::~ReaderHandler()
+{
     stop();
 }
 
@@ -103,34 +115,40 @@ ReaderHandler::~ReaderHandler() {
 /// Called in DTOR when main goes out of scope.\n
 /// Also called if cli calls "shutdown".
 /// @returns void
-void ReaderHandler::stop() {
+void ReaderHandler::stop()
+{
     running = false;
     clientServer.stop();
     cliServer.stop();
     DEBUG_OUT("Servers Shutting Down");
 }
 
-ReaderState ReaderHandler::getState() const {
+ReaderState ReaderHandler::getState() const
+{
     return state;
 }
 
 /// Runtime loop.\n Necessary to avoid termination while callbacks await.
 /// @returns void
-void ReaderHandler::runLoop() {
+void ReaderHandler::runLoop()
+{
     while (running)
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }
 
 /// Outputs server IPV4.
 /// @returns void
-void ReaderHandler::myIp() {
+void ReaderHandler::myIp()
+{
     boost::asio::io_context io;
     boost::asio::ip::tcp::resolver resolver(io);
     auto results = resolver.resolve(boost::asio::ip::host_name(), "");
     std::string ip_address;
-    for (const auto &e: results) {
+    for (const auto &e : results)
+    {
         auto addr = e.endpoint().address();
-        if (addr.is_v4() && !addr.is_loopback()) {
+        if (addr.is_v4() && !addr.is_loopback())
+        {
             ip_address = addr.to_string();
             break;
         }
@@ -138,8 +156,9 @@ void ReaderHandler::myIp() {
     DEBUG_OUT(ip_address);
 }
 
-void ReaderHandler::onDeadConnection(CONNECTION_T dead) {
-    std::scoped_lock (cli_mtx);
+void ReaderHandler::onDeadConnection(CONNECTION_T dead)
+{
+    std::scoped_lock(cli_mtx);
     if (cliReader.second == dead)
         cliReader.second == nullptr;
 }
@@ -148,10 +167,12 @@ void ReaderHandler::onDeadConnection(CONNECTION_T dead) {
 /// Is automatically called via lambda callback in CTOR whenever a new TCP Connection is established on the clientServer.<br>Recalls itself after each pass.
 /// @param connection ptr to the relative TcpConnection object. This is established and passed in the CTOR callback.
 /// @returns void
-void ReaderHandler::handleClient(CONNECTION_T connection) {
+void ReaderHandler::handleClient(CONNECTION_T connection)
+{
     state = ReaderState::Active;
 
-    connection->read<std::string>([this, connection](const std::string &pkg) {
+    connection->read<std::string>([this, connection](const std::string &pkg)
+                                  {
         const size_t seperator = pkg.find(':');
         if (seperator == std::string::npos || seperator == 0 || seperator == pkg.size() - 1) {
             DEBUG_OUT("Invalid Client Package Syntax - Connection Closed");
@@ -183,8 +204,7 @@ void ReaderHandler::handleClient(CONNECTION_T connection) {
             connection->write<std::string>(authorized ? "approved" : "denied");
             //log.addLog(door->first, user->second.first, stoi(user->first), authorized ? "approved" : "denied");
         }
-        handleClient(connection);
-    });
+        handleClient(connection); });
     state = ReaderState::Idle;
 }
 
@@ -192,23 +212,30 @@ void ReaderHandler::handleClient(CONNECTION_T connection) {
 /// Is automatically called via lambda callback in CTOR whenever a new TCP Connection is established on the cliServer. Recalls itself after each pass.
 /// @param connection ptr to the relative TcpConnection object. This is established and passed in the CTOR callback.
 /// @returns void
-void ReaderHandler::handleCli(CONNECTION_T connection) {
+void ReaderHandler::handleCli(CONNECTION_T connection)
+{
     {
         // Phase 1: Check if admin is connected and if not facilitate new connection.
         std::scoped_lock{cli_mtx};
 
-        if (cliReader.second == connection) {
+        if (cliReader.second == connection)
+        {
             connection->write<std::string>("CLI is ready");
-        } else if (!cliReader.second) {
+        }
+        else if (!cliReader.second)
+        {
             connection->write<std::string>("Input CLI Identification");
-        } else {
+        }
+        else
+        {
             connection->write<std::string>("Another Admin is connected");
             connection->close();
             return;
         }
     }
 
-    connection->read<std::string>([this, connection](const std::string &pkg) {
+    connection->read<std::string>([this, connection](const std::string &pkg)
+                                  {
         // Phase 2: Handle admin duplicates the connection registered as admin
         bool recursionFlag = false;
         {
@@ -292,17 +319,18 @@ void ReaderHandler::handleCli(CONNECTION_T connection) {
         } else {
             connection->write<std::string>("Unknown Command");
             handleCli(connection);
-        }
-    });
+        } });
 }
 
 /// Add new user function.
 /// @param connection ptr to the relative TcpConnection object.
 /// @param name string representation of the user to be added i.e. "john_doe".
 /// @param lvl uint8_t representation of the access level for the user to be added i.e. "1".
-void ReaderHandler::newUser(CONNECTION_T connection, const std::string &name, const uint8_t lvl) {
+void ReaderHandler::newUser(CONNECTION_T connection, const std::string &name, const uint8_t lvl)
+{
     connection->write<std::string>("Awaiting card read");
-    connection->read<std::string>([this, name, lvl, connection](const std::string &uid) {
+    connection->read<std::string>([this, name, lvl, connection](const std::string &uid)
+                                  {
         const std::string confirmMsg("Are you sure you want to add user:\n"
                                      "UID: " + uid + "\n" +
                                      "Name: " + name + "\n" +
@@ -321,20 +349,22 @@ void ReaderHandler::newUser(CONNECTION_T connection, const std::string &name, co
             else
                 connection->write<std::string>("Failed to add user");
             handleCli(connection);
-        });
-    });
+        }); });
 }
 
 /// Add new door function.
 /// /// @param connection ptr to the relative TcpConnection object.
 /// @param name string representation of the door to be added i.e. "front_entrance".
 /// @param lvl uint8_t representation of the access level for the door to be added i.e. "1".
-void ReaderHandler::newDoor(CONNECTION_T connection, const std::string &name, const uint8_t lvl) {
+void ReaderHandler::newDoor(CONNECTION_T connection, const std::string &name, const uint8_t lvl)
+{
     const std::string confirmMsg("Are you sure you want to add door:\n"
-                                 "Name: " + name + "\n" +
+                                 "Name: " +
+                                 name + "\n" +
                                  "Access Level: " + std::to_string(lvl));
     connection->write<std::string>(confirmMsg);
-    connection->read<std::string>([this, name, lvl, connection](const std::string &status) {
+    connection->read<std::string>([this, name, lvl, connection](const std::string &status)
+                                  {
         if (status == "denied" || status != "approved") {
             connection->write<std::string>("Did not add door");
             handleCli(connection);
@@ -345,26 +375,31 @@ void ReaderHandler::newDoor(CONNECTION_T connection, const std::string &name, co
             connection->write<std::string>("Door added successfully");
         else
             connection->write<std::string>("Failed to add door");
-        handleCli(connection);
-    });
+        handleCli(connection); });
 }
 
 /// Remove user function.
 /// @param connection ptr to the relative TcpConnection object.
 /// @param name string representation of the user to be removed i.e. "john_doe".
-void ReaderHandler::rmUser(CONNECTION_T connection, const std::string &name) {
+void ReaderHandler::rmUser(CONNECTION_T connection, const std::string &name)
+{
     auto user = usersByName.find(name);
-    if (user == usersByName.end()) {
+    if (user == usersByName.end())
+    {
         connection->write<std::string>("User could not be found");
         handleCli(connection);
         return;
     }
     const std::string confirmMsg("Are you sure you want to remove user:\n"
-                                 "UID: " + user->second.first + "\n"
-                                 "Name: " + name + "\n"
-                                 "Access Level: " + std::to_string(user->second.second));
+                                 "UID: " +
+                                 user->second.first + "\n"
+                                                      "Name: " +
+                                 name + "\n"
+                                        "Access Level: " +
+                                 std::to_string(user->second.second));
     connection->write<std::string>(confirmMsg);
-    connection->read<std::string>([this, name, connection](const std::string &status) {
+    connection->read<std::string>([this, name, connection](const std::string &status)
+                                  {
         if (status == "denied" || status != "approved") {
             connection->write<std::string>("Cancelled remove operation");
             handleCli(connection);
@@ -375,25 +410,28 @@ void ReaderHandler::rmUser(CONNECTION_T connection, const std::string &name) {
             connection->write<std::string>("User removed successfully");
         else
             connection->write<std::string>("Failed to remove user");
-        handleCli(connection);
-    });
+        handleCli(connection); });
 }
 
 /// Remove door function.
 /// @param connection ptr to the relative TcpConnection object.
 /// @param name string representation of the door to be removed i.e. "front_entrance".
-void ReaderHandler::rmDoor(CONNECTION_T connection, const std::string &name) {
+void ReaderHandler::rmDoor(CONNECTION_T connection, const std::string &name)
+{
     const auto door = doors.find(name);
-    if (door == doors.end()) {
+    if (door == doors.end())
+    {
         connection->write<std::string>("Door could not be found");
         handleCli(connection);
         return;
     }
     const std::string confirmMsg("Are you sure you want to remove door:\n"
-                                 "Name: " + name + "\n" +
+                                 "Name: " +
+                                 name + "\n" +
                                  "Access Level: " + std::to_string(door->second));
     connection->write<std::string>(confirmMsg);
-    connection->read<std::string>([this, name, connection](const std::string &status) {
+    connection->read<std::string>([this, name, connection](const std::string &status)
+                                  {
         if (status == "denied" || status != "approved") {
             connection->write<std::string>("Cancelled remove operation");
             handleCli(connection);
@@ -404,14 +442,15 @@ void ReaderHandler::rmDoor(CONNECTION_T connection, const std::string &name) {
             connection->write<std::string>("Door removed successfully");
         else
             connection->write<std::string>("Failed to remove door");
-        handleCli(connection);
-    });
+        handleCli(connection); });
 }
 
 void ReaderHandler::mvUser(CONNECTION_T connection, const std::string &oldName, const std::string &newName,
-                           uint8_t lvl) {
+                           uint8_t lvl)
+{
     auto user = usersByName.find(oldName);
-    if (user == usersByName.end()) {
+    if (user == usersByName.end())
+    {
         connection->write<std::string>("User could not be found");
         handleCli(connection);
         return;
@@ -420,14 +459,17 @@ void ReaderHandler::mvUser(CONNECTION_T connection, const std::string &oldName, 
         lvl = user->second.second;
 
     const std::string confirmMsg("Are you sure you want to edit user:\n"
-                                 "UID: " + user->second.first + "\n"
-                                 "Name: " + oldName + " -> " + newName + "\n"
-                                 "Access Level: " + std::to_string(user->second.second) + " -> " + std::to_string(lvl) +
-                                 "\n"
-            );
+                                 "UID: " +
+                                 user->second.first + "\n"
+                                                      "Name: " +
+                                 oldName + " -> " + newName + "\n"
+                                                              "Access Level: " +
+                                 std::to_string(user->second.second) + " -> " + std::to_string(lvl) +
+                                 "\n");
     std::string uid = user->second.first;
     connection->write<std::string>(confirmMsg);
-    connection->read<std::string>([this, uid, oldName, newName, lvl, connection](const std::string &status) {
+    connection->read<std::string>([this, uid, oldName, newName, lvl, connection](const std::string &status)
+                                  {
         if (status == "denied" || status != "approved") {
             connection->write<std::string>("Cancelled edit operation");
             handleCli(connection);
@@ -438,15 +480,15 @@ void ReaderHandler::mvUser(CONNECTION_T connection, const std::string &oldName, 
             connection->write<std::string>("User edited successfully");
         else
             connection->write<std::string>("Failed to edit user, data may be corrupted");
-        handleCli(connection);
-    });
+        handleCli(connection); });
 }
 
-
 void ReaderHandler::mvDoor(CONNECTION_T connection, const std::string &oldName, const std::string &newName,
-                           uint8_t lvl) {
+                           uint8_t lvl)
+{
     const auto door = doors.find(oldName);
-    if (door == doors.end()) {
+    if (door == doors.end())
+    {
         connection->write<std::string>("Door could not be found");
         handleCli(connection);
         return;
@@ -456,11 +498,13 @@ void ReaderHandler::mvDoor(CONNECTION_T connection, const std::string &oldName, 
         lvl = door->second;
 
     const std::string confirmMsg("Are you sure you want to edit door:\n"
-                                 "Name: " + oldName + " -> " + newName + "\n"
-                                 "Access Level: " + std::to_string(door->second) + " -> " + std::to_string(lvl) + "\n"
-            );
+                                 "Name: " +
+                                 oldName + " -> " + newName + "\n"
+                                                              "Access Level: " +
+                                 std::to_string(door->second) + " -> " + std::to_string(lvl) + "\n");
     connection->write<std::string>(confirmMsg);
-    connection->read<std::string>([this, oldName, newName, lvl, connection](const std::string &status) {
+    connection->read<std::string>([this, oldName, newName, lvl, connection](const std::string &status)
+                                  {
         if (status == "denied" || status != "approved") {
             connection->write<std::string>("Cancelled edit operation");
             handleCli(connection);
@@ -471,90 +515,93 @@ void ReaderHandler::mvDoor(CONNECTION_T connection, const std::string &oldName, 
             connection->write<std::string>("Door edited successfully");
         else
             connection->write<std::string>("Failed to edit door, data may be corrupted");
-        handleCli(connection);
-    });
+        handleCli(connection); });
 }
 
-std::string ReaderHandler::getSystemLog(const std::string &date) {
+std::string ReaderHandler::getSystemLog(const std::string &date)
+{
     return log.getLogByDate(date);
 }
 
-std::string ReaderHandler::getUserLog(const std::string &name) {
+std::string ReaderHandler::getUserLog(const std::string &name)
+{
     return log.getLogByName(name);
 }
 
-std::string ReaderHandler::getDoorLog(const std::string &name) {
+std::string ReaderHandler::getDoorLog(const std::string &name)
+{
     return log.getLogByDoor(name);
 }
 
-
-ReaderHandler::cmdArgs ReaderHandler::parseSyntax(const std::string &data, command type) {
+ReaderHandler::cmdArgs ReaderHandler::parseSyntax(const std::string &data, command type)
+{
     std::smatch match;
     cmdArgs error;
     uint8_t lvl{};
 
-    switch (type) {
-        case newUser_:
-            static const std::regex newUserSyntax(R"(^newUser\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
-            if (!std::regex_match(data, match, newUserSyntax))
-                return error;
-            lvl = std::stoul(match[2].str());
-            break;
-
-        case newDoor_:
-            static const std::regex newDoorSyntax(R"(^newDoor\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
-            if (!std::regex_match(data, match, newDoorSyntax))
-                return error;
-            lvl = std::stoul(match[2].str());
-            break;
-
-        case rmUser_:
-            static const std::regex rmUserSyntax(R"(^rmUser\s+([A-Za-z0-9_]+)$)");
-            if (!std::regex_match(data, match, rmUserSyntax))
-                return error;
-            break;
-
-        case rmDoor_:
-            static const std::regex rmDoorSyntax(R"(^rmDoor\s+([A-Za-z0-9_]+)$)");
-            if (!std::regex_match(data, match, rmDoorSyntax))
-                return error;
-            break;
-
-        case mvUser_:
-            static const std::regex mvUserSyntax1(R"(^mvUser\s+([A-Za-z0-9_]+)\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
-            static const std::regex mvUserSyntax2(R"(^mvUser\s+([A-Za-z0-9_]+)\s+([A-Za-z0-9_]+)$)");
-            if (std::regex_match(data, match, mvUserSyntax1))
-                lvl = std::stoul(match[3].str());
-            else if (!std::regex_match(data, match, mvUserSyntax2))
-                return error;
-            break;
-
-        case mvDoor_:
-            static const std::regex mvDoorSyntax1(R"(^mvUser\s+([A-Za-z0-9_]+)\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
-            static const std::regex mvDoorSyntax2(R"(^mvUser\s+([A-Za-z0-9_]+)\s+([A-Za-z0-9_]+)$)");
-            if (std::regex_match(data, match, mvDoorSyntax1))
-                lvl = std::stoul(match[3].str());
-            else if (!std::regex_match(data, match, mvDoorSyntax2))
-                return error;
-            break;
-        case systemLog_:
-            static const std::regex SystemLogSyntax(R"(^getSystemLog\s+([A-Za-z0-9_]+)\s+([A-Za-z0-9_]+)$)");
-            if (!std::regex_match(data, match, SystemLogSyntax))
-                return error;
-            break;
-        case userLog_:
-            static const std::regex userLogSyntax(R"(^getUserLog\s+([A-Za-z0-9_]+)$)");
-            if (!std::regex_match(data, match, userLogSyntax))
-                return error;
-            break;
-        case doorLog_:
-            static const std::regex doorLogSyntax(R"(^getDoorLog\s+([A-Za-z0-9_]+)$)");
-            if (!std::regex_match(data, match, doorLogSyntax))
-                return error;
-            break;
-
-        default:
+    switch (type)
+    {
+    case newUser_:
+        static const std::regex newUserSyntax(R"(^newUser\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
+        if (!std::regex_match(data, match, newUserSyntax))
             return error;
+        lvl = std::stoul(match[2].str());
+        break;
+
+    case newDoor_:
+        static const std::regex newDoorSyntax(R"(^newDoor\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
+        if (!std::regex_match(data, match, newDoorSyntax))
+            return error;
+        lvl = std::stoul(match[2].str());
+        break;
+
+    case rmUser_:
+        static const std::regex rmUserSyntax(R"(^rmUser\s+([A-Za-z0-9_]+)$)");
+        if (!std::regex_match(data, match, rmUserSyntax))
+            return error;
+        break;
+
+    case rmDoor_:
+        static const std::regex rmDoorSyntax(R"(^rmDoor\s+([A-Za-z0-9_]+)$)");
+        if (!std::regex_match(data, match, rmDoorSyntax))
+            return error;
+        break;
+
+    case mvUser_:
+        static const std::regex mvUserSyntax1(R"(^mvUser\s+([A-Za-z0-9_]+)\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
+        static const std::regex mvUserSyntax2(R"(^mvUser\s+([A-Za-z0-9_]+)\s+([A-Za-z0-9_]+)$)");
+        if (std::regex_match(data, match, mvUserSyntax1))
+            lvl = std::stoul(match[3].str());
+        else if (!std::regex_match(data, match, mvUserSyntax2))
+            return error;
+        break;
+
+    case mvDoor_:
+        static const std::regex mvDoorSyntax1(R"(^mvUser\s+([A-Za-z0-9_]+)\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
+        static const std::regex mvDoorSyntax2(R"(^mvUser\s+([A-Za-z0-9_]+)\s+([A-Za-z0-9_]+)$)");
+        if (std::regex_match(data, match, mvDoorSyntax1))
+            lvl = std::stoul(match[3].str());
+        else if (!std::regex_match(data, match, mvDoorSyntax2))
+            return error;
+        break;
+    case systemLog_:
+        static const std::regex SystemLogSyntax(R"(^getSystemLog\s+([A-Za-z0-9_]+)\s+([A-Za-z0-9_]+)$)");
+        if (!std::regex_match(data, match, SystemLogSyntax))
+            return error;
+        break;
+    case userLog_:
+        static const std::regex userLogSyntax(R"(^getUserLog\s+([A-Za-z0-9_]+)$)");
+        if (!std::regex_match(data, match, userLogSyntax))
+            return error;
+        break;
+    case doorLog_:
+        static const std::regex doorLogSyntax(R"(^getDoorLog\s+([A-Za-z0-9_]+)$)");
+        if (!std::regex_match(data, match, doorLogSyntax))
+            return error;
+        break;
+
+    default:
+        return error;
     }
 
     uint8_t count = match.size() - 1;
@@ -569,9 +616,11 @@ ReaderHandler::cmdArgs ReaderHandler::parseSyntax(const std::string &data, comma
     return cmdArgs{oldName, newName, lvl};
 }
 
-bool ReaderHandler::addToConfig(const std::string &type, const std::string &name, uint8_t lvl, const std::string &uid) {
+bool ReaderHandler::addToConfig(const std::string &type, const std::string &name, uint8_t lvl, const std::string &uid)
+{
     // Assert type is correct. Cannot use compile-time asserts on string comparisons, maybe use const char* instead in the future.
-    if (type != "doors" && type != "users") {
+    if (type != "doors" && type != "users")
+    {
         DEBUG_OUT("Type must be either 'doors' or 'users'");
         return false;
     }
@@ -588,20 +637,21 @@ bool ReaderHandler::addToConfig(const std::string &type, const std::string &name
 
     nlohmann::json addition;
 
-    if (type == "users") {
+    if (type == "users")
+    {
         usersByName[name] = {uid, lvl};
         usersByUid[uid] = {name, lvl};
         addition = {
             {"name", name},
             {"uid", uid},
-            {"lvl", lvl}
-        };
-    } else {
+            {"lvl", lvl}};
+    }
+    else
+    {
         doors[name] = lvl;
         addition = {
             {"name", name},
-            {"lvl", lvl}
-        };
+            {"lvl", lvl}};
     }
 
     configJson[type].push_back(addition);
@@ -616,9 +666,11 @@ bool ReaderHandler::addToConfig(const std::string &type, const std::string &name
     return true;
 }
 
-bool ReaderHandler::removeFromConfig(const std::string &type, const std::string &name) {
+bool ReaderHandler::removeFromConfig(const std::string &type, const std::string &name)
+{
     // Assert type is correct. Cannot use compile-time asserts on string comparisons, maybe use const char* instead in the future.
-    if (type != "doors" && type != "users") {
+    if (type != "doors" && type != "users")
+    {
         DEBUG_OUT("Type must be either 'doors' or 'users'");
         return false;
     }
@@ -627,11 +679,14 @@ bool ReaderHandler::removeFromConfig(const std::string &type, const std::string 
     std::scoped_lock{rw_mtx};
 
     // Remove from memory
-    if (type == "users") {
+    if (type == "users")
+    {
         const auto &user = usersByName.find(name);
         usersByUid.erase(user->second.first); // remove by uid
         usersByName.erase(user);
-    } else if (type == "doors") {
+    }
+    else if (type == "doors")
+    {
         const auto &door = doors.find(name);
         doors.erase(door);
     }
@@ -641,10 +696,13 @@ bool ReaderHandler::removeFromConfig(const std::string &type, const std::string 
     assertConfig(configJson);
 
     // Rewrite related config.json segment
-    if (configJson.contains(type)) {
+    if (configJson.contains(type))
+    {
         auto &revisedJson = configJson[type];
-        for (auto it = revisedJson.begin(); it != revisedJson.end(); ++it) {
-            if (it->contains("name") && (*it)["name"] == name) {
+        for (auto it = revisedJson.begin(); it != revisedJson.end(); ++it)
+        {
+            if (it->contains("name") && (*it)["name"] == name)
+            {
                 revisedJson.erase(it);
                 break;
             }
@@ -661,14 +719,18 @@ bool ReaderHandler::removeFromConfig(const std::string &type, const std::string 
     return true;
 }
 
-void ReaderHandler::assertConfig(nlohmann::json &configJson) {
-    try {
+void ReaderHandler::assertConfig(nlohmann::json &configJson)
+{
+    try
+    {
         std::ifstream in("config.json");
         if (in && in.peek() != std::ifstream::traits_type::eof())
             in >> configJson;
         else
             configJson = {{"users", nlohmann::json::array()}, {"doors", nlohmann::json::array()}};
-    } catch (const nlohmann::json::parse_error &e) {
+    }
+    catch (const nlohmann::json::parse_error &e)
+    {
         DEBUG_OUT("Invalid JSON @ config.json, attempting clean overwrite - " + std::string(e.what()));
         configJson = {{"users", nlohmann::json::array()}, {"doors", nlohmann::json::array()}};
     }
@@ -678,23 +740,29 @@ void ReaderHandler::assertConfig(nlohmann::json &configJson) {
 /// Takes std::string by reference.
 /// @param args undefined parameter pack. Will assert type is std::string&
 /// @returns void
-template<typename... Args>
-void ReaderHandler::to_snake_case(Args &... args) {
+template <typename... Args>
+void ReaderHandler::to_snake_case(Args &...args)
+{
     static_assert((std::is_same_v<Args, std::string> && ...), "Arguments must be of type std::string&");
-    auto convertOne = [](std::string &input) {
+    auto convertOne = [](std::string &input)
+    {
         std::string result;
         result.reserve(input.size());
         /// Albeit reserving only input.size(), more usually get's allocated.
         /// If larger than input.size() it will just reallocate which is negligible regardless, considering the string sizes we'll be handling.
 
         bool prevLower{false};
-        for (const unsigned char c: input) {
-            if (std::isupper(c)) {
+        for (const unsigned char c : input)
+        {
+            if (std::isupper(c))
+            {
                 if (prevLower)
                     result += '_';
                 result += static_cast<char>(std::tolower(c));
                 prevLower = false;
-            } else {
+            }
+            else
+            {
                 result += static_cast<char>(c);
                 prevLower = true;
             }
