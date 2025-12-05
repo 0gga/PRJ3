@@ -1,9 +1,6 @@
 [submodule "extern/ogga"]
 	path = extern/ogga
 	url = https://github.com/0gga/oggaLib.git
-[submodule "extern/WiringPi"]
-	path = extern/WiringPi
-	url = https://github.com/WiringPi/WiringPi.git
 [submodule "extern/asio"]
 	path = extern/asio
 	url = https://github.com/boostorg/asio.git
@@ -55,3 +52,6 @@
 [submodule "extern/json"]
 	path = extern/json
 	url = https://github.com/nlohmann/json.git
+[submodule "extern/WiringPi"]
+	path = extern/WiringPi
+	url = https://github.com/WiringPi/WiringPi

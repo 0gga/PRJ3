@@ -11,6 +11,7 @@ obj/
 *.lib
 *.pdb
 *.ilk
+*.o
 
 # CMake
 CMakeCache.txt
