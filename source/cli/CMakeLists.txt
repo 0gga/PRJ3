@@ -10,8 +10,9 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 # Create the executable
 add_executable(${PROJECT_NAME} ${SOURCES})
 
-# Include nlohmann::json
-include_directories(${CMAKE_SOURCE_DIR}/extern/json/single_include/nlohmann)
+add_subdirectory(${PROJECT_SOURCE_DIR}/client/pn532-lib)
+
+target_link_libraries(cli PRIVATE pn532_lib)
 
 # Set C++ standard
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 23)

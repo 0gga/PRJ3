@@ -1,32 +1,54 @@
 #include "rpi_client.h"
-
+#include "wiringPi.h"
+#include <chrono>
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <thread>
 
-client::client(int portno, const char *server_ip, std::string doorname) : portno(portno), server_ip(server_ip), doorname(doorname)
+client::client(int portno, const char *server_ip, std::string doorname)
+    : portno(portno), server_ip(server_ip), doorname(doorname)
 {
-    rfid_reader = std::make_unique<PN532Reader>(); 
-
-    if(!rfid_reader->init_pn532()){
-        std::cerr << "Failed to initialize PN532" << std::endl; 
+    // First wiring pi setup for physical pins.
+    if (wiringPiSetupPhys() == -1)
+    {
+        std::cerr << "WiringPi setup failed" << std::endl;
+        exit(1);
     }
 
+    // initialized to correct physical pins.
+    buzzer = std::make_unique<Buzzer>(21);
+    Led_Green = std::make_unique<Led>(8);
+    Led_Yellow = std::make_unique<Led>(11);
+    Led_Red = std::make_unique<Led>(10);
+    RS = std::make_unique<ReedSwitch>(35);
+
+    // Second setup RFID reader.
+    rfid_reader = std::make_unique<PN532Reader>();
+
+    if (!rfid_reader->init_pn532())
+    {
+        std::cerr << "Failed to initialize PN532" << std::endl;
+    }
+
+    // Third connect to server (continuous calls, until connected)
     while ((sockfd = connect_to_server()) < 0)
     {
-        std::cerr << "trying to connect.. 2 seconds wait..";
-        sleep(2); //should be 2s
+        std::cerr << "trying to connect.. 2 seconds wait.." << std::endl;
+        std::this_thread::sleep_for(std::chrono::milliseconds(2000));
     }
+
+    // little test, that everything works, when powering on.
+    initLeds();
 }
 
 client::~client()
 {
     close(sockfd);
 }
-
 
 int client::connect_to_server()
 {
@@ -60,13 +82,13 @@ int client::connect_to_server()
     return sockfd;
 }
 
-void client::send_data(const std::string& uidstring)
+void client::send_data(const std::string &uidstring)
 {
     std::string totalstring(doorname);
     totalstring += ':';
     totalstring += uidstring;
     totalstring += '\n';
-    std::cerr << totalstring << std::endl;
+    std::cerr << "Sending: " << totalstring << std::endl;
 
     ssize_t n = write(sockfd, totalstring.c_str(), strlen(totalstring.c_str()));
     if (n < 0)
@@ -74,26 +96,31 @@ void client::send_data(const std::string& uidstring)
         perror("ERROR writing to socket");
         return;
     }
+    // std::cerr << "Sent " << n << " bytes" << std::endl;
 }
 
 bool client::recieve_data()
 {
-    size_t total = 0; // antallet af bytes modtaget
-    ssize_t n = 0;    // antallet af bytes læst
+    size_t total = 0;
+    ssize_t n = 0;
 
-    // læser indtil \n eller \r, og kan blive stuck her hvis, det ikke er en del af beskeden
-    // overvej eventuelt, bare at læse indtil EOF via read
-
+    memset(buffer_receive, 0, sizeof(buffer_receive));
     while (total < sizeof(buffer_receive) - 1)
     {
-        n = read(sockfd, buffer_receive + total, 1); // send 1 byte at a time
+        n = read(sockfd, buffer_receive + total, 1);
         if (n < 0)
         {
             perror("ERROR reading from socket");
             return false;
         }
 
-        // end of line check
+        if (n == 0) // end of file check.
+        {
+            std::cerr << "Server closed connection" << std::endl;
+            return false;
+        }
+
+        // end of line characters check.
         if (buffer_receive[total] == '\n' || buffer_receive[total] == '\r')
         {
             break;
@@ -102,27 +129,94 @@ bool client::recieve_data()
         total += n;
     }
 
-    buffer_receive[total] = '\0'; // null termination
+    memmove(buffer_receive,
+            buffer_receive + 14,
+            total - 14 + 1);
 
-    // std::cerr << "Recieved data: " << buffer_receive << std::endl;
+    buffer_receive[total] = '\0';
 
     return true;
 }
 
 void client::io_feedback()
 {
-    if (strcmp(buffer_receive, "Godkendt") == 0)
+    // std::cerr << "Buffer contains: '" << buffer_receive << "'" << std::endl;
+
+    if (strcmp(buffer_receive, "approved") == 0)
     {
         std::cerr << "GODKENDT!! velkommen :))" << std::endl;
+
+        // Yellow LED off. Green LED on.
+        Led_Yellow->off();
+        Led_Green->on();
+
+        auto start_door_closed = std::chrono::high_resolution_clock::now();
+        while (!RS->isOpen()) // first check if they dont open door in 10 seconds, lock again.
+        {
+            auto now_door_closed = std::chrono::high_resolution_clock::now();
+            auto duration_door_closed = std::chrono::duration_cast<std::chrono::seconds>(now_door_closed - start_door_closed).count();
+            if (duration_door_closed > 10) // 10 seconds
+            {
+                Led_Green->off();
+                Led_Yellow->on();
+                std::cout << "Door not opened inside 10 seconds. locking again" << std::endl;
+                return; // if door not opened in 10 seconds, return.
+            }
+            std::this_thread::sleep_for(std::chrono::milliseconds(50)); // small sleep time.
+        }
+
+        auto start_door_open = std::chrono::high_resolution_clock::now();
+
+        std::cout << "Door open" << std::endl;
+
+        while (RS->isOpen()) // second check if they have openend door, that they close it in 2 minutes time, if not play alarm.
+        {
+            std::cerr << "Door still open, waiting..." << std::endl;
+            auto now_door_open = std::chrono::high_resolution_clock::now();
+            auto duration_door_open = std::chrono::duration_cast<std::chrono::seconds>(now_door_open - start_door_open).count();
+            if (duration_door_open > 120) // 120 seconds / 2 min.
+            {
+                Led_Red->on();
+                buzzer->beep(1000); // beeps one second and sleeps one second
+                std::cout << "Door not closed inside 2 min. locking again" << std::endl;
+                break;
+            }
+            std::this_thread::sleep_for(std::chrono::milliseconds(50)); // small sleep time.
+        }
+        // Door closed, turn off green. turn on yellow.
+        Led_Green->off();
+        Led_Yellow->on();
     }
-    else if (strcmp(buffer_receive, "Denied") == 0)
+    else if (strcmp(buffer_receive, "denied") == 0)
     {
         std::cerr << "AFVIST!! øv bøv, slem slem slem :((" << std::endl;
+
+        Led_Green->off();
+        Led_Yellow->off();
+        Led_Red->on();
+
+        for (int i = 0; i < 6; i++) // blink i 3 sekunder.
+        {
+            Led_Red->blink(12, 3000);
+        }
+
+        Led_Red->off();
+        Led_Yellow->on();
     }
     else
     {
-        std::cerr << "Nothing detected :/" << std::endl;
-        // håndtering af fejlstrenge ?
+        std::cerr << "Unknown response: '" << buffer_receive << "'" << std::endl;
+
+        Led_Red->off();
+        Led_Green->off();
+
+        for (int i = 0; i < 3; i++)
+        {
+            Led_Yellow->off();
+            std::this_thread::sleep_for(std::chrono::milliseconds(300));
+            Led_Yellow->on();
+            std::this_thread::sleep_for(std::chrono::milliseconds(300));
+        }
     }
 }
 
@@ -138,49 +232,107 @@ void client::run()
 
     State curr_state = State::WAIT_INPUT;
 
-    std::string uid; 
+    // Initial LED states.
+    Led_Green->off();
+    Led_Red->off();
+    Led_Yellow->on();
+
+    std::string uid;
     while (rfid_reader->isInitialized())
     {
         switch (curr_state)
         {
         case State::WAIT_INPUT:
-            std::cerr << "In state: " << curr_state << std::endl;
-            if(rfid_reader->waitForScan()){
+            std::cerr << "State: WAIT_INPUT" << std::endl;
+            if (rfid_reader->waitForScan())
+            {
                 uid = rfid_reader->getStringUID();
+                // std::cerr << "Card detected: " << uid << std::endl;
                 curr_state = State::SEND;
             }
-            else{
-                const long time = 200*1000*1000L;
-                nanosleep((const struct timespec[]){{0, time}}, NULL); //200ms
+            else
+            {
+                std::this_thread::sleep_for(std::chrono::milliseconds(200)); // poll every 200 for uid string ms
             }
             break;
 
         case State::SEND:
-            std::cerr << "In state: " << curr_state << std::endl;
+            std::cerr << "State: SEND" << std::endl;
             send_data(uid);
             curr_state = State::RESPONSE;
             break;
 
         case State::RESPONSE:
         {
-            std::cerr << "In state: " << curr_state << std::endl;
+            std::cerr << "State: RESPONSE" << std::endl;
             if (recieve_data())
             {
                 curr_state = State::FEEDBACK;
-                std::cerr << "Recieved data: " << buffer_receive << std::endl;
+                // std::cerr << "Received data: '" << buffer_receive << "'" << std::endl;
             }
-            else {
-                std::cerr << "No data recieved, set rfid status to false" << std::endl; 
-                curr_state = State::WAIT_INPUT; 
+            else // if recieve_data returns false -> in case of socket error.
+            {
+                std::cerr << "No data received, showing error and returning to wait" << std::endl;
+
+                for (int i = 0; i < 2; i++)
+                {
+                    std::cerr << "Error blink " << (i + 1) << std::endl;
+                    Led_Red->on();
+                    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+                    Led_Red->off();
+                    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+                }
+
+                Led_Yellow->on();
+                curr_state = State::WAIT_INPUT;
             }
             break;
         }
 
         case State::FEEDBACK:
-            std::cerr << "In state: " << curr_state << std::endl;
+            std::cerr << "State: FEEDBACK" << std::endl;
             io_feedback();
             curr_state = State::WAIT_INPUT;
             break;
         }
     }
+}
+
+void client::initLeds()
+{
+    std::cerr << "=== INITLEDS() START ===" << std::endl;
+    for (int i = 0; i < 2; i++)
+    {
+        printf("Cycle %d/2\n", i + 1);
+
+        printf("GREEN ON\n");
+        Led_Green->on();
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        printf("GREEN OFF\n");
+        Led_Green->off();
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        ;
+
+        printf("YELLOW ON\n");
+        Led_Yellow->on();
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        printf("YELLOW OFF\n");
+        Led_Yellow->off();
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+
+        printf("RED ON\n");
+        Led_Red->on();
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        printf("RED OFF\n");
+        Led_Red->off();
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+
+        printf("BUZZER ON\n");
+        buzzer->beep(1000);
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+
+        printf("REED SWITCH OPEN: %d\n", RS->isOpen());
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    }
+    return;
 }

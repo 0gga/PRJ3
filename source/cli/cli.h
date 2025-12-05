@@ -1,11 +1,12 @@
 #pragma once
-
 #include <stdint.h>
 #include <iostream>
 #include <string>
 #include <regex>
+#include "pn532_wrapper.h"
 
-class cli {
+class cli
+{
 public:
     cli(int portno, const char *server_ip);
     ~cli();
@@ -20,21 +21,21 @@ private:
 
     char buffer_receive[4096];
 
+    std::unique_ptr<PN532Reader> rfid_reader;
+
     int connect_to_server();
-    void send_data(const std::string& msg);
+    void send_data(const std::string &msg);
     bool recieve_data();
     bool admin_identification();
 
-   bool handle_newDoor(const std::string&);
-   bool handle_newUser(const std::string&);
-   bool handle_rmDoor(const std::string&);
-   bool handle_rmUser(const std::string&);
-   bool handle_exit(const std::string&);
-   bool handle_shutdown(const std::string&);
-   bool handle_mvUser(const std::string&);
-   bool handle_mvDoor(const std::string&);
-
+    bool handle_newDoor(const std::string &);
+    bool handle_newUser(const std::string &);
+    bool handle_rmDoor(const std::string &);
+    bool handle_rmUser(const std::string &);
+    bool handle_exit(const std::string &);
+    bool handle_shutdown(const std::string &);
+    bool handle_mvUser(const std::string &);
+    bool handle_mvDoor(const std::string &);
 
     void printCommands() const;
-
 };
