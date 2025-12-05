@@ -9,10 +9,8 @@
 #include "csv.hpp"
 
 enum class ReaderState {
-	Idle, Active
+	idle_, active_
 };
-
-void myIP();
 
 class ReaderHandler {
 public:
@@ -32,7 +30,7 @@ private: // Member Functions
 	void handleClient(CONNECTION_T connection);
 	void handleCli(CONNECTION_T connection);
 
-	enum command {
+	enum Command {
 		newUser_,
 		newDoor_,
 		rmUser_,
@@ -44,7 +42,7 @@ private: // Member Functions
 		doorLog_
 	};
 
-	struct cmdArgs {
+	struct CmdArgs {
 		std::string oldName_{"-1"};
 		std::string newName_{"-1"};
 		uint8_t accessLevel_{};
@@ -65,7 +63,7 @@ private: // Member Functions
 	bool addToConfig(const std::string&, const std::string&, uint8_t, const std::string& = "");
 	bool removeFromConfig(const std::string&, const std::string&);
 	void assertConfig(nlohmann::json&);
-	cmdArgs parseSyntax(const std::string& pkg, command type);
+	CmdArgs parseSyntax(const std::string& pkg, Command type);
 
 	template<typename... Args>
 	void to_snake_case(Args&... args);
@@ -74,18 +72,18 @@ private: // Member Functions
 	ReaderState getState() const;
 
 private: // Member Variables
-	ReaderState state          = ReaderState::Idle;
-	static inline bool running = true;
+	ReaderState state_          = ReaderState::idle_;
+	static inline bool running_ = true;
 
-	TcpServer clientServer;
-	TcpServer cliServer;
+	TcpServer clientServer_;
+	TcpServer cliServer_;
 
-	CsvLogger log;
-	std::pair<std::string, CONNECTION_T> cliReader; //brug weak_ptr her perchance
-	std::unordered_map<std::string, int> doors;
-	std::unordered_map<std::string, std::pair<std::string, int>> usersByName;
-	std::unordered_map<std::string, std::pair<std::string, int>> usersByUid;
+	CsvLogger log_;
+	std::pair<std::string, CONNECTION_T> cliReader_; //brug weak_ptr her perchance
+	std::unordered_map<std::string, int> doors_;
+	std::unordered_map<std::string, std::pair<std::string, int>> usersByName_;
+	std::unordered_map<std::string, std::pair<std::string, int>> usersByUid_;
 
-	std::mutex cli_mtx;       // for cli admin control
-	std::shared_mutex rw_mtx; // Use shared_lock for json reads and unique_lock for json writes.
+	std::mutex cli_mtx_;       // for cli admin control
+	std::shared_mutex rw_mtx_; // Use shared_lock for json reads and unique_lock for json writes.
 };

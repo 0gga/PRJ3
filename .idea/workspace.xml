@@ -28,19 +28,19 @@
     </generated>
   </component>
   <component name="CMakeSettings" AUTO_RELOAD="true">
-    <configurations />
+    <configurations>
+      <configuration PROFILE_NAME="x64-debug" ENABLED="false" FROM_PRESET="true" GENERATION_DIR="$PROJECT_DIR$/out/build/x64-debug" />
+      <configuration PROFILE_NAME="x64-release" ENABLED="false" FROM_PRESET="true" GENERATION_DIR="$PROJECT_DIR$/out/build/x64-release" />
+      <configuration PROFILE_NAME="x86-debug" ENABLED="false" FROM_PRESET="true" GENERATION_DIR="$PROJECT_DIR$/out/build/x86-debug" />
+      <configuration PROFILE_NAME="x86-release" ENABLED="false" FROM_PRESET="true" GENERATION_DIR="$PROJECT_DIR$/out/build/x86-release" />
+    </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="\n">
-      <change beforePath="$PROJECT_DIR$/.idea/PRJ3.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/PRJ3.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/csv-editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-editor.xml" afterDir="false" />
+    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="whatever">
       <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/asioServer/include/ReaderHandler.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/include/ReaderHandler.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/cli/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/source/cli/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/cli/cli.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/cli/cli.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/client/pn532-lib/rpi_tcptest/rpi_client.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/client/pn532-lib/rpi_tcptest/rpi_client.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -116,44 +116,44 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
-    &quot;CMake Application.asioServer.executor&quot;: &quot;Run&quot;,
-    &quot;CMake Application.build_unix.executor&quot;: &quot;Run&quot;,
-    &quot;CMake Application.cli.executor&quot;: &quot;Run&quot;,
-    &quot;CMake Application.client.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.Dockerfile.executor&quot;: &quot;Run&quot;,
-    &quot;Python.serverTester.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.RadMigrateCodeStyle&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.west.config.association.type.startup.service&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Ogga/Documents/Repos/PRJ3&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.updates&quot;,
-    &quot;settings.editor.splitter.proportion&quot;: &quot;0.23740393&quot;,
-    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
+    "CMake Application.asioServer.executor": "Run",
+    "CMake Application.build_unix.executor": "Run",
+    "CMake Application.cli.executor": "Run",
+    "CMake Application.client.executor": "Run",
+    "Docker.Dockerfile.executor": "Run",
+    "Python.serverTester.executor": "Run",
+    "RunOnceActivity.RadMigrateCodeStyle": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "RunOnceActivity.west.config.association.type.startup.service": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "C:/Users/Ogga/Documents/Repos/PRJ3",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.sourceCode.C++",
+    "settings.editor.splitter.proportion": "0.23740393",
+    "show.migrate.to.gradle.popup": "false",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;ChangesTree.GroupingKeys&quot;: [
-      &quot;directory&quot;,
-      &quot;repository&quot;
+  "keyToStringList": {
+    "ChangesTree.GroupingKeys": [
+      "directory",
+      "repository"
     ]
   }
-}</component>
+}]]></component>
   <component name="RdControllerToolWindowsLayoutState" isNewUi="true">
     <layout>
       <window_info id="Bookmarks" side_tool="true" />
@@ -221,9 +221,9 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.asioServer">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration name="asioServer" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="PRJ3" TARGET_NAME="asioServer" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="PRJ3" RUN_TARGET_NAME="asioServer">
@@ -336,14 +336,7 @@
       <workItem from="1764959460895" duration="81000" />
       <workItem from="1764959797739" duration="1352000" />
       <workItem from="1764961519102" duration="368000" />
-    </task>
-    <task id="LOCAL-00025" summary="Cleanup">
-      <option name="closed" value="true" />
-      <created>1761307017065</created>
-      <option name="number" value="00025" />
-      <option name="presentableId" value="LOCAL-00025" />
-      <option name="project" value="LOCAL" />
-      <updated>1761307017065</updated>
+      <workItem from="1764964665031" duration="2220000" />
     </task>
     <task id="LOCAL-00026" summary="Readme fixes">
       <option name="closed" value="true" />
@@ -729,7 +722,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764958458145</updated>
     </task>
-    <option name="localTasksCounter" value="74" />
+    <task id="LOCAL-00074" summary="whatever">
+      <option name="closed" value="true" />
+      <created>1764962398206</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1764962398206</updated>
+    </task>
+    <option name="localTasksCounter" value="75" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
