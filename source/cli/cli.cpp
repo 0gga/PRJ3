@@ -6,6 +6,7 @@
 #include <sys/ioctl.h>
 #include <cstring>
 #include <limits>
+#include <thread>
 
 cli::cli(int portno, const char *server_ip) : portno(portno), server_ip(server_ip) {
     while ((sockfd = connect_to_server()) < 0) {
@@ -134,6 +135,7 @@ bool cli::recieve_data() {
         }
 
         std::cout << buffer_receive << std::endl;
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
     }
 
     return true;
@@ -174,9 +176,9 @@ void cli::run() {
     if (!admin_identification())
         return;
 
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
     while (connection) {
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         std::cout << "Input command. Type 'help' to see overview\n\n";
         std::cout << "> ";
         std::string input;

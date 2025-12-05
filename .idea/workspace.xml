@@ -32,12 +32,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="\n">
-      <change beforePath="$PROJECT_DIR$/.idea/PRJ3.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/PRJ3.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/csv-editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-editor.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/cli/cli.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/cli/cli.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/cli/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/cli/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -158,8 +154,8 @@
       <window_info id="Backup and Sync History" />
       <window_info id="Commit_Guest" show_stripe_button="false" />
       <window_info id="Learn" show_stripe_button="false" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14463651" />
-      <window_info id="Commit" order="1" weight="0.14463651" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.14463651" />
+      <window_info active="true" id="Commit" order="1" visible="true" weight="0.14463651" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info id="Pull Requests" order="3" weight="0.14463651" />
       <window_info anchor="bottom" id="Database Changes" />
@@ -329,15 +325,7 @@
       <workItem from="1764959460895" duration="81000" />
       <workItem from="1764959797739" duration="1352000" />
       <workItem from="1764961519102" duration="368000" />
-      <workItem from="1764964597893" duration="124000" />
-    </task>
-    <task id="LOCAL-00025" summary="Cleanup">
-      <option name="closed" value="true" />
-      <created>1761307017065</created>
-      <option name="number" value="00025" />
-      <option name="presentableId" value="LOCAL-00025" />
-      <option name="project" value="LOCAL" />
-      <updated>1761307017065</updated>
+      <workItem from="1764964597893" duration="707000" />
     </task>
     <task id="LOCAL-00026" summary="Readme fixes">
       <option name="closed" value="true" />
@@ -723,7 +711,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764958458145</updated>
     </task>
-    <option name="localTasksCounter" value="74" />
+    <task id="LOCAL-00074" summary="\n">
+      <option name="closed" value="true" />
+      <created>1764964739963</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1764964739964</updated>
+    </task>
+    <option name="localTasksCounter" value="75" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -785,10 +781,10 @@
     <MESSAGE value="temporarily commented out cli in CMakeLists.txt" />
     <MESSAGE value="cmake downgrade" />
     <MESSAGE value="ReaderHandler.cpp/mvUser &amp; mvDoor bugfix" />
-    <MESSAGE value="\n" />
     <MESSAGE value="fixes" />
     <MESSAGE value="whatever" />
-    <option name="LAST_COMMIT_MESSAGE" value="whatever" />
+    <MESSAGE value="\n" />
+    <option name="LAST_COMMIT_MESSAGE" value="\n" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
