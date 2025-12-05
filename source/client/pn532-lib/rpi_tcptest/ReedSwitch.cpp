@@ -9,5 +9,5 @@ ReedSwitch::ReedSwitch(int physPin) : pin(physPin)
 
 bool ReedSwitch::isOpen()
 {
-    return digitalRead(pin) == HIGH; // HIGH -> magnet væk -> døren åben
+    return digitalRead(pin);
 }
