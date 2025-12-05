@@ -10,12 +10,6 @@ file(GLOB_RECURSE PN532 CONFIGURE_DEPENDS
         ${CMAKE_CURRENT_SOURCE_DIR}/pn532-lib/rpi_tcptest/*.cpp
 )
 
-if (UNIX)
-	target_link_libraries(
-			PRIVATE wiringPi
-	)
-endif()
-
 # Define executable path
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
@@ -27,7 +21,10 @@ target_include_directories(${PROJECT_NAME} PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/pn532-lib/rpi_tcptest
 )
 
-target_link_libraries(${PROJECT_NAME} PRIVATE pthread rt)
+if (UNIX)
+	target_link_libraries(${PROJECT_NAME} PRIVATE wiringPi PRIVATE pthread rt)
+endif()
+
 
 # Set C++ standard
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 23)

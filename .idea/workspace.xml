@@ -22,21 +22,19 @@
   </component>
   <component name="CMakeRunConfigurationManager">
     <generated>
+      <config projectName="PRJ3" targetName="cli" />
       <config projectName="PRJ3" targetName="client" />
       <config projectName="PRJ3" targetName="asioServer" />
-      <config projectName="PRJ3" targetName="cli" />
     </generated>
   </component>
   <component name="CMakeSettings" AUTO_RELOAD="true">
-    <configurations>
-      <configuration PROFILE_NAME="x64-debug" ENABLED="false" FROM_PRESET="true" GENERATION_DIR="$PROJECT_DIR$/out/build/x64-debug" />
-      <configuration PROFILE_NAME="x64-release" ENABLED="false" FROM_PRESET="true" GENERATION_DIR="$PROJECT_DIR$/out/build/x64-release" />
-      <configuration PROFILE_NAME="x86-debug" ENABLED="false" FROM_PRESET="true" GENERATION_DIR="$PROJECT_DIR$/out/build/x86-debug" />
-      <configuration PROFILE_NAME="x86-release" ENABLED="false" FROM_PRESET="true" GENERATION_DIR="$PROJECT_DIR$/out/build/x86-release" />
-    </configurations>
+    <configurations />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="whatever">
+    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="\n">
+      <change beforePath="$PROJECT_DIR$/.idea/PRJ3.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/PRJ3.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/csv-editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-editor.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/cli/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/source/cli/CMakeLists.txt" afterDir="false" />
     </list>
@@ -71,12 +69,12 @@
     }
   }
 }</component>
-  <component name="GitLabMergeRequestsSettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "first": "https://gitlab.au.dk/SWPRJ3/PRJ3.git",
-    "second": "eecea205-3cbe-4958-b7b2-7637b50b1076"
+  <component name="GitLabMergeRequestsSettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;first&quot;: &quot;https://gitlab.au.dk/SWPRJ3/PRJ3.git&quot;,
+    &quot;second&quot;: &quot;eecea205-3cbe-4958-b7b2-7637b50b1076&quot;
   }
-}]]></component>
+}</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/source/asioServer/TCP/TcpConnection.hpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/source/asioServer/include/ReaderHandler.hpp" root0="FORCE_HIGHLIGHTING" />
@@ -92,6 +90,9 @@
     <setting file="file://$PROJECT_DIR$/source/client/pn532-lib/rpi_tcptest/Buzzer.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/source/client/pn532-lib/rpi_tcptest/pn532_wrapper.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/source/client/pn532-lib/rpi_tcptest/pn532_wrapper.h" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="MacroExpansionManager">
+    <option name="directoryName" value="6uXxeKc4" />
   </component>
   <component name="NamedScopeManager">
     <order>
@@ -109,7 +110,6 @@
   </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showExcludedFiles" value="false" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">{
@@ -156,27 +156,43 @@
       <window_info id="Merge Requests" />
       <window_info id="Backup and Sync History" />
       <window_info id="Commit_Guest" show_stripe_button="false" />
-      <window_info id="Pull Requests" />
-      <window_info id="Learn" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.3301983" />
-      <window_info id="Commit" order="1" weight="0.25" />
+      <window_info id="Learn" show_stripe_button="false" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14463651" />
+      <window_info id="Commit" order="1" weight="0.14463651" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
+      <window_info id="Pull Requests" order="3" weight="0.14463651" />
+      <window_info anchor="bottom" id="Dart Analysis" />
       <window_info anchor="bottom" id="Database Changes" />
       <window_info anchor="bottom" id="TypeScript" />
       <window_info anchor="bottom" id="Python Packages" />
       <window_info anchor="bottom" id="TODO" />
       <window_info anchor="bottom" id="File Transfer" />
+      <window_info anchor="bottom" id="Conan" />
+      <window_info anchor="bottom" id="PythonProcessOutput" />
       <window_info anchor="bottom" id="Vcpkg" />
       <window_info anchor="bottom" id="clangd" />
       <window_info anchor="bottom" id="Version Control" order="0" />
       <window_info anchor="bottom" id="Problems" order="1" />
       <window_info anchor="bottom" id="Problems View" order="2" />
-      <window_info anchor="bottom" id="Terminal" order="3" />
-      <window_info anchor="bottom" id="Services" order="4" weight="0.33011582" />
-      <window_info active="true" anchor="bottom" id="CMake" order="5" visible="true" weight="0.33011582" />
+      <window_info anchor="bottom" id="Terminal" order="3" weight="0.3018018" />
+      <window_info anchor="bottom" id="Services" order="4" weight="0.3018018" />
+      <window_info anchor="bottom" id="CMake" order="5" weight="0.3018018" />
+      <window_info active="true" anchor="bottom" id="Messages" order="6" visible="true" weight="0.3018018" />
+      <window_info anchor="bottom" id="Run" order="7" weight="0.3018018" />
+      <window_info anchor="bottom" id="Serial Monitor" order="8" weight="0.3018018" />
+      <window_info anchor="right" id="PlantUML" />
+      <window_info anchor="right" id="Flutter DevTools" />
+      <window_info anchor="right" id="Json Helper" />
+      <window_info anchor="right" id="PR AI Assistant" />
+      <window_info anchor="right" id="Flutter DevTools Extensions" />
       <window_info anchor="right" id="make" side_tool="true" />
-      <window_info anchor="right" id="Python Console" />
+      <window_info anchor="right" id="Flutter Property Editor" />
       <window_info anchor="right" id="Coverage" side_tool="true" />
+      <window_info anchor="right" id="Python Console" />
+      <window_info anchor="right" id="PlatformIO" />
+      <window_info anchor="right" id="Flutter Deep Links" />
+      <window_info anchor="right" id="Flutter Widget Preview" />
+      <window_info anchor="right" id="Flutter Inspector" />
       <window_info anchor="right" content_ui="combo" id="Notifications" order="0" weight="0.25" />
       <window_info anchor="right" id="AIAssistant" order="1" weight="0.25" />
       <window_info anchor="right" id="Database" order="2" weight="0.25" />
@@ -200,7 +216,7 @@
       <recent name="C:\Users\oscar\source\.repos\SW3PRJ3\.source" />
     </key>
   </component>
-  <component name="RunManager" selected="CMake Application.asioServer">
+  <component name="RunManager" selected="CMake Application.cli">
     <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -234,6 +250,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="RUN_TOOL" value="" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/source/asioServer/serverTester.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
@@ -315,6 +332,7 @@
       <workItem from="1764950606032" duration="1719000" />
       <workItem from="1764959460895" duration="81000" />
       <workItem from="1764959797739" duration="1352000" />
+      <workItem from="1764961519102" duration="368000" />
     </task>
     <task id="LOCAL-00025" summary="Cleanup">
       <option name="closed" value="true" />
