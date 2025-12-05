@@ -2,10 +2,7 @@
 
 > ## **Dependencies**<br>
 >
->> Run `git submodule update --init --recursive --remote --merge` in root to clone external dependencies.  
->> Run `docker build -t asio-server .` in root to build docker image.  
->> Run `docker run -it --rm asio-server` in root to run docker image.
->
+>> Run `git submodule update --init --recursive --remote --merge` in root to clone external dependencies.
 >
 >> ### **Current dependencies:**
 >>

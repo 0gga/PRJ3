@@ -9,12 +9,16 @@ file(GLOB_RECURSE PN532 CONFIGURE_DEPENDS
         ${CMAKE_CURRENT_SOURCE_DIR}/pn532-lib/rpi_tcptest/*.h
         ${CMAKE_CURRENT_SOURCE_DIR}/pn532-lib/rpi_tcptest/*.cpp
 )
+file(GLOB_RECURSE WPI CONFIGURE_DEPENDS
+        ${CMAKE_SOURCE_DIR}/extern/WiringPi/wiringPi/*.c
+        ${CMAKE_SOURCE_DIR}/extern/WiringPi/devLib/*.c
+)
 
 # Define executable path
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
 # Create the executable
-add_executable(${PROJECT_NAME} ${SOURCES} ${PN532})
+add_executable(${PROJECT_NAME} ${SOURCES} ${PN532} ${WPI})
 
 target_include_directories(${PROJECT_NAME} PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/pn532-lib

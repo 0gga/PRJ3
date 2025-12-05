@@ -196,7 +196,7 @@ void ReaderHandler::handleCli(CONNECTION_T connection) {
     {
         // Phase 1: Check if admin is connected and if not facilitate new connection.
         std::scoped_lock{cli_mtx};
-
+        DEBUG_OUT(std::to_string(++loops));
         if (cliReader.second == connection) {
             connection->write<std::string>("CLI is ready");
         } else if (!cliReader.second) {
@@ -467,7 +467,7 @@ void ReaderHandler::mvDoor(CONNECTION_T connection, const std::string &oldName, 
             return;
         }
 
-        if (removeFromConfig("users", oldName) && addToConfig("users", newName, lvl))
+        if (removeFromConfig("doors", oldName) && addToConfig("doors", newName, lvl))
             connection->write<std::string>("Door edited successfully");
         else
             connection->write<std::string>("Failed to edit door, data may be corrupted");
@@ -530,8 +530,8 @@ ReaderHandler::cmdArgs ReaderHandler::parseSyntax(const std::string &data, comma
             break;
 
         case mvDoor_:
-            static const std::regex mvDoorSyntax1(R"(^mvUser\s+([A-Za-z0-9_]+)\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
-            static const std::regex mvDoorSyntax2(R"(^mvUser\s+([A-Za-z0-9_]+)\s+([A-Za-z0-9_]+)$)");
+            static const std::regex mvDoorSyntax1(R"(^mvDoor\s+([A-Za-z0-9_]+)\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
+            static const std::regex mvDoorSyntax2(R"(^mvDoor\s+([A-Za-z0-9_]+)\s+([A-Za-z0-9_]+)$)");
             if (std::regex_match(data, match, mvDoorSyntax1))
                 lvl = std::stoul(match[3].str());
             else if (!std::regex_match(data, match, mvDoorSyntax2))

@@ -88,6 +88,7 @@ void TcpConnection::write(const Tx& data) {
 
 	boost::asio::async_write(socket_, boost::asio::buffer(*bytes),
 							 boost::asio::bind_executor(strand_, [this, bytes](const boost::system::error_code& ec, std::size_t) {
+							 	DEBUG_OUT("I am writing shit");
 								 if (ec)
 									 close();
 							 }));
