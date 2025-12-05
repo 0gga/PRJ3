@@ -293,7 +293,11 @@ bool cli::handle_newUser(const std::string &cmd) {
         std::cerr << "Failed to initialize PN532" << std::endl;
     }
 
-    std::string uid = rfid_reader->getStringUID();
+    std::string uid; 
+    if (rfid_reader->waitForScan()) { //blocking loop.
+		uid = rfid_reader->getStringUID();
+    }
+    
     send_data(uid);
 
     if (!recieve_data())
