@@ -3,16 +3,15 @@ project(${PROJ_NAME} LANGUAGES CXX)
 
 # Collect all .c, .cpp, .h, .tpp files from src/ & include/
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS *.cpp *.c *.tpp *.hpp *.h)
+file(GLOB_RECURSE PN532 CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/../client/pn532-lib/*.c ${CMAKE_CURRENT_SOURCE_DIR}/../client/pn532-lib/*.h ${CMAKE_CURRENT_SOURCE_DIR}/../client/pn532-lib/rpi_tcptest/*.h ${CMAKE_CURRENT_SOURCE_DIR}/../client/pn532-lib/rpi_tcptest/*.cpp)
 
 # Define executable path
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
 # Create the executable
-add_executable(${PROJECT_NAME} ${SOURCES})
+add_executable(${PROJECT_NAME} ${SOURCES} ${PN532})
 
-add_subdirectory(${PROJECT_SOURCE_DIR}/client/pn532-lib)
-
-target_link_libraries(cli PRIVATE pn532_lib)
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../client/pn532-lib PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../client/pn532-lib/rpi_tcptest)
 
 # Set C++ standard
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 23)
