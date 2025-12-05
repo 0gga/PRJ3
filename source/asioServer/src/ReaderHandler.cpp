@@ -217,9 +217,14 @@ void ReaderHandler::handleCli(CONNECTION_T connection)
     {
         // Phase 1: Check if admin is connected and if not facilitate new connection.
         std::scoped_lock{cli_mtx};
+<<<<<<< HEAD
 
         if (cliReader.second == connection)
         {
+=======
+        DEBUG_OUT(std::to_string(++loops));
+        if (cliReader.second == connection) {
+>>>>>>> 45ffb3b081707bd43d2b799a2eaf7787f1979706
             connection->write<std::string>("CLI is ready");
         }
         else if (!cliReader.second)
@@ -511,7 +516,7 @@ void ReaderHandler::mvDoor(CONNECTION_T connection, const std::string &oldName, 
             return;
         }
 
-        if (removeFromConfig("users", oldName) && addToConfig("users", newName, lvl))
+        if (removeFromConfig("doors", oldName) && addToConfig("doors", newName, lvl))
             connection->write<std::string>("Door edited successfully");
         else
             connection->write<std::string>("Failed to edit door, data may be corrupted");
@@ -539,11 +544,75 @@ ReaderHandler::cmdArgs ReaderHandler::parseSyntax(const std::string &data, comma
     cmdArgs error;
     uint8_t lvl{};
 
+<<<<<<< HEAD
     switch (type)
     {
     case newUser_:
         static const std::regex newUserSyntax(R"(^newUser\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
         if (!std::regex_match(data, match, newUserSyntax))
+=======
+    switch (type) {
+        case newUser_:
+            static const std::regex newUserSyntax(R"(^newUser\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
+            if (!std::regex_match(data, match, newUserSyntax))
+                return error;
+            lvl = std::stoul(match[2].str());
+            break;
+
+        case newDoor_:
+            static const std::regex newDoorSyntax(R"(^newDoor\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
+            if (!std::regex_match(data, match, newDoorSyntax))
+                return error;
+            lvl = std::stoul(match[2].str());
+            break;
+
+        case rmUser_:
+            static const std::regex rmUserSyntax(R"(^rmUser\s+([A-Za-z0-9_]+)$)");
+            if (!std::regex_match(data, match, rmUserSyntax))
+                return error;
+            break;
+
+        case rmDoor_:
+            static const std::regex rmDoorSyntax(R"(^rmDoor\s+([A-Za-z0-9_]+)$)");
+            if (!std::regex_match(data, match, rmDoorSyntax))
+                return error;
+            break;
+
+        case mvUser_:
+            static const std::regex mvUserSyntax1(R"(^mvUser\s+([A-Za-z0-9_]+)\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
+            static const std::regex mvUserSyntax2(R"(^mvUser\s+([A-Za-z0-9_]+)\s+([A-Za-z0-9_]+)$)");
+            if (std::regex_match(data, match, mvUserSyntax1))
+                lvl = std::stoul(match[3].str());
+            else if (!std::regex_match(data, match, mvUserSyntax2))
+                return error;
+            break;
+
+        case mvDoor_:
+            static const std::regex mvDoorSyntax1(R"(^mvDoor\s+([A-Za-z0-9_]+)\s+([A-Za-z0-9_]+)\s+([0-9]+)$)");
+            static const std::regex mvDoorSyntax2(R"(^mvDoor\s+([A-Za-z0-9_]+)\s+([A-Za-z0-9_]+)$)");
+            if (std::regex_match(data, match, mvDoorSyntax1))
+                lvl = std::stoul(match[3].str());
+            else if (!std::regex_match(data, match, mvDoorSyntax2))
+                return error;
+            break;
+        case systemLog_:
+            static const std::regex SystemLogSyntax(R"(^getSystemLog\s+([A-Za-z0-9_]+)\s+([A-Za-z0-9_]+)$)");
+            if (!std::regex_match(data, match, SystemLogSyntax))
+                return error;
+            break;
+        case userLog_:
+            static const std::regex userLogSyntax(R"(^getUserLog\s+([A-Za-z0-9_]+)$)");
+            if (!std::regex_match(data, match, userLogSyntax))
+                return error;
+            break;
+        case doorLog_:
+            static const std::regex doorLogSyntax(R"(^getDoorLog\s+([A-Za-z0-9_]+)$)");
+            if (!std::regex_match(data, match, doorLogSyntax))
+                return error;
+            break;
+
+        default:
+>>>>>>> 45ffb3b081707bd43d2b799a2eaf7787f1979706
             return error;
         lvl = std::stoul(match[2].str());
         break;

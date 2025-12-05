@@ -4,23 +4,29 @@ project(${PROJ_NAME} LANGUAGES CXX)
 # Collect all .c, .cpp, .h, .tpp files from src/ & include/
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS *.cpp *.c *.tpp *.hpp *.h)
 file(GLOB_RECURSE PN532 CONFIGURE_DEPENDS
-        ${CMAKE_CURRENT_SOURCE_DIR}/../client/pn532-lib/*.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/../client/pn532-lib/*.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../client/pn532-lib/rpi_tcptest/*.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/../client/pn532-lib/rpi_tcptest/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/pn532-lib/*.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/pn532-lib/*.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/pn532-lib/rpi_tcptest/*.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/pn532-lib/rpi_tcptest/*.cpp
+)
+file(GLOB WPI
+        ${CMAKE_SOURCE_DIR}/extern/WiringPi/wiringPi/wiringPi.c
+        ${CMAKE_SOURCE_DIR}/extern/WiringPi/wiringPi/wiringPiSPI.c
+        ${CMAKE_SOURCE_DIR}/extern/WiringPi/wiringPi/wiringSerial.c
+        ${CMAKE_SOURCE_DIR}/extern/WiringPi/devLib/*.c
 )
 
 # Define executable path
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
 # Create the executable
-add_executable(${PROJECT_NAME} ${SOURCES} ${PN532})
+add_executable(${PROJECT_NAME} ${SOURCES} ${PN532} ${WPI})
 
 target_include_directories(${PROJECT_NAME} PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/../client/pn532-lib
-        ${CMAKE_CURRENT_SOURCE_DIR}/../client/pn532-lib/rpi_tcptest
-        ${CMAKE_CURRENT_SOURCE_DIR}/../extern/WiringPi/wiringPi
-        ${CMAKE_CURRENT_SOURCE_DIR}/../extern/WiringPi/devLib
+        ${CMAKE_CURRENT_SOURCE_DIR}/pn532-lib
+        ${CMAKE_CURRENT_SOURCE_DIR}/pn532-lib/rpi_tcptest
+        ${CMAKE_SOURCE_DIR}/extern/WiringPi/wiringPi
+        ${CMAKE_SOURCE_DIR}/extern/WiringPi/devLib
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE pthread rt)
