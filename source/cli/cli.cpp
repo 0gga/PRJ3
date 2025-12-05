@@ -128,6 +128,7 @@ bool cli::admin_identification()
 			strcmp(buffer_receive, "Incorrect CLI Identification") == 0)
 		{
 
+			std::cout << buffer_receive << std::endl;
 			std::cout << "<";
 			std::cin >> cli_identification;
 
