@@ -16,7 +16,7 @@ This readme mainly describes:
 >
 >> ### **CLI & Client dependencies:**
 >>
->>- **wiringPi** Must be installed to RPi root:<br>
+>>- **wiringPi** - Must be installed to RPi root:<br>
 >>
 >> Grab newest release here:<br>
 > > https://github.com/WiringPi/WiringPi/releases<br>
