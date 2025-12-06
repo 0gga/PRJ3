@@ -3,41 +3,6 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
-        <entry key="\Log_2025_11_28.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value=";" />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\Log_2025_12_04.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value=";" />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\Log_door1.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value=";" />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\Log_door2.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value=";" />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\Log_ogga.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value=";" />
-            </Attribute>
-          </value>
-        </entry>
         <entry key="\source\asioServer\bin\logs\doorLogs\Log_door1.csv">
           <value>
             <Attribute>
@@ -52,13 +17,6 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="\source\asioServer\bin\logs\systemLogs\Log_2025_12_04.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value=";" />
-            </Attribute>
-          </value>
-        </entry>
         <entry key="\source\asioServer\bin\logs\systemLogs\Log_2025_12_05.csv">
           <value>
             <Attribute>
@@ -67,13 +25,6 @@
           </value>
         </entry>
         <entry key="\source\asioServer\bin\logs\userLogs\Log_a.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value=";" />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\source\asioServer\bin\logs\userLogs\Log_ogga.csv">
           <value>
             <Attribute>
               <option name="separator" value=";" />

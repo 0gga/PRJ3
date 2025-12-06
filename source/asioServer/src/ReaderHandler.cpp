@@ -1,5 +1,18 @@
 ﻿#include "ReaderHandler.hpp"
 
+#ifdef _WIN32
+#define _WINSOCK_DEPRECATED_NO_WARNINGS
+#include <winsock2.h>
+#include <Ws2tcpip.h>
+#pragma comment(lib, "Ws2_32.lib")
+#else
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netdb.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+#endif
+
 #include <iostream>
 #include <regex>
 
@@ -72,7 +85,7 @@ ReaderHandler::ReaderHandler(const int& clientPort, const int& cliPort,
 	});
 
 	cliServer_.onClientDisconnect([this](const CONNECTION_T& connection) {
-		std::scoped_lock{cli_mtx};
+		const std::scoped_lock lock{cli_mtx};
 		if (cliReader_.second == connection) {
 			cliReader_.second = nullptr;
 			DEBUG_OUT("Dead CLI Cleared\n");
@@ -120,19 +133,6 @@ void ReaderHandler::runLoop() {
 	while (running_)
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }
-
-#ifdef _WIN32
-#define _WINSOCK_DEPRECATED_NO_WARNINGS
-#include <winsock2.h>
-#include <Ws2tcpip.h>
-#pragma comment(lib, "Ws2_32.lib")
-#else
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netdb.h>
-#include <arpa/inet.h>
-#include <unistd.h>
-#endif
 
 /// Outputs server IPV4.
 /// /// @returns void
@@ -203,7 +203,7 @@ void ReaderHandler::myIp() {
 }
 
 void ReaderHandler::onDeadConnection(CONNECTION_T dead) {
-	std::scoped_lock{cli_mtx};
+	const std::scoped_lock lock{cli_mtx};
 	if (cliReader_.second == dead)
 		cliReader_.second = nullptr;
 }
@@ -226,7 +226,7 @@ void ReaderHandler::handleClient(CONNECTION_T connection) const {
 			const std::string name = pkg.substr(0, seperator);
 			const std::string uid  = pkg.substr(seperator + 1);
 
-			std::shared_lock rw_lock(rw_mtx); // Shared lock since it exclusively reads
+			const std::shared_lock lock{rw_mtx}; // Shared lock since it exclusively reads
 			const auto door = doors_.find(name);
 			if (door == doors_.end()) {
 				DEBUG_OUT("Unknown Door");
@@ -265,7 +265,7 @@ void ReaderHandler::handleClient(CONNECTION_T connection) const {
 void ReaderHandler::handleCli(CONNECTION_T connection) {
 	{
 		// Phase 1: Check if admin is connected and if not facilitate new connection.
-		std::scoped_lock{cli_mtx};
+		const std::scoped_lock lock{cli_mtx};
 		if (cliReader_.second == connection) {
 			connection->write<std::string>("CLI is ready");
 		} else if (!cliReader_.second) {
@@ -281,7 +281,7 @@ void ReaderHandler::handleCli(CONNECTION_T connection) {
 		// Phase 2: Handle admin duplicates the connection registered as admin
 		bool recursionFlag = false;
 		{
-			std::scoped_lock{cli_mtx};
+			const std::scoped_lock lock{cli_mtx};
 			if (cliReader_.second != connection) {
 				if (pkg.rfind(cliReader_.first, 0) == 0) {
 					cliReader_.second = connection;
@@ -573,7 +573,7 @@ bool ReaderHandler::addToConfig(const std::string& type, const std::string& name
 	}
 
 	// Lock before editing any runtime memory/config.json
-	std::scoped_lock{rw_mtx};
+	const std::scoped_lock lock{rw_mtx};
 
 	// config.json error syntax checks
 	nlohmann::json configJson;
@@ -620,7 +620,7 @@ bool ReaderHandler::removeFromConfig(const std::string& type, const std::string&
 	}
 
 	// Lock before editing any runtime memory/config.json
-	std::scoped_lock{rw_mtx};
+	const std::scoped_lock lock{rw_mtx};
 	// Remove from memory
 	if (type == "users") {
 		const auto& user = usersByName_.find(name);

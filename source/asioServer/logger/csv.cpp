@@ -4,7 +4,7 @@
 #include <ctime>
 #include <filesystem>
 
-void CsvLogger::addLog(std::string door, std::string name, std::string userID, std::string access) {
+void CsvLogger::addLog(std::string door, std::string name, std::string userID, std::string access) const {
 	/// get date from RPi
 	time_t timestamp   = std::time(NULL);
 	struct tm datetime = *localtime(&timestamp);

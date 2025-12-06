@@ -78,6 +78,6 @@ private: // Member Variables
 	std::unordered_map<std::string, std::pair<std::string, int>> usersByName_;
 	std::unordered_map<std::string, std::pair<std::string, int>> usersByUid_;
 
-	std::mutex cli_mtx;
-	std::shared_mutex rw_mtx; // Use shared_lock for json reads and unique_lock for json writes.
+	mutable std::mutex cli_mtx;
+	mutable std::shared_mutex rw_mtx; // Use shared_lock for json reads and unique_lock for json writes.
 };

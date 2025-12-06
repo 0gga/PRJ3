@@ -5,7 +5,7 @@ class CsvLogger {
         /// addLog adds a new line in the csv-file for the corresponding date
         /// it adds data for these specs: Date, Time, Door, Name, UserID, Acces
         /// void addLog(const std::string& info);
-        void addLog(std::string door, std::string name, std::string userID, std::string access);
+        void addLog(std::string door, std::string name, std::string userID, std::string access) const;
 
         /// getLogByName transfers the csv-file with the corresponding date
         /// to the admin pc using TCP
