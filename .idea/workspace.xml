@@ -36,8 +36,30 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="naming fixes and general style fixes">
+    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="general style fixes">
+      <change beforePath="$PROJECT_DIR$/.gitmodules" beforeDir="false" afterPath="$PROJECT_DIR$/.gitmodules" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/WiringPi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/align" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/asio" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/assert" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/config" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/core" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/detail" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/integer" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/move" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/ogga" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/predef" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/static_assert" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/system" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/throw_exception" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/type_index" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/type_traits" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/utility" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/winapi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -131,8 +153,10 @@
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
     &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
     &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/Ogga/Documents/Repos/PRJ3&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -142,6 +166,7 @@
     &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.IDE.editor.colors.General&quot;,
     &quot;settings.editor.splitter.proportion&quot;: &quot;0.23740393&quot;,
     &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
   &quot;keyToStringList&quot;: {
@@ -323,15 +348,10 @@
       <workItem from="1764964665031" duration="8385000" />
       <workItem from="1765017841179" duration="821000" />
       <workItem from="1765018678859" duration="3052000" />
-      <workItem from="1765030931713" duration="320000" />
-    </task>
-    <task id="LOCAL-00032" summary="Readme fixes">
-      <option name="closed" value="true" />
-      <created>1763714341728</created>
-      <option name="number" value="00032" />
-      <option name="presentableId" value="LOCAL-00032" />
-      <option name="project" value="LOCAL" />
-      <updated>1763714341728</updated>
+      <workItem from="1765030931713" duration="381000" />
+      <workItem from="1765053369017" duration="206000" />
+      <workItem from="1765053595975" duration="7000" />
+      <workItem from="1765053687430" duration="1286000" />
     </task>
     <task id="LOCAL-00033" summary="ReaderHandler refactor/fixes">
       <option name="closed" value="true" />
@@ -717,7 +737,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765021749184</updated>
     </task>
-    <option name="localTasksCounter" value="81" />
+    <task id="LOCAL-00081" summary="general style fixes">
+      <option name="closed" value="true" />
+      <created>1765031306427</created>
+      <option name="number" value="00081" />
+      <option name="presentableId" value="LOCAL-00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1765031306427</updated>
+    </task>
+    <option name="localTasksCounter" value="82" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -763,7 +791,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="ReaderHandler refactor/fixes" />
     <MESSAGE value="fix main" />
     <MESSAGE value="submodule update" />
     <MESSAGE value="ReaderHandler patch" />
@@ -788,7 +815,8 @@
     <MESSAGE value="fixes and stuff" />
     <MESSAGE value="handleClient fixes" />
     <MESSAGE value="naming fixes and general style fixes" />
-    <option name="LAST_COMMIT_MESSAGE" value="naming fixes and general style fixes" />
+    <MESSAGE value="general style fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="general style fixes" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
