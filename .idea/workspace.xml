@@ -36,31 +36,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="general style fixes">
-      <change beforePath="$PROJECT_DIR$/.gitmodules" beforeDir="false" afterPath="$PROJECT_DIR$/.gitmodules" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/WiringPi" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/align" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/asio" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/assert" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/config" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/core" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/detail" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/integer" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/move" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/ogga" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/predef" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/static_assert" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/system" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/throw_exception" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/type_index" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/type_traits" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/utility" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/winapi" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
-    </list>
+    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="readme and gitmodules fixes" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -81,6 +57,7 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
+    <option name="SET_USER_NAME_GLOBALLY" value="false" />
   </component>
   <component name="GitLabMergeRequestFiltersHistory">{
   &quot;lastFilter&quot;: {
@@ -351,23 +328,7 @@
       <workItem from="1765030931713" duration="381000" />
       <workItem from="1765053369017" duration="206000" />
       <workItem from="1765053595975" duration="7000" />
-      <workItem from="1765053687430" duration="1286000" />
-    </task>
-    <task id="LOCAL-00033" summary="ReaderHandler refactor/fixes">
-      <option name="closed" value="true" />
-      <created>1764250208421</created>
-      <option name="number" value="00033" />
-      <option name="presentableId" value="LOCAL-00033" />
-      <option name="project" value="LOCAL" />
-      <updated>1764250208421</updated>
-    </task>
-    <task id="LOCAL-00034" summary="ReaderHandler refactor/fixes">
-      <option name="closed" value="true" />
-      <created>1764250289999</created>
-      <option name="number" value="00034" />
-      <option name="presentableId" value="LOCAL-00034" />
-      <option name="project" value="LOCAL" />
-      <updated>1764250289999</updated>
+      <workItem from="1765053687430" duration="1504000" />
     </task>
     <task id="LOCAL-00035" summary="ReaderHandler refactor/fixes">
       <option name="closed" value="true" />
@@ -745,7 +706,23 @@
       <option name="project" value="LOCAL" />
       <updated>1765031306427</updated>
     </task>
-    <option name="localTasksCounter" value="82" />
+    <task id="LOCAL-00082" summary="readme and gitmodules fixes">
+      <option name="closed" value="true" />
+      <created>1765055146433</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1765055146433</updated>
+    </task>
+    <task id="LOCAL-00083" summary="readme and gitmodules fixes">
+      <option name="closed" value="true" />
+      <created>1765055171308</created>
+      <option name="number" value="00083" />
+      <option name="presentableId" value="LOCAL-00083" />
+      <option name="project" value="LOCAL" />
+      <updated>1765055171308</updated>
+    </task>
+    <option name="localTasksCounter" value="84" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -791,7 +768,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fix main" />
     <MESSAGE value="submodule update" />
     <MESSAGE value="ReaderHandler patch" />
     <MESSAGE value="Pushing so i can rollback after this next commit" />
@@ -816,7 +792,8 @@
     <MESSAGE value="handleClient fixes" />
     <MESSAGE value="naming fixes and general style fixes" />
     <MESSAGE value="general style fixes" />
-    <option name="LAST_COMMIT_MESSAGE" value="general style fixes" />
+    <MESSAGE value="readme and gitmodules fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="readme and gitmodules fixes" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
