@@ -511,7 +511,6 @@ void ReaderHandler::mvUser(CONNECTION_T connection, const std::string& oldName, 
 	});
 }
 
-
 void ReaderHandler::mvDoor(CONNECTION_T connection, const std::string& oldName, const std::string& newName,
 						   uint8_t lvl) {
 	const auto door = doors_.find(oldName);
@@ -555,7 +554,6 @@ std::string ReaderHandler::getUserLog(const std::string& name) {
 std::string ReaderHandler::getDoorLog(const std::string& name) {
 	return log_.getLogByDoor(name);
 }
-
 
 bool ReaderHandler::addToConfig(const std::string& type, const std::string& name, uint8_t lvl, const std::string& uid) {
 	// Assert type is correct. Cannot use compile-time asserts on string comparisons, maybe use const char* instead in the future.
@@ -613,6 +611,7 @@ bool ReaderHandler::addToConfig(const std::string& type, const std::string& name
 }
 
 bool ReaderHandler::removeFromConfig(const std::string& type, const std::string& name) {
+	// Using std::string instead of enum since config contains these exact strings. Doing check to assert type.
 	// Assert type is correct. Cannot use compile-time asserts on string comparisons, maybe use const char* instead in the future.
 	if (type != "doors" && type != "users") {
 		DEBUG_OUT("Type must be either 'doors' or 'users'");
