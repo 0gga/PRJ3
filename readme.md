@@ -2,12 +2,25 @@
 
 > ## **Dependencies**<br>
 >
->> Run `git submodule update --init --recursive --remote --merge` in root to clone external dependencies.
+>> Run in root to clone external dependencies.
+>> ```shell
+>> git submodule update --init --recursive --remote --merge
+>> ```
+>>
+>> Run in root to initialize .gitmodules after adding external dependencies.
+>> ```shell
+>> git submodule init
+>> ```
+>>
+>> Run in root to reset .gitmodules after removal from .gitmodules.
+>> ```shell
+>> rm -rf .git/modules/*
+>> git rm -r --cached .
+>> ```
 >
 >> ### **Current dependencies:**
 >>
->>- **boost.asio**  
->>  Read documentation for info on sub-dependencies  
+>>- **boost.asio** - Read documentation for info on sub-dependencies
 >>- **nlohmann/json**
 
 > ## **CLI Syntax & Cmdlets**<br>
@@ -29,33 +42,33 @@
 >> ### **Syntax**<br>
 >>
 >>_**To make the CLI commands parseable, they must be syntactically correct:**_  
->> CLI command arguments must always be separated by a single space,  
->> and must never have any trailing spaces:  
->> `newUser john 3`
+> > CLI command arguments must always be separated by a single space,  
+> > and must never have any trailing spaces:  
+> > `newUser john 3`
 >>
 >>User or door names must be either snake_case or camelCase:  
->> `rmUser johnDoe`  
->> `rmUser john_doe`  
->> The CLI parser will look for both and ensure all entries are removed.
+> > `rmUser johnDoe`  
+> > `rmUser john_doe`  
+> > The CLI parser will look for both and ensure all entries are removed.
 >>
 >>If exceptions are made such as PascalCase or PascalSnake_Case,  
->> it will still work as long as the preceding letter to a surname is lower case:  
->> `rmDoor JohnDoe`  
->> `rmDoor John_Doe`  
->> `rmDoor JOHN_Doe`
+> > it will still work as long as the preceding letter to a surname is lower case:  
+> > `rmDoor JohnDoe`  
+> > `rmDoor John_Doe`  
+> > `rmDoor JOHN_Doe`
 >>
 >>The following combinations will not work:  
->> `newUser JOHNDOE`  
->> `newUser johNdoe`
+> > `newUser JOHNDOE`  
+> > `newUser johNdoe`
 >>
 >>When editing a user/door specific syntax must be followed:
->>`mvUser 0gga ogga 1`
->>`mvUser door1 door2 1`
->> The 1st argument after the cmdlet is the user/door you wish to edit,
->> the 2nd is their new name,
->> the 3rd is their new accessLevel.
+> > `mvUser 0gga ogga 1`
+> > `mvUser door1 door2 1`
+> > The 1st argument after the cmdlet is the user/door you wish to edit,
+> > the 2nd is their new name,
+> > the 3rd is their new accessLevel.
 >
->>#### **Possible additions:**
+>> #### **Possible additions:**
 >>
 >>- Get user specific logs: `getULog 0gga`
 
@@ -70,12 +83,12 @@
 >>- Constantly accepts clients and stores information independently.
 >>- Systemwide unified users.json - read onto hashmaps at startup for efficient runtime.
 >>- String parser for standardized name format - snake_case.  
->> <br>
+    > > <br>
 >>- ASIO - Asynchronous client handling.
 >>- Asynchronous client handling runs on hardcoded amount of dedicated threads{4}.
 >>- Callback to avoid blocking IO.
 >>- Utilizes shared_lock & unique_lock for read/write respectively.
->> <br>
+    > > <br>
 >>- OOP implementation for simple high-level usage.
 >
 >> ### **To be implemented**<br>

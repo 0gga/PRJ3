@@ -52,6 +52,3 @@
 [submodule "extern/json"]
 	path = extern/json
 	url = https://github.com/nlohmann/json.git
-[submodule "extern/WiringPi"]
-	path = extern/WiringPi
-	url = https://github.com/WiringPi/WiringPi
