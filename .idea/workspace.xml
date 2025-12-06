@@ -37,15 +37,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="naming fixes and general style fixes">
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/csv-editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-editor.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/include/ReaderHandler.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/include/ReaderHandler.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/logger/csv.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/logger/csv.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/logger/csv.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/logger/csv.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -147,7 +139,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "editor.preferences.folding",
+    "settings.editor.selected.configurable": "reference.settingsdialog.IDE.editor.colors.General",
     "settings.editor.splitter.proportion": "0.23740393",
     "show.migrate.to.gradle.popup": "false",
     "vue.rearranger.settings.migration": "true"
@@ -336,15 +328,7 @@
       <workItem from="1764961519102" duration="368000" />
       <workItem from="1764964665031" duration="8385000" />
       <workItem from="1765017841179" duration="821000" />
-      <workItem from="1765018678859" duration="749000" />
-    </task>
-    <task id="LOCAL-00030" summary="Readme fixes">
-      <option name="closed" value="true" />
-      <created>1763115777345</created>
-      <option name="number" value="00030" />
-      <option name="presentableId" value="LOCAL-00030" />
-      <option name="project" value="LOCAL" />
-      <updated>1763115777345</updated>
+      <workItem from="1765018678859" duration="3035000" />
     </task>
     <task id="LOCAL-00031" summary="Readme fixes">
       <option name="closed" value="true" />
@@ -730,7 +714,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764974175335</updated>
     </task>
-    <option name="localTasksCounter" value="79" />
+    <task id="LOCAL-00079" summary="naming fixes and general style fixes">
+      <option name="closed" value="true" />
+      <created>1765019537148</created>
+      <option name="number" value="00079" />
+      <option name="presentableId" value="LOCAL-00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1765019537148</updated>
+    </task>
+    <option name="localTasksCounter" value="80" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
