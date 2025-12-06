@@ -36,26 +36,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="readme and gitmodules fixes">
-      <change afterPath="$PROJECT_DIR$/extern/align" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/extern/asio" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/extern/assert" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/extern/config" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/extern/core" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/extern/detail" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/extern/integer" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/extern/json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/extern/move" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/extern/ogga" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/extern/predef" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/extern/static_assert" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/extern/system" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/extern/throw_exception" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/extern/type_index" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/extern/type_traits" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/extern/utility" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/extern/winapi" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="updated readme">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
     </list>
@@ -352,23 +333,7 @@
       <workItem from="1765053595975" duration="7000" />
       <workItem from="1765053687430" duration="4557000" />
       <workItem from="1765058331406" duration="413000" />
-      <workItem from="1765058749949" duration="2538000" />
-    </task>
-    <task id="LOCAL-00035" summary="ReaderHandler refactor/fixes">
-      <option name="closed" value="true" />
-      <created>1764250398658</created>
-      <option name="number" value="00035" />
-      <option name="presentableId" value="LOCAL-00035" />
-      <option name="project" value="LOCAL" />
-      <updated>1764250398658</updated>
-    </task>
-    <task id="LOCAL-00036" summary="fix main">
-      <option name="closed" value="true" />
-      <created>1764250488804</created>
-      <option name="number" value="00036" />
-      <option name="presentableId" value="LOCAL-00036" />
-      <option name="project" value="LOCAL" />
-      <updated>1764250488804</updated>
+      <workItem from="1765058749949" duration="2917000" />
     </task>
     <task id="LOCAL-00037" summary="submodule update">
       <option name="closed" value="true" />
@@ -746,7 +711,23 @@
       <option name="project" value="LOCAL" />
       <updated>1765055171308</updated>
     </task>
-    <option name="localTasksCounter" value="84" />
+    <task id="LOCAL-00084" summary="updated readme">
+      <option name="closed" value="true" />
+      <created>1765061320922</created>
+      <option name="number" value="00084" />
+      <option name="presentableId" value="LOCAL-00084" />
+      <option name="project" value="LOCAL" />
+      <updated>1765061320922</updated>
+    </task>
+    <task id="LOCAL-00085" summary="updated readme">
+      <option name="closed" value="true" />
+      <created>1765061354040</created>
+      <option name="number" value="00085" />
+      <option name="presentableId" value="LOCAL-00085" />
+      <option name="project" value="LOCAL" />
+      <updated>1765061354040</updated>
+    </task>
+    <option name="localTasksCounter" value="86" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -792,7 +773,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="submodule update" />
     <MESSAGE value="ReaderHandler patch" />
     <MESSAGE value="Pushing so i can rollback after this next commit" />
     <MESSAGE value="Moved config operations to helper functions" />
@@ -817,7 +797,8 @@
     <MESSAGE value="naming fixes and general style fixes" />
     <MESSAGE value="general style fixes" />
     <MESSAGE value="readme and gitmodules fixes" />
-    <option name="LAST_COMMIT_MESSAGE" value="readme and gitmodules fixes" />
+    <MESSAGE value="updated readme" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated readme" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

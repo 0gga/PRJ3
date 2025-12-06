@@ -22,7 +22,7 @@ This readme mainly describes:
 > > https://github.com/WiringPi/WiringPi/releases<br>
 > > copy it to `<pi>@<rpi>:~` with scp <br>
 >> ```shell
->> scp -r "C:\Users\user\Downloads\wiringpi-3.x.deb" <pi>@<ip>:/home/<pi>/
+>> scp -r "C:\Users\USERNAME\Downloads\wiringpi-3.x.deb" <pi>@<ip>:/home/<pi>/
 >> ```
 > > SSH into RPi and:
 >>
