@@ -8,5 +8,7 @@ private:
 public:
     ReedSwitch() = default;
     ReedSwitch(int physPin);
-    bool isOpen();
+    bool magnetPresent() const;
+    bool isDoorOpen() const;
+    bool isDoorClosed() const;
 };
