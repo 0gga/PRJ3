@@ -570,6 +570,10 @@ bool ReaderHandler::addToConfig(const std::string& type, const std::string& name
 		return false;
 	}
 
+	std::string addedName = name;
+	std::string addedUid = uid;
+	to_snake_case(addedName, addedUid);
+
 	// Lock before editing any runtime memory/config.json
 	const std::scoped_lock lock{rw_mtx};
 
@@ -583,17 +587,17 @@ bool ReaderHandler::addToConfig(const std::string& type, const std::string& name
 	nlohmann::json addition;
 
 	if (type == "users") {
-		usersByName_[name] = {uid, lvl};
-		usersByUid_[uid]   = {name, lvl};
+		usersByName_[addedName] = {addedUid, lvl};
+		usersByUid_[addedUid]   = {addedName, lvl};
 		addition           = {
-			{"name", name},
-			{"uid", uid},
+			{"name", addedName},
+			{"uid", addedUid},
 			{"lvl", lvl}
 		};
 	} else {
-		doors_[name] = lvl;
+		doors_[addedName] = lvl;
 		addition     = {
-			{"name", name},
+			{"name", addedName},
 			{"lvl", lvl}
 		};
 	}
