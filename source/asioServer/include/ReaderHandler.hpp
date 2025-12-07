@@ -46,7 +46,7 @@ private: // Member Functions
 	CmdArgs parseSyntax(const std::string& pkg, Command type);
 
 	template<typename... Args>
-	void to_snake_case(Args&... args);
+	static void to_snake_case(Args&... args);
 
 private: // Member Variables
 	enum Command : int {

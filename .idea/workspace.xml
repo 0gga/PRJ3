@@ -36,9 +36,10 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="updated readme">
+    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="fixed addToConfig">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/asioServer/TCP/TcpServer.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/TCP/TcpServer.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/asioServer/include/ReaderHandler.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/include/ReaderHandler.hpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -334,15 +335,11 @@
       <workItem from="1765053687430" duration="4557000" />
       <workItem from="1765058331406" duration="413000" />
       <workItem from="1765058749949" duration="2930000" />
-      <workItem from="1765113281158" duration="867000" />
-    </task>
-    <task id="LOCAL-00038" summary="submodule update">
-      <option name="closed" value="true" />
-      <created>1764253572958</created>
-      <option name="number" value="00038" />
-      <option name="presentableId" value="LOCAL-00038" />
-      <option name="project" value="LOCAL" />
-      <updated>1764253572958</updated>
+      <workItem from="1765113281158" duration="891000" />
+      <workItem from="1765116938264" duration="55000" />
+      <workItem from="1765118723810" duration="10000" />
+      <workItem from="1765119977116" duration="137000" />
+      <workItem from="1765143122567" duration="3978000" />
     </task>
     <task id="LOCAL-00039" summary="ReaderHandler patch">
       <option name="closed" value="true" />
@@ -728,7 +725,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765061695452</updated>
     </task>
-    <option name="localTasksCounter" value="87" />
+    <task id="LOCAL-00087" summary="fixed addToConfig">
+      <option name="closed" value="true" />
+      <created>1765114170251</created>
+      <option name="number" value="00087" />
+      <option name="presentableId" value="LOCAL-00087" />
+      <option name="project" value="LOCAL" />
+      <updated>1765114170251</updated>
+    </task>
+    <option name="localTasksCounter" value="88" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -774,7 +779,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="ReaderHandler patch" />
     <MESSAGE value="Pushing so i can rollback after this next commit" />
     <MESSAGE value="Moved config operations to helper functions" />
     <MESSAGE value="fixes to CMake for args" />
@@ -799,7 +803,8 @@
     <MESSAGE value="general style fixes" />
     <MESSAGE value="readme and gitmodules fixes" />
     <MESSAGE value="updated readme" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated readme" />
+    <MESSAGE value="fixed addToConfig" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed addToConfig" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
