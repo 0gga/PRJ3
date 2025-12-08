@@ -44,6 +44,7 @@ private: // Member Functions
 	struct CmdArgs;
 	enum Command : int; // Standard enum type. Necessary for forward declaration
 	CmdArgs parseSyntax(const std::string& pkg, Command type);
+	static std::string getConfigPath();
 
 	template<typename... Args>
 	static void to_snake_case(Args&... args);

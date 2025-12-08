@@ -104,84 +104,64 @@ void TcpConnection::write(const Tx& data) {
 														}));
 }
 
-inline void TcpConnection::writeFile(const std::string& filepath) {
+inline void TcpConnection::writeFile(const std::string& path)
+{
 	if (!alive_)
 		return;
 
-	// Step 1: validate file
-	std::ifstream file(filepath, std::ios::binary);
-	if (!file) {
-		DEBUG_OUT("File open failed: " + filepath);
+	namespace asio = boost::asio;
+
+	// --- Read file into memory ---
+	std::ifstream ifs(path, std::ios::binary | std::ios::ate);
+	if (!ifs) {
+		DEBUG_OUT("Failed to open file: " + path);
 		return;
 	}
-	DEBUG_OUT("Sending file: " + filepath);
 
-	// Step 2: get filesize
-	file.seekg(0, std::ios::end);
-	const std::size_t filesize = file.tellg();
-	file.seekg(0, std::ios::beg);
+	std::streamsize size = ifs.tellg();
+	ifs.seekg(0, std::ios::beg);
 
-	// Step 3: extract filename only
-	const std::string filename = filepath.substr(filepath.find_last_of("/\\") + 1);
+	auto data = std::make_shared<std::string>(size, '\0');
+	if (!ifs.read(data->data(), size)) {
+		DEBUG_OUT("Failed to read file: " + path);
+		return;
+	}
 
-	// Step 4: build header
+	// Extract filename only
+	std::string filename = std::filesystem::path(path).filename().string();
+
+	// --- Build header: type:file%%%<filename>%%%<filesize>\n ---
 	auto header = std::make_shared<std::string>();
-	header->reserve(128);
+	header->reserve(64 + filename.size());
+	*header = "type:file%%%" + filename + "%%%" + std::to_string(size) + "\n";
 
-	header->append("type:file%%%");
-	header->append(filename);
-	header->append("%%%");
-	header->append(std::to_string(filesize));
-	header->push_back('\n');
+	// --- Step 1: async header write ---
+	asio::async_write(
+		socket_,
+		asio::buffer(*header),
+		asio::bind_executor(
+			strand_,
+			[this, header, data](const boost::system::error_code& ec, std::size_t)
+			{
+				if (ec) {
+					close();
+					return;
+				}
 
-	// Step 5: send header
-	auto file_ptr = std::make_shared<std::ifstream>(filepath, std::ios::binary);
-
-	boost::asio::async_write(
-							 socket_,
-							 boost::asio::buffer(*header),
-							 boost::asio::bind_executor(
-														strand_,
-														[this, header, file_ptr, filesize]
-												(const boost::system::error_code& ec, std::size_t) {
-															if (ec) {
-																close();
-																return;
-															}
-
-															auto buffer    = std::make_shared<std::vector<char>>(8192);
-															auto sendChunk = std::make_shared<std::function<void()>>();
-
-															std::weak_ptr weakSend = sendChunk;
-
-															*sendChunk = [this, buffer, weakSend, file_ptr]() mutable {
-																file_ptr->read(buffer->data(), buffer->size());
-																std::streamsize bytesRead = file_ptr->gcount();
-
-																if (bytesRead <= 0)
-																	return;
-
-																boost::asio::async_write(
-																						 socket_,
-																						 boost::asio::buffer(buffer->data(), bytesRead),
-																						 boost::asio::bind_executor(
-																							  strand_,
-																							  [this, buffer, weakSend, file_ptr]
-																					  (const boost::system::error_code& ec, std::size_t) {
-																								  if (ec) {
-																									  close();
-																									  return;
-																								  }
-
-																								  if (auto fn = weakSend.lock())
-																									  (*fn)();
-																							  }
-																							 )
-																						);
-															};
-
-															(*sendChunk)();
-														}
-													   )
-							);
+				// --- Step 2: async file payload write ---
+				asio::async_write(
+					socket_,
+					asio::buffer(*data),
+					asio::bind_executor(
+						strand_,
+						[this, data](const boost::system::error_code& ec, std::size_t)
+						{
+							if (ec)
+								close();
+						}
+					)
+				);
+			}
+		)
+	);
 }
