@@ -38,8 +38,25 @@
   <component name="ChangeListManager">
     <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="fixed addToConfig">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/TCP/TcpServer.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/TCP/TcpServer.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/include/ReaderHandler.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/include/ReaderHandler.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/WiringPi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/align" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/asio" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/assert" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/config" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/core" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/detail" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/integer" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/move" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/ogga" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/predef" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/static_assert" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/system" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/throw_exception" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/type_index" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/type_traits" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/utility" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/extern/winapi" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -224,6 +241,11 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.asioServer">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="asioServer" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="PRJ3" TARGET_NAME="asioServer" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="PRJ3" RUN_TARGET_NAME="asioServer">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -273,6 +295,8 @@
       <item itemvalue="CMake Application.asioServer" />
       <item itemvalue="CMake Application.cli" />
       <item itemvalue="CMake Application.client" />
+      <item itemvalue="Docker.Dockerfile" />
+      <item itemvalue="Python.serverTester" />
     </list>
   </component>
   <component name="TaskManager">
