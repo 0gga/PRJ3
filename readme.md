@@ -30,7 +30,7 @@ This readme mainly describes:
 >> sudo apt install ./wiringpi-3.x.deb
 >> ```
 >
->> Should apply automatically, if not run this in root to clone external dependencies.
+>> Should apply automatically, if getting build errors run this in root to clone external dependencies.
 >> ```shell
 >> git submodule update --init --recursive
 >> ```
