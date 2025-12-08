@@ -36,10 +36,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="handleCli fix. Better write file and stuff.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
-    </list>
+    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="handleCli fix. Better write file and stuff." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -354,15 +351,7 @@
       <workItem from="1765119977116" duration="137000" />
       <workItem from="1765143122567" duration="3978000" />
       <workItem from="1765194078744" duration="7958000" />
-      <workItem from="1765206677019" duration="3897000" />
-    </task>
-    <task id="LOCAL-00052" summary="readability patch on handleCli and removed unnecessary lock at &quot;exit&quot;">
-      <option name="closed" value="true" />
-      <created>1764617059230</created>
-      <option name="number" value="00052" />
-      <option name="presentableId" value="LOCAL-00052" />
-      <option name="project" value="LOCAL" />
-      <updated>1764617059230</updated>
+      <workItem from="1765206677019" duration="4215000" />
     </task>
     <task id="LOCAL-00053" summary="Dead CLI connection detection implemented">
       <option name="closed" value="true" />
@@ -748,7 +737,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765210643897</updated>
     </task>
-    <option name="localTasksCounter" value="101" />
+    <task id="LOCAL-00101" summary="handleCli fix. Better write file and stuff.">
+      <option name="closed" value="true" />
+      <created>1765211432235</created>
+      <option name="number" value="00101" />
+      <option name="presentableId" value="LOCAL-00101" />
+      <option name="project" value="LOCAL" />
+      <updated>1765211432235</updated>
+    </task>
+    <option name="localTasksCounter" value="102" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
