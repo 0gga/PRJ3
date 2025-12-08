@@ -255,6 +255,11 @@ void cli::handle_newDoor(const std::string &cmd) {
     if (!recieve_data())
         return;
 
+    while (strcmp(buffer_receive, "CLI is ready") == 0) {
+        if (!recieve_data())
+            return;
+    }
+
     if (strcmp(buffer_receive, "Operation failed - Incorrect CLI syntax") == 0) {
         return;
     }
@@ -274,6 +279,11 @@ void cli::handle_newUser(const std::string &cmd) {
 
     if (!recieve_data())
         return;
+
+    while (strcmp(buffer_receive, "CLI is ready") == 0) {
+        if (!recieve_data())
+            return;
+    }
 
     if (strcmp(buffer_receive, "Operation failed - Incorrect CLI syntax") == 0) {
         return;
@@ -316,6 +326,12 @@ void cli::handle_rmDoor(const std::string &cmd) {
     if (!recieve_data())
         return;
 
+    while (strcmp(buffer_receive, "CLI is ready") == 0) {
+        if (!recieve_data())
+            return;
+    }
+
+
     if (strcmp(buffer_receive, "Operation failed - Incorrect CLI syntax") == 0 ||
         strcmp(buffer_receive, "Door could not be found") == 0) {
         return;
@@ -336,6 +352,11 @@ void cli::handle_rmUser(const std::string &cmd) {
 
     if (!recieve_data())
         return;
+
+    while (strcmp(buffer_receive, "CLI is ready") == 0) {
+        if (!recieve_data())
+            return;
+    }
 
     if (strcmp(buffer_receive, "Operation failed - Incorrect CLI syntax") == 0 ||
         strcmp(buffer_receive, "User could not be found") == 0) 
@@ -386,6 +407,11 @@ void cli::handle_mvUser(const std::string &cmd) {
     if (!recieve_data())
         return;
 
+    while (strcmp(buffer_receive, "CLI is ready") == 0) {
+        if (!recieve_data())
+            return;
+    }
+
     if (strcmp(buffer_receive, "Operation failed - Incorrect CLI syntax") == 0 ||
         strcmp(buffer_receive, "User could not be found") == 0) {
         return;
@@ -407,6 +433,11 @@ void cli::handle_mvDoor(const std::string &cmd) {
 
     if (!recieve_data())
         return;
+
+    while (strcmp(buffer_receive, "CLI is ready") == 0) {
+        if (!recieve_data())
+            return;
+    }
 
     if (strcmp(buffer_receive, "Operation failed - Incorrect CLI syntax") == 0 ||
         strcmp(buffer_receive, "Door could not be found") == 0) {
