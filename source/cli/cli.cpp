@@ -355,6 +355,8 @@ void cli::handle_exit(const std::string &cmd) {
 
 
     close(sockfd);
+    sockfd = -1;
+    connection = false;
     return;
 }
 
@@ -415,7 +417,7 @@ void cli::handle_mvDoor(const std::string &cmd) {
         return;
 }
 
-void handle_log( const std::string &cmd)
+void cli::handle_log( const std::string &cmd)
 {
     send_data(cmd);
 
