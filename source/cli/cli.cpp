@@ -177,11 +177,17 @@ void cli::run() {
 
 
     while (connection) {
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         std::cout << "Input command. Type 'help' to see overview\n\n";
         std::cout << "> ";
+
+        if (std::cin.peek() == '\n')
+        std::cin.ignore();
+
         std::string input;
         std::getline(std::cin, input);
+
+        if (input.empty())
+            continue;
 
         if (input.rfind("newDoor", 0) == 0)
             handle_newDoor(input);
@@ -250,6 +256,7 @@ void cli::handle_newDoor(const std::string &cmd) {
     if (!recieve_data())
         return;
 
+
     if (strcmp(buffer_receive, "Operation failed - Incorrect CLI syntax") == 0) {
         return;
     }
@@ -272,6 +279,8 @@ void cli::handle_newUser(const std::string &cmd) {
 
     if (strcmp(buffer_receive, "Operation failed - Incorrect CLI syntax") == 0) {
         return;
+
+
     }
 
     // Second setup RFID reader.
@@ -311,6 +320,7 @@ void cli::handle_rmDoor(const std::string &cmd) {
     if (!recieve_data())
         return;
 
+
     if (strcmp(buffer_receive, "Operation failed - Incorrect CLI syntax") == 0 ||
         strcmp(buffer_receive, "Door could not be found") == 0) {
         return;
@@ -332,8 +342,10 @@ void cli::handle_rmUser(const std::string &cmd) {
     if (!recieve_data())
         return;
 
+
     if (strcmp(buffer_receive, "Operation failed - Incorrect CLI syntax") == 0 ||
-        strcmp(buffer_receive, "User could not be found") == 0) {
+        strcmp(buffer_receive, "User could not be found") == 0) 
+    {
         return;
     }
 
@@ -380,6 +392,7 @@ void cli::handle_mvUser(const std::string &cmd) {
     if (!recieve_data())
         return;
 
+
     if (strcmp(buffer_receive, "Operation failed - Incorrect CLI syntax") == 0 ||
         strcmp(buffer_receive, "User could not be found") == 0) {
         return;
@@ -401,6 +414,7 @@ void cli::handle_mvDoor(const std::string &cmd) {
 
     if (!recieve_data())
         return;
+
 
     if (strcmp(buffer_receive, "Operation failed - Incorrect CLI syntax") == 0 ||
         strcmp(buffer_receive, "Door could not be found") == 0) {
