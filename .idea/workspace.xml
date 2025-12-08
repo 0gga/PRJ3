@@ -36,28 +36,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="fixed addToConfig">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/WiringPi" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/align" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/asio" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/assert" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/config" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/core" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/detail" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/integer" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/move" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/ogga" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/predef" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/static_assert" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/system" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/throw_exception" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/type_index" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/type_traits" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/utility" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/extern/winapi" beforeDir="false" />
-    </list>
+    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="fixes" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -80,6 +59,12 @@
     <option name="ROOT_SYNC" value="DONT_SYNC" />
     <option name="SET_USER_NAME_GLOBALLY" value="false" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "0gga"
+  }
+}]]></component>
   <component name="GitLabMergeRequestFiltersHistory">{
   &quot;lastFilter&quot;: {
     &quot;state&quot;: &quot;OPENED&quot;,
@@ -96,6 +81,12 @@
     &quot;second&quot;: &quot;eecea205-3cbe-4958-b7b2-7637b50b1076&quot;
   }
 }</component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/0gga/oggaLib.git",
+    "accountId": "f892b73e-1667-4106-afd7-df6951e28507"
+  }
+}]]></component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/source/asioServer/TCP/TcpConnection.hpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/source/asioServer/include/ReaderHandler.hpp" root0="FORCE_HIGHLIGHTING" />
@@ -364,14 +355,6 @@
       <workItem from="1765118723810" duration="10000" />
       <workItem from="1765119977116" duration="137000" />
       <workItem from="1765143122567" duration="3978000" />
-    </task>
-    <task id="LOCAL-00039" summary="ReaderHandler patch">
-      <option name="closed" value="true" />
-      <created>1764322223423</created>
-      <option name="number" value="00039" />
-      <option name="presentableId" value="LOCAL-00039" />
-      <option name="project" value="LOCAL" />
-      <updated>1764322223423</updated>
     </task>
     <task id="LOCAL-00040" summary="ReaderHandler patch">
       <option name="closed" value="true" />
@@ -757,7 +740,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765114170251</updated>
     </task>
-    <option name="localTasksCounter" value="88" />
+    <task id="LOCAL-00088" summary="fixes">
+      <option name="closed" value="true" />
+      <created>1765192244605</created>
+      <option name="number" value="00088" />
+      <option name="presentableId" value="LOCAL-00088" />
+      <option name="project" value="LOCAL" />
+      <updated>1765192244605</updated>
+    </task>
+    <option name="localTasksCounter" value="89" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -819,7 +810,6 @@
     <MESSAGE value="cmake downgrade" />
     <MESSAGE value="ReaderHandler.cpp/mvUser &amp; mvDoor bugfix" />
     <MESSAGE value="\n" />
-    <MESSAGE value="fixes" />
     <MESSAGE value="whatever" />
     <MESSAGE value="fixes and stuff" />
     <MESSAGE value="handleClient fixes" />
@@ -828,7 +818,8 @@
     <MESSAGE value="readme and gitmodules fixes" />
     <MESSAGE value="updated readme" />
     <MESSAGE value="fixed addToConfig" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed addToConfig" />
+    <MESSAGE value="fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixes" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
