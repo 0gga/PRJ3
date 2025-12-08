@@ -36,7 +36,10 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="fixes" />
+    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="fixes">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -355,30 +358,6 @@
       <workItem from="1765118723810" duration="10000" />
       <workItem from="1765119977116" duration="137000" />
       <workItem from="1765143122567" duration="3978000" />
-    </task>
-    <task id="LOCAL-00040" summary="ReaderHandler patch">
-      <option name="closed" value="true" />
-      <created>1764323044670</created>
-      <option name="number" value="00040" />
-      <option name="presentableId" value="LOCAL-00040" />
-      <option name="project" value="LOCAL" />
-      <updated>1764323044670</updated>
-    </task>
-    <task id="LOCAL-00041" summary="ReaderHandler patch">
-      <option name="closed" value="true" />
-      <created>1764323570212</created>
-      <option name="number" value="00041" />
-      <option name="presentableId" value="LOCAL-00041" />
-      <option name="project" value="LOCAL" />
-      <updated>1764323570212</updated>
-    </task>
-    <task id="LOCAL-00042" summary="ReaderHandler patch">
-      <option name="closed" value="true" />
-      <created>1764327001062</created>
-      <option name="number" value="00042" />
-      <option name="presentableId" value="LOCAL-00042" />
-      <option name="project" value="LOCAL" />
-      <updated>1764327001062</updated>
     </task>
     <task id="LOCAL-00043" summary="ReaderHandler patch">
       <option name="closed" value="true" />
@@ -748,7 +727,31 @@
       <option name="project" value="LOCAL" />
       <updated>1765192244605</updated>
     </task>
-    <option name="localTasksCounter" value="89" />
+    <task id="LOCAL-00089" summary="fixes">
+      <option name="closed" value="true" />
+      <created>1765192492928</created>
+      <option name="number" value="00089" />
+      <option name="presentableId" value="LOCAL-00089" />
+      <option name="project" value="LOCAL" />
+      <updated>1765192492928</updated>
+    </task>
+    <task id="LOCAL-00090" summary="fixes">
+      <option name="closed" value="true" />
+      <created>1765192502590</created>
+      <option name="number" value="00090" />
+      <option name="presentableId" value="LOCAL-00090" />
+      <option name="project" value="LOCAL" />
+      <updated>1765192502590</updated>
+    </task>
+    <task id="LOCAL-00091" summary="fixes">
+      <option name="closed" value="true" />
+      <created>1765192810663</created>
+      <option name="number" value="00091" />
+      <option name="presentableId" value="LOCAL-00091" />
+      <option name="project" value="LOCAL" />
+      <updated>1765192810663</updated>
+    </task>
+    <option name="localTasksCounter" value="92" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
