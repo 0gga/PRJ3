@@ -16,7 +16,6 @@ class CsvLogger {
 
         /// getLogByDoor transfers the csv-file withe the corresponding door name
         std::string getLogByDoor(std::string door);
-
 };
 
 
