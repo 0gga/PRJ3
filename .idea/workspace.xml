@@ -37,10 +37,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="fixes">
+      <change beforePath="$PROJECT_DIR$/.idea/csv-editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/cli/cli" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/cli/cli.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/cli/cli.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/client/pn532-lib/rpi_tcptest/rpi_get_uid" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/asioServer/logger/csv.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/logger/csv.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/asioServer/logger/csv.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/logger/csv.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,6 +94,8 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///dummy.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/source/asioServer/TCP/TcpConnection.hpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/source/asioServer/include/ReaderHandler.hpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/source/asioServer/logger/csv.hpp" root0="FORCE_HIGHLIGHTING" />
@@ -132,7 +135,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
-    "CMake Application.asioServer.executor": "Run",
+    "CMake Application.asioServer.executor": "Debug",
     "CMake Application.build_unix.executor": "Run",
     "CMake Application.cli.executor": "Run",
     "CMake Application.client.executor": "Run",
@@ -360,15 +363,7 @@
       <workItem from="1765118723810" duration="10000" />
       <workItem from="1765119977116" duration="137000" />
       <workItem from="1765143122567" duration="3978000" />
-      <workItem from="1765194078744" duration="2693000" />
-    </task>
-    <task id="LOCAL-00049" summary="fixing races">
-      <option name="closed" value="true" />
-      <created>1764413558372</created>
-      <option name="number" value="00049" />
-      <option name="presentableId" value="LOCAL-00049" />
-      <option name="project" value="LOCAL" />
-      <updated>1764413558372</updated>
+      <workItem from="1765194078744" duration="7958000" />
     </task>
     <task id="LOCAL-00050" summary="refactor from enum to enum class">
       <option name="closed" value="true" />
@@ -754,7 +749,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765195868012</updated>
     </task>
-    <option name="localTasksCounter" value="98" />
+    <task id="LOCAL-00098" summary="fixes">
+      <option name="closed" value="true" />
+      <created>1765196921710</created>
+      <option name="number" value="00098" />
+      <option name="presentableId" value="LOCAL-00098" />
+      <option name="project" value="LOCAL" />
+      <updated>1765196921710</updated>
+    </task>
+    <option name="localTasksCounter" value="99" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
