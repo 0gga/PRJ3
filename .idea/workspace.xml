@@ -37,27 +37,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="fixes">
-      <change afterPath="$PROJECT_DIR$/extern/align" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/extern/asio" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/extern/assert" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/extern/config" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/extern/core" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/extern/detail" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/extern/integer" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/extern/move" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/extern/ogga" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/extern/predef" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/extern/static_assert" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/extern/system" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/extern/throw_exception" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/extern/type_index" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/extern/type_traits" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/extern/utility" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/extern/winapi" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitmodules" beforeDir="false" afterPath="$PROJECT_DIR$/.gitmodules" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/csv-editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-editor.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -372,15 +353,7 @@
       <workItem from="1765118723810" duration="10000" />
       <workItem from="1765119977116" duration="137000" />
       <workItem from="1765143122567" duration="3978000" />
-      <workItem from="1765194078744" duration="306000" />
-    </task>
-    <task id="LOCAL-00045" summary="Pushing so i can rollback after this next commit">
-      <option name="closed" value="true" />
-      <created>1764335567031</created>
-      <option name="number" value="00045" />
-      <option name="presentableId" value="LOCAL-00045" />
-      <option name="project" value="LOCAL" />
-      <updated>1764335567031</updated>
+      <workItem from="1765194078744" duration="1395000" />
     </task>
     <task id="LOCAL-00046" summary="Moved config operations to helper functions">
       <option name="closed" value="true" />
@@ -766,7 +739,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765193278943</updated>
     </task>
-    <option name="localTasksCounter" value="94" />
+    <task id="LOCAL-00094" summary="fixes">
+      <option name="closed" value="true" />
+      <created>1765194458101</created>
+      <option name="number" value="00094" />
+      <option name="presentableId" value="LOCAL-00094" />
+      <option name="project" value="LOCAL" />
+      <updated>1765194458101</updated>
+    </task>
+    <option name="localTasksCounter" value="95" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
