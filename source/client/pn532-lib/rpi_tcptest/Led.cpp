@@ -17,16 +17,10 @@ void Led::off()
     digitalWrite(pin, LOW);
 }
 
-void Led::blink(int times, int delayMs)
+void Led::blink(int delayMs)
 {
-    std::thread([this, times, delayMs]()
-                {
-        for (int i = 0; i < times; i++) {
-        
-        on();
-        std::this_thread::sleep_for(std::chrono::milliseconds(delayMs));
-        off();
-        std::this_thread::sleep_for(std::chrono::milliseconds(delayMs));
-    } })
-        .detach();
+    on();
+    std::this_thread::sleep_for(std::chrono::milliseconds(delayMs));
+    off();
+    std::this_thread::sleep_for(std::chrono::milliseconds(delayMs));
 }

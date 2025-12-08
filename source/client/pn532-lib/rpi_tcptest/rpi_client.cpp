@@ -33,7 +33,7 @@ client::client(int portno, const char *server_ip, std::string doorname) : portno
 		std::cerr << "Failed to initialize PN532" << std::endl;
 	}
 
-	initLeds();
+	// initLeds();
 
 	// Third connect to server (continuous calls, until connected)
 	while ((sockfd = connect_to_server()) < 0)
@@ -207,9 +207,11 @@ void client::io_feedback()
 		Led_Yellow->off();
 		Led_Red->on();
 
-		for (int i = 0; i < 6; i++) // blink i 3 sekunder.
+		int i = 0;
+		while (i < 6) // blink i 3 sekunder.
 		{
-			Led_Red->blink(12, 3000);
+			Led_Red->blink(250);
+			i++;
 		}
 
 		Led_Red->off();
@@ -343,7 +345,7 @@ void client::initLeds()
 		buzzer->beep(1000);
 		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
-		printf("REED SWITCH OPEN: %d\n", RS->isOpen());
+		printf("REED SWITCH OPEN: %d\n", RS->isDoorOpen());
 		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	}
 	return;

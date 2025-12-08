@@ -10,5 +10,5 @@ public:
     Led(int physPin);
     void on();
     void off();
-    void blink(int times, int delayMs);
+    void blink(int delayMs);
 };
