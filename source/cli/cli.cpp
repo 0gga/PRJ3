@@ -200,6 +200,12 @@ void cli::run() {
                  input == "getUserLog" ||
                  input == "getDoorLog")
             send_data(input);
+        
+        else if (input.rfind("mvUser", 0) == 0)
+            handle_mvUser(input);
+
+        else if (input.rfind("mvDoor", 0) == 0)
+            handle_mvDoor(input);
 
         else if (input == "exit")
             handle_exit(input);
@@ -235,19 +241,19 @@ void cli::printCommands() const {
             << "  getDoorLog <Door name>              - Get door-specific log\n"
             << "  help                                - Print command overview\n"
             << "\n";
+
+    return;
 }
 
-bool cli::handle_newDoor(const std::string &cmd) {
+void cli::handle_newDoor(const std::string &cmd) {
     send_data(cmd);
 
     if (!recieve_data())
-        return false;
+        return;
 
     if (strcmp(buffer_receive, "Operation failed - Incorrect CLI syntax") == 0) {
-        return false;
+        return;
     }
-
-    // confirm msg
 
     std::string confirmation;
     std::cout << "<approved/denied> ";
@@ -256,34 +262,17 @@ bool cli::handle_newDoor(const std::string &cmd) {
     send_data(confirmation);
 
     if (!recieve_data())
-        return false;
-
-    if (strcmp(buffer_receive, "Did not add door") == 0) {
-        return false;
-    }
-
-    if (strcmp(buffer_receive, "Failed to add door") == 0) {
-        return false;
-    }
-
-    if (strcmp(buffer_receive, "Door added successfully") == 0) {
-        return true;
-    }
-    return false;
+        return;
 }
 
-bool cli::handle_newUser(const std::string &cmd) {
+void cli::handle_newUser(const std::string &cmd) {
     send_data(cmd);
 
     if (!recieve_data())
-        return false;
+        return;
 
     if (strcmp(buffer_receive, "Operation failed - Incorrect CLI syntax") == 0) {
-        return false;
-    }
-
-    if (strcmp(buffer_receive, "Awaiting card read") != 0) {
-        return false;
+        return;
     }
 
     // Second setup RFID reader.
@@ -301,7 +290,7 @@ bool cli::handle_newUser(const std::string &cmd) {
     send_data(uid);
 
     if (!recieve_data())
-        return false;
+        return;
 
     std::string confirmation;
     std::cout << "<approved/denied> ";
@@ -310,27 +299,18 @@ bool cli::handle_newUser(const std::string &cmd) {
     send_data(confirmation);
 
     if (!recieve_data())
-        return false;
-
-    if (strcmp(buffer_receive, "Failed to add user") == 0) {
-        return false;
-    }
-
-    if (strcmp(buffer_receive, "User added successfully") == 0) {
-        return true;
-    }
-    return false;
+        return;
 }
 
-bool cli::handle_rmDoor(const std::string &cmd) {
+void cli::handle_rmDoor(const std::string &cmd) {
     send_data(cmd);
 
     if (!recieve_data())
-        return false;
+        return;
 
     if (strcmp(buffer_receive, "Operation failed - Incorrect CLI syntax") == 0 ||
         strcmp(buffer_receive, "Door could not be found") == 0) {
-        return false;
+        return;
     }
 
     std::string confirmation;
@@ -340,31 +320,18 @@ bool cli::handle_rmDoor(const std::string &cmd) {
     send_data(confirmation);
 
     if (!recieve_data())
-        return false;
-
-    if (strcmp(buffer_receive, "Cancelled remove operation") == 0) {
-        return false;
-    }
-
-    if (strcmp(buffer_receive, "Failed to remove door") == 0) {
-        return false;
-    }
-
-    if (strcmp(buffer_receive, "Door removed successfully") == 0) {
-        return true;
-    }
-    return false;
+        return;
 }
 
-bool cli::handle_rmUser(const std::string &cmd) {
+void cli::handle_rmUser(const std::string &cmd) {
     send_data(cmd);
 
     if (!recieve_data())
-        return false;
+        return;
 
     if (strcmp(buffer_receive, "Operation failed - Incorrect CLI syntax") == 0 ||
         strcmp(buffer_receive, "User could not be found") == 0) {
-        return false;
+        return;
     }
 
     std::string confirmation;
@@ -374,59 +341,44 @@ bool cli::handle_rmUser(const std::string &cmd) {
     send_data(confirmation);
 
     if (!recieve_data())
-        return false;
-
-    if (strcmp(buffer_receive, "Cancelled remove operation") == 0) {
-        return false;
-    }
-
-    if (strcmp(buffer_receive, "Failed to remove user") == 0) {
-        return false;
-    }
-
-    if (strcmp(buffer_receive, "User removed successfully") == 0) {
-        return true;
-    }
-    return false;
+        return;
 }
 
-bool cli::handle_exit(const std::string &cmd) {
+void cli::handle_exit(const std::string &cmd) {
     send_data(cmd);
 
     if (!recieve_data())
-        return false;
+        return;
 
 
     close(sockfd);
-    return true;
+    return;
 }
 
-bool cli::handle_shutdown(const std::string &cmd) {
+void cli::handle_shutdown(const std::string &cmd) {
     send_data(cmd);
 
     if (!recieve_data())
-        return false;
+        return;
 
 
     close(sockfd);
     sockfd = -1;
     connection = false;
 
-    return true;
+    return;
 }
 
-bool cli::handle_mvUser(const std::string &cmd) {
+void cli::handle_mvUser(const std::string &cmd) {
     send_data(cmd);
 
     if (!recieve_data())
-        return false;
+        return;
 
     if (strcmp(buffer_receive, "Operation failed - Incorrect CLI syntax") == 0 ||
         strcmp(buffer_receive, "User could not be found") == 0) {
-        return false;
+        return;
     }
-
-    // confirm msg
 
     std::string confirmation;
     std::cout << "<approved/denied> ";
@@ -435,35 +387,20 @@ bool cli::handle_mvUser(const std::string &cmd) {
     send_data(confirmation);
 
     if (!recieve_data())
-        return false;
+        return;
 
-    if (strcmp(buffer_receive, "Cancelled edit operation") == 0) {
-        return false;
-    }
-
-    if (strcmp(buffer_receive, "Failed to edit user, data may be corrupted") == 0) {
-        return false;
-    }
-
-    if (strcmp(buffer_receive, "User edited successfully") == 0) {
-        std::cout << buffer_receive;
-        return true;
-    }
-    return false;
 }
 
-bool cli::handle_mvDoor(const std::string &cmd) {
+void cli::handle_mvDoor(const std::string &cmd) {
     send_data(cmd);
 
     if (!recieve_data())
-        return false;
+        return;
 
     if (strcmp(buffer_receive, "Operation failed - Incorrect CLI syntax") == 0 ||
         strcmp(buffer_receive, "Door could not be found") == 0) {
-        return false;
+        return;
     }
-
-    // confirm msg
 
     std::string confirmation;
     std::cout << "<approved/denied> ";
@@ -472,19 +409,5 @@ bool cli::handle_mvDoor(const std::string &cmd) {
     send_data(confirmation);
 
     if (!recieve_data())
-        return false;
-
-    if (strcmp(buffer_receive, "Cancelled edit operation") == 0) {
-        return false;
-    }
-
-    if (strcmp(buffer_receive, "Failed to edit door, data may be corrupted") == 0) {
-        return false;
-    }
-
-    if (strcmp(buffer_receive, "Door edited successfully") == 0) {
-        std::cout << buffer_receive;
-        return true;
-    }
-    return false;
+        return;
 }

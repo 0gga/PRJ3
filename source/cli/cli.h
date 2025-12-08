@@ -28,14 +28,14 @@ private:
     bool recieve_data();
     bool admin_identification();
 
-    bool handle_newDoor(const std::string &);
-    bool handle_newUser(const std::string &);
-    bool handle_rmDoor(const std::string &);
-    bool handle_rmUser(const std::string &);
-    bool handle_exit(const std::string &);
-    bool handle_shutdown(const std::string &);
-    bool handle_mvUser(const std::string &);
-    bool handle_mvDoor(const std::string &);
+    void handle_newDoor(const std::string &);
+    void handle_newUser(const std::string &);
+    void handle_rmDoor(const std::string &);
+    void handle_rmUser(const std::string &);
+    void handle_exit(const std::string &);
+    void handle_shutdown(const std::string &);
+    void handle_mvUser(const std::string &);
+    void handle_mvDoor(const std::string &);
 
     void printCommands() const;
 };
