@@ -180,13 +180,14 @@ void cli::run() {
         std::cout << "Input command. Type 'help' to see overview\n\n";
         std::cout << "> ";
 
-        std::string cmd;
-        std::cin >> cmd;   // læser kommando uden newline-problemer
+        if (std::cin.peek() == '\n')
+        std::cin.ignore();
 
-        std::string rest;
-        std::getline(std::cin, rest); // resten af linjen inkl. arguments
+        std::string input;
+        std::getline(std::cin, input);
 
-        std::string input = cmd + rest; // samlet kommando
+        if (input.empty())
+            continue;
 
         if (input.rfind("newDoor", 0) == 0)
             handle_newDoor(input);
@@ -255,10 +256,6 @@ void cli::handle_newDoor(const std::string &cmd) {
     if (!recieve_data())
         return;
 
-    while (strcmp(buffer_receive, "CLI is ready") == 0) {
-        if (!recieve_data())
-            return;
-    }
 
     if (strcmp(buffer_receive, "Operation failed - Incorrect CLI syntax") == 0) {
         return;
@@ -280,13 +277,10 @@ void cli::handle_newUser(const std::string &cmd) {
     if (!recieve_data())
         return;
 
-    while (strcmp(buffer_receive, "CLI is ready") == 0) {
-        if (!recieve_data())
-            return;
-    }
-
     if (strcmp(buffer_receive, "Operation failed - Incorrect CLI syntax") == 0) {
         return;
+
+
     }
 
     // Second setup RFID reader.
@@ -326,11 +320,6 @@ void cli::handle_rmDoor(const std::string &cmd) {
     if (!recieve_data())
         return;
 
-    while (strcmp(buffer_receive, "CLI is ready") == 0) {
-        if (!recieve_data())
-            return;
-    }
-
 
     if (strcmp(buffer_receive, "Operation failed - Incorrect CLI syntax") == 0 ||
         strcmp(buffer_receive, "Door could not be found") == 0) {
@@ -353,10 +342,6 @@ void cli::handle_rmUser(const std::string &cmd) {
     if (!recieve_data())
         return;
 
-    while (strcmp(buffer_receive, "CLI is ready") == 0) {
-        if (!recieve_data())
-            return;
-    }
 
     if (strcmp(buffer_receive, "Operation failed - Incorrect CLI syntax") == 0 ||
         strcmp(buffer_receive, "User could not be found") == 0) 
@@ -407,10 +392,6 @@ void cli::handle_mvUser(const std::string &cmd) {
     if (!recieve_data())
         return;
 
-    while (strcmp(buffer_receive, "CLI is ready") == 0) {
-        if (!recieve_data())
-            return;
-    }
 
     if (strcmp(buffer_receive, "Operation failed - Incorrect CLI syntax") == 0 ||
         strcmp(buffer_receive, "User could not be found") == 0) {
@@ -434,10 +415,6 @@ void cli::handle_mvDoor(const std::string &cmd) {
     if (!recieve_data())
         return;
 
-    while (strcmp(buffer_receive, "CLI is ready") == 0) {
-        if (!recieve_data())
-            return;
-    }
 
     if (strcmp(buffer_receive, "Operation failed - Incorrect CLI syntax") == 0 ||
         strcmp(buffer_receive, "Door could not be found") == 0) {
