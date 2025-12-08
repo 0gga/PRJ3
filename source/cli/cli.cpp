@@ -177,11 +177,16 @@ void cli::run() {
 
 
     while (connection) {
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         std::cout << "Input command. Type 'help' to see overview\n\n";
         std::cout << "> ";
-        std::string input;
-        std::getline(std::cin, input);
+
+        std::string cmd;
+        std::cin >> cmd;   // læser kommando uden newline-problemer
+
+        std::string rest;
+        std::getline(std::cin, rest); // resten af linjen inkl. arguments
+
+        std::string input = cmd + rest; // samlet kommando
 
         if (input.rfind("newDoor", 0) == 0)
             handle_newDoor(input);
@@ -333,7 +338,8 @@ void cli::handle_rmUser(const std::string &cmd) {
         return;
 
     if (strcmp(buffer_receive, "Operation failed - Incorrect CLI syntax") == 0 ||
-        strcmp(buffer_receive, "User could not be found") == 0) {
+        strcmp(buffer_receive, "User could not be found") == 0) 
+    {
         return;
     }
 
