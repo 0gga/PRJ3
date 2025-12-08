@@ -13,11 +13,10 @@ public:
 	explicit ReaderHandler(const int& clientPort, const int& cliPort, const std::string& cliName);
 	~ReaderHandler();
 
-	void stop();
-
 	static void runLoop();
 
 private: // Member Functions
+	void stop();
 	/// Do not pass by const reference since pointer copy is trivial.<br>Additional benefit: Avoids any unintended interference with the TcpConnection objects.
 	void handleClient(CONNECTION_T connection) const;
 	void handleCli(CONNECTION_T connection);
