@@ -32,7 +32,8 @@ This readme mainly describes:
 >
 >> Run in root to clone external dependencies.
 >> ```shell
->> git submodule update --init --recursive --remote --merge
+>> git submodule sync --recursive
+>> git submodule update --init --recursive
 >> ```
 >
 >> <h3>Addition/Removal of dependencies:</h3>
