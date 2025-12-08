@@ -141,7 +141,6 @@ bool cli::recieve_data() {
     return true;
 }
 
-
 bool cli::admin_identification() {
     std::string cli_identification;
     while (true) {
