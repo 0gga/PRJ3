@@ -30,7 +30,7 @@ This readme mainly describes:
 >> sudo apt install ./wiringpi-3.x.deb
 >> ```
 >
->> Run in root to clone external dependencies.
+>> Should apply automatically, if not run this in root to clone external dependencies.
 >> ```shell
 >> git submodule update --init --recursive
 >> ```
@@ -43,7 +43,7 @@ This readme mainly describes:
 >>
 >> ```shell
 >> git submodule add url extern/<name>
->> git submodule update --init --recursive --remote --merge
+>> git submodule update --init --recursive
 >> ```
 >>
 >> <h4>To remove a submodule:</h4>
@@ -137,6 +137,7 @@ This readme mainly describes:
 >>- Edit an existing door: `mvDoor <string>0gga <int>accessLevel`
 >>- Exit and kill the CLI connection: `exit`
 >>- Shutdown the entire system: `shutdown`
+>>- Get config - contains all persistent data: `getConfig`
 >>- Get date-specific system logs: `getSystemLog <string>Date`
 >>- Get user-specific logs: `getUserLog <string>0gga`
 >>- Get door-specific logs: `getDoorLog <string>Door1`
@@ -180,10 +181,6 @@ This readme mainly describes:
 > > `mvUser 0gga ogga`<br>
 > > `mvDoor door1 door2`<br>
 >> </details>
->
->> #### **Possible additions:**
->>
->>- Get user specific logs: `getULog 0gga`
 
 > ## **Compilation**<br>
 >> ### **Cross Compilation**<br>
@@ -193,7 +190,7 @@ This readme mainly describes:
 > > To cross compile the server it is recommended to use CLions default WSL toolchain.<br>
 >>
 >> ### **CMake options**<br>
->> To enable args and/or debug output the following flags must be set as CMake options before building CMake config:<br>
+>> To enable args and/or debug output for the server the following flags must be set as CMake options before building CMake config:<br>
 > > `DDEBUG=1`,
 > > `DARGS=1`
 >>
@@ -202,7 +199,7 @@ This readme mainly describes:
 >> ### **Implemented**<br>
 >>- Easy Admin configuration through CLI connection on a separate port.
 >>- Constantly accepts clients and stores information independently.
->>- Systemwide unified users.json - read onto hashmaps at startup for efficient runtime.
+>>- Systemwide unified config.json - read onto hashmaps at startup for efficient runtime.
 >>- String parser for standardized name format - snake_case.<br>
 >>
 >>
