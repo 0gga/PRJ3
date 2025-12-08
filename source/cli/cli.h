@@ -36,6 +36,7 @@ private:
     void handle_shutdown(const std::string &);
     void handle_mvUser(const std::string &);
     void handle_mvDoor(const std::string &);
+    void handle_log(const std::string &);
 
     void printCommands() const;
 };

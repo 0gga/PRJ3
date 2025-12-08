@@ -198,7 +198,7 @@ void cli::run() {
         else if (input.rfind("getSystemLog", 0) == 0 ||
                  input.rfind("getUserLog", 0) == 0 ||
                  input.rfind("getDoorLog", 0) == 0)
-            send_data(input);
+            handle_log(input);
         
         else if (input.rfind("mvUser", 0) == 0)
             handle_mvUser(input);
@@ -282,8 +282,12 @@ void cli::handle_newUser(const std::string &cmd) {
     }
 
     std::string uid; 
-    if (rfid_reader->waitForScan()) { //blocking loop.
-		uid = rfid_reader->getStringUID();
+    bool scanned = false; 
+    while(!scanned) { //blocking loop.
+		if(rfid_reader->waitForScan()){
+            scanned = true; 
+            uid = rfid_reader->getStringUID();
+        }
     }
     
     send_data(uid);
@@ -406,6 +410,14 @@ void cli::handle_mvDoor(const std::string &cmd) {
     std::cin >> confirmation;
 
     send_data(confirmation);
+
+    if (!recieve_data())
+        return;
+}
+
+void handle_log( const std::string &cmd)
+{
+    send_data(cmd);
 
     if (!recieve_data())
         return;
