@@ -195,9 +195,9 @@ void cli::run() {
         else if (input.rfind("rmUser", 0) == 0)
             handle_rmUser(input);
 
-        else if (input == "getSystemLog" ||
-                 input == "getUserLog" ||
-                 input == "getDoorLog")
+        else if (input.rfind("getSystemLog", 0) == 0 ||
+                 input.rfind("getUserLog", 0) == 0 ||
+                 input.rfind("getDoorLog", 0) == 0)
             send_data(input);
         
         else if (input.rfind("mvUser", 0) == 0)
