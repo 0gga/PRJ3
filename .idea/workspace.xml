@@ -36,9 +36,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="readme updated">
+    <list default="true" id="106661c3-5992-45b9-a1bf-9a023f1d5c44" name="Changes" comment="ReaderrHandler::stop() moved to private:">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/asioServer/include/ReaderHandler.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/include/ReaderHandler.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/asioServer/src/ReaderHandler.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -351,15 +351,8 @@
       <workItem from="1765194078744" duration="7958000" />
       <workItem from="1765206677019" duration="5311000" />
       <workItem from="1765212882632" duration="166000" />
-      <workItem from="1765213368471" duration="25000" />
-    </task>
-    <task id="LOCAL-00055" summary="added dockerfile">
-      <option name="closed" value="true" />
-      <created>1764636375431</created>
-      <option name="number" value="00055" />
-      <option name="presentableId" value="LOCAL-00055" />
-      <option name="project" value="LOCAL" />
-      <updated>1764636375431</updated>
+      <workItem from="1765213368471" duration="79000" />
+      <workItem from="1765219177720" duration="432000" />
     </task>
     <task id="LOCAL-00056" summary="mv cmdlets implemented">
       <option name="closed" value="true" />
@@ -745,7 +738,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765212143272</updated>
     </task>
-    <option name="localTasksCounter" value="104" />
+    <task id="LOCAL-00104" summary="ReaderrHandler::stop() moved to private:">
+      <option name="closed" value="true" />
+      <created>1765213440633</created>
+      <option name="number" value="00104" />
+      <option name="presentableId" value="LOCAL-00104" />
+      <option name="project" value="LOCAL" />
+      <updated>1765213440633</updated>
+    </task>
+    <option name="localTasksCounter" value="105" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -791,7 +792,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fixes to CMake for args" />
     <MESSAGE value="TcpConnection patch" />
     <MESSAGE value="fixing races" />
     <MESSAGE value="refactor from enum to enum class" />
@@ -816,7 +816,8 @@
     <MESSAGE value="fixes" />
     <MESSAGE value="handleCli fix. Better write file and stuff." />
     <MESSAGE value="readme updated" />
-    <option name="LAST_COMMIT_MESSAGE" value="readme updated" />
+    <MESSAGE value="ReaderrHandler::stop() moved to private:" />
+    <option name="LAST_COMMIT_MESSAGE" value="ReaderrHandler::stop() moved to private:" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

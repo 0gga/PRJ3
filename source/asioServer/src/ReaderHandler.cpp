@@ -271,7 +271,7 @@ void ReaderHandler::handleCli(CONNECTION_T connection) {
 		const std::scoped_lock lock{cli_mtx};
 		if (!cliReader_.second) {
 			connection->write<std::string>("Input CLI Identification");
-		} else {
+		} else if (cliReader_.second != connection) {
 			connection->write<std::string>("Another Admin is connected");
 			connection->close();
 			return;
@@ -331,7 +331,7 @@ void ReaderHandler::handleCli(CONNECTION_T connection) {
 			if (checkSyntax(oldName))
 				mvUser(connection, oldName, newName, lvl);
 		} else if (pkg.rfind("mvDoor", 0) == 0) {
-			const auto [oldName, newName , lvl] = parseSyntax(pkg, mvDoor_);
+			const auto [oldName, newName, lvl] = parseSyntax(pkg, mvDoor_);
 			if (checkSyntax(oldName))
 				mvDoor(connection, oldName, newName, lvl);
 		} else if (pkg.rfind("getSystemLog", 0) == 0) {
