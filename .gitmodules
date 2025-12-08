@@ -52,6 +52,3 @@
 [submodule "extern/json"]
 	path = extern/json
 	url = https://github.com/nlohmann/json.git
-[submodule "type_traits"]
-	path = type_traits
-	url = https://github.com/boostorg/type_traits.git

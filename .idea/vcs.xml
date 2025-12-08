@@ -2,23 +2,5 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/extern/align" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/extern/asio" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/extern/assert" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/extern/config" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/extern/core" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/extern/detail" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/extern/integer" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/extern/json" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/extern/move" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/extern/ogga" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/extern/predef" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/extern/static_assert" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/extern/system" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/extern/throw_exception" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/extern/type_index" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/extern/type_traits" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/extern/utility" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/extern/winapi" vcs="Git" />
   </component>
 </project>

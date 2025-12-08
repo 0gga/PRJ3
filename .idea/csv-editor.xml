@@ -3,41 +3,6 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
-        <entry key="\source\asioServer\bin\logs\doorLogs\Log_door1.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value=";" />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\source\asioServer\bin\logs\doorLogs\Log_door2.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value=";" />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\source\asioServer\bin\logs\systemLogs\Log_2025_12_05.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value=";" />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\source\asioServer\bin\logs\userLogs\Log_a.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value=";" />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\source\asioServer\bin\logs\userLogs\Log_unknown.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value=";" />
-            </Attribute>
-          </value>
-        </entry>
         <entry key="\source\asioServer\logger\logs\systemLogs\Log_2025_11_28.csv">
           <value>
             <Attribute>
