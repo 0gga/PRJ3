@@ -130,12 +130,10 @@ inline void TcpConnection::writeFile(const std::string& path)
 	// Extract filename only
 	std::string filename = std::filesystem::path(path).filename().string();
 
-	// --- Build header: type:file%%%<filename>%%%<filesize>\n ---
 	auto header = std::make_shared<std::string>();
 	header->reserve(64 + filename.size());
 	*header = "type:file%%%" + filename + "%%%" + std::to_string(size) + "\n";
 
-	// --- Step 1: async header write ---
 	asio::async_write(
 		socket_,
 		asio::buffer(*header),

@@ -1,5 +1,7 @@
 ﻿#include "ReaderHandler.hpp"
 
+#include "ogga/scopetimer.hpp"
+
 #ifdef _WIN32
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 #include <winsock2.h>
@@ -575,6 +577,20 @@ bool ReaderHandler::addToConfig(const std::string& type, const std::string& name
 		DEBUG_OUT("Door already exists");
 		return false;
 	}
+#ifdef DEBUG
+	if (type == "users" && !usersByUid_.contains(uid)) {
+		{
+			ogga::scopetimer("Lookup time for users in memory: ", "ns");
+			usersByUid_.find(uid);
+		}
+	}
+	if (type == "doors" && !doors_.contains(name)) {
+		{
+			ogga::scopetimer("Lookup time for doors in memory: ", "ns");
+			doors_.find(uid);
+		}
+	}
+#endif
 
 	std::string addedName = name;
 	std::string addedUid  = uid;
@@ -680,7 +696,6 @@ void ReaderHandler::assertConfig(nlohmann::json& configJson) {
 		configJson = {{"users", nlohmann::json::array()}, {"doors", nlohmann::json::array()}};
 	}
 }
-
 
 ReaderHandler::CmdArgs ReaderHandler::parseSyntax(const std::string& data, Command type) {
 	std::smatch match;
